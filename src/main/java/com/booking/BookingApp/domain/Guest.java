@@ -10,5 +10,5 @@ import java.util.ArrayList;
 @Setter
 @NoArgsConstructor
 public class Guest extends User {
-    private ArrayList<Accommodation> favoriteAccommodations;
+
 }
