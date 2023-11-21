@@ -7,5 +7,6 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class GuestComments extends Comments{
+public class AccommodationComments extends Comments{
+
 }
