@@ -1,18 +1,19 @@
 package com.booking.BookingApp.service.interfaces;
 
 import com.booking.BookingApp.domain.Amenity;
+import com.booking.BookingApp.dto.AmenityDTO;
 
 import java.util.Collection;
 
 public interface IAmenityService {
 
-    Collection<Amenity> findAll();
+    Collection<AmenityDTO> findAll();
 
-    Amenity findById(Long id);
+    AmenityDTO findById(Long id);
 
-    Amenity create(Amenity amenity);
+    AmenityDTO create(AmenityDTO amenity);
 
-    Amenity update(Amenity amenity);
+    AmenityDTO update(AmenityDTO amenity);
 
-    Amenity delete(Long id);
+    AmenityDTO delete(Long id);
 }

@@ -2,29 +2,30 @@ package com.booking.BookingApp.service.interfaces;
 
 import com.booking.BookingApp.domain.Comments;
 import com.booking.BookingApp.domain.enums.Status;
+import com.booking.BookingApp.dto.CommentsDTO;
 
 import java.util.Collection;
 
 
 public interface ICommentService {
 
-    Collection<Comments> findAll();
+    Collection<CommentsDTO> findAll();
 
-    Comments findById(Long id);
+    CommentsDTO findById(Long id);
 
-    Collection<Comments> findByHostId(Long id);
+    Collection<CommentsDTO> findByHostId(Long id);
 
-    Collection<Comments> findByAccommodationId(Long id);
+    Collection<CommentsDTO> findByAccommodationId(Long id);
 
-    Collection<Comments> findByStatus(Status status);
+    Collection<CommentsDTO> findByStatus(Status status);
 
     int findHostRating(Long id);
 
     int findAccommodationRating(Long id);
 
-    Comments create(Comments comment);
+    CommentsDTO create(CommentsDTO comment);
 
-    Comments update(Comments comment);
+    CommentsDTO update(CommentsDTO comment);
 
     void delete(Long id);
 }

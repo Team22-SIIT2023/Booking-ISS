@@ -2,6 +2,7 @@ package com.booking.BookingApp.controller;
 
 import com.booking.BookingApp.domain.Request;
 import com.booking.BookingApp.domain.enums.RequestStatus;
+import com.booking.BookingApp.dto.RequestDTO;
 import com.booking.BookingApp.service.RequestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,64 +20,64 @@ public class RequestController {
     private RequestService requestService;
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Collection<Request>> getRequests() {
-        Collection<Request> requests = requestService.findAll();
-        return new ResponseEntity<Collection<Request>>(requests, HttpStatus.OK);
+    public ResponseEntity<Collection<RequestDTO>> getRequests() {
+        Collection<RequestDTO> requests = requestService.findAll();
+        return new ResponseEntity<Collection<RequestDTO>>(requests, HttpStatus.OK);
     }
 
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Request> getById(@PathVariable("id") Long id) {
-        Request request = requestService.findById(id);
-        return new ResponseEntity<Request>(request, HttpStatus.OK);
+    public ResponseEntity<RequestDTO> getById(@PathVariable("id") Long id) {
+        RequestDTO request = requestService.findById(id);
+        return new ResponseEntity<RequestDTO>(request, HttpStatus.OK);
     }
 
     @GetMapping(value = "/host", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Collection<Request>> getByHostId(@RequestParam("hostId") Long id) {
-        Collection<Request> hostRequests = requestService.findByHostId(id);
-        return new ResponseEntity<Collection<Request>>(hostRequests, HttpStatus.OK);
+    public ResponseEntity<Collection<RequestDTO>> getByHostId(@RequestParam("hostId") Long id) {
+        Collection<RequestDTO> hostRequests = requestService.findByHostId(id);
+        return new ResponseEntity<Collection<RequestDTO>>(hostRequests, HttpStatus.OK);
     }
 
     @GetMapping(value = "/guest", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Collection<Request>> getByGuestId(@RequestParam("guestId") Long id) {
-        Collection<Request> guestRequests = requestService.findByGuestId(id);
-        return new ResponseEntity<Collection<Request>>(guestRequests, HttpStatus.OK);
+    public ResponseEntity<Collection<RequestDTO>> getByGuestId(@RequestParam("guestId") Long id) {
+        Collection<RequestDTO> guestRequests = requestService.findByGuestId(id);
+        return new ResponseEntity<Collection<RequestDTO>>(guestRequests, HttpStatus.OK);
     }
 
     @GetMapping(value = "/status", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Collection<Request>> getByStatus(@RequestParam("status") RequestStatus status) {
-        Collection<Request> guestRequests = requestService.findByStatus(status);
-        return new ResponseEntity<Collection<Request>>(guestRequests, HttpStatus.OK);
+    public ResponseEntity<Collection<RequestDTO>> getByStatus(@RequestParam("status") RequestStatus status) {
+        Collection<RequestDTO> guestRequests = requestService.findByStatus(status);
+        return new ResponseEntity<Collection<RequestDTO>>(guestRequests, HttpStatus.OK);
     }
 
     @GetMapping(value = "/reservations", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Collection<Request>> getGuestReservation(@RequestParam("guestId") Long id,
+    public ResponseEntity<Collection<RequestDTO>> getGuestReservation(@RequestParam("guestId") Long id,
                                                                    @RequestParam("status") RequestStatus status) {
-        Collection<Request> guestRequests = requestService.findReservationByGuestId(id, status);
-        return new ResponseEntity<Collection<Request>>(guestRequests, HttpStatus.OK);
+        Collection<RequestDTO> guestRequests = requestService.findReservationByGuestId(id, status);
+        return new ResponseEntity<Collection<RequestDTO>>(guestRequests, HttpStatus.OK);
     }
 
-    @GetMapping(value = "/waitingStatus", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Collection<Request>> getWaitingRequest(@RequestParam("waitingStatus") RequestStatus status) {
-        Collection<Request> guestRequests = requestService.findWaitingRequest(status);
-        return new ResponseEntity<Collection<Request>>(guestRequests, HttpStatus.OK);
+    @GetMapping(value = "/hostRequest", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Collection<RequestDTO>> getWaitingRequest(@RequestParam("hostId") Long id) {
+        Collection<RequestDTO> guestRequests = requestService.findWaitingRequest(id);
+        return new ResponseEntity<Collection<RequestDTO>>(guestRequests, HttpStatus.OK);
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Request> createRequest(@RequestBody Request request) {
-        Request savedRequest = requestService.create(request);
-        return new ResponseEntity<Request>(savedRequest, HttpStatus.CREATED);
+    public ResponseEntity<RequestDTO> createRequest(@RequestBody RequestDTO request) {
+        RequestDTO savedRequest = requestService.create(request);
+        return new ResponseEntity<RequestDTO>(savedRequest, HttpStatus.CREATED);
     }
 
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Request> updateRequest(@PathVariable("id") Long id) {
-        Request requestForUpdated = requestService.findById(id);
+    public ResponseEntity<RequestDTO> updateRequest(@PathVariable("id") Long id) {
+        RequestDTO requestForUpdated = requestService.findById(id);
         // zavrsiti !!!!!
-        return new ResponseEntity<Request>(requestForUpdated, HttpStatus.OK);
+        return new ResponseEntity<RequestDTO>(requestForUpdated, HttpStatus.OK);
     }
 
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<Request> deleteRequest(@PathVariable("id") Long id) {
+    public ResponseEntity<RequestDTO> deleteRequest(@PathVariable("id") Long id) {
         requestService.delete(id);
-        return new ResponseEntity<Request>(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<RequestDTO>(HttpStatus.NO_CONTENT);
     }
 }
