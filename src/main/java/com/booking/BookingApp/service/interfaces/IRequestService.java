@@ -2,30 +2,31 @@ package com.booking.BookingApp.service.interfaces;
 
 import com.booking.BookingApp.domain.Request;
 import com.booking.BookingApp.domain.enums.RequestStatus;
+import com.booking.BookingApp.dto.RequestDTO;
 
 import java.util.Collection;
 
 public interface IRequestService {
 
-    Collection<Request> findAll();
+    Collection<RequestDTO> findAll();
 
-    Request findById(Long id);
+    RequestDTO findById(Long id);
 
-    Collection<Request> findByHostId(Long id);
+    Collection<RequestDTO> findByHostId(Long id);
 
-    Collection<Request> findByGuestId(Long id);
+    Collection<RequestDTO> findByGuestId(Long id);
 
-    Collection<Request> findByStatus(RequestStatus status);
+    Collection<RequestDTO> findByStatus(RequestStatus status);
 
-    Collection<Request> findReservationByGuestId(Long id, RequestStatus status);
+    Collection<RequestDTO> findReservationByGuestId(Long id, RequestStatus status);
 
-    Collection<Request> findWaitingRequest(RequestStatus status);
+    Collection<RequestDTO> findWaitingRequest(Long id);
 
-    Request findByAccommodationId(Long id);
+    RequestDTO findByAccommodationId(Long id);
 
-    Request create(Request request);
+    RequestDTO create(RequestDTO request);
 
-    Request update(Request request);
+    RequestDTO update(RequestDTO request);
 
     void delete(Long id);
 }

@@ -3,9 +3,11 @@ package com.booking.BookingApp.service;
 import com.booking.BookingApp.domain.Accommodation;
 import com.booking.BookingApp.domain.enums.AccommodationType;
 import com.booking.BookingApp.domain.enums.Status;
+import com.booking.BookingApp.dto.AccommodationDTO;
 import com.booking.BookingApp.service.interfaces.IAccommodationService;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -13,22 +15,22 @@ import java.util.List;
 @Service
 public class AccommodationService implements IAccommodationService {
     @Override
-    public Collection<Accommodation> findAll() {
+    public Collection<AccommodationDTO> findAll() {
+        return data();
+    }
+
+    @Override
+    public AccommodationDTO findOne(Long id) {
+        return new AccommodationDTO(1L, "Hotel A", "Description A", null, AccommodationType.HOTEL);
+    }
+
+    @Override
+    public AccommodationDTO create(AccommodationDTO accommodation) throws Exception {
         return null;
     }
 
     @Override
-    public Accommodation findOne(Long id) {
-        return null;
-    }
-
-    @Override
-    public Accommodation create(Accommodation accommodation) throws Exception {
-        return null;
-    }
-
-    @Override
-    public Accommodation update(Accommodation accommodation) throws Exception {
+    public AccommodationDTO update(AccommodationDTO accommodation) throws Exception {
         return null;
     }
 
@@ -36,38 +38,46 @@ public class AccommodationService implements IAccommodationService {
     public void delete(Long id) {}
 
     @Override
-    public List<Accommodation> findAllForDates(Date begin, Date end) {
-        return null;
+    public List<AccommodationDTO> findAllForDates(Date begin, Date end) {
+        return data();
     }
 
     @Override
-    public List<Accommodation> findAllForGuestNumber(int guestNumber) {
-        return null;
+    public List<AccommodationDTO> findAllForGuestNumber(int guestNumber) {
+        return data();
     }
 
     @Override
-    public List<Accommodation> findAllForType(AccommodationType type) {
-        return null;
+    public List<AccommodationDTO> findAllForType(AccommodationType type) {
+        return data();
     }
 
     @Override
-    public List<Accommodation> findAllForPrice(double startPrice, double endPrice) {
-        return null;
+    public List<AccommodationDTO> findAllForPrice(double startPrice, double endPrice) {
+        return data();
     }
 
     @Override
-    public List<Accommodation> findAllForStatus(Status status) {
-        return null;
+    public List<AccommodationDTO> findAllForStatus(Status status) {
+        return data();
     }
 
     @Override
-    public List<Accommodation> findAllForLocation(String country, String city) {
-        return null;
+    public List<AccommodationDTO> findAllForLocation(String country, String city) {
+        return data();
     }
 
     @Override
-    public List<Accommodation> findAllForAmenities(List<String> amenities) {
-        return null;
+    public List<AccommodationDTO> findAllForAmenities(List<String> amenities) {
+        return data();
     }
 
+    public List<AccommodationDTO> data() {
+        List<AccommodationDTO> accommodationList = new ArrayList<>();
+
+        // Add instances of AccommodationDTO to the list
+        accommodationList.add(new AccommodationDTO(1L, "Hotel A", "Description A", null, AccommodationType.HOTEL));
+        accommodationList.add(new AccommodationDTO(2L, "Resort B", "Description B", null, AccommodationType.VILLA));
+        return accommodationList;
+    }
 }

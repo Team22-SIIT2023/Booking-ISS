@@ -1,5 +1,6 @@
 package com.booking.BookingApp.dto;
 
+import com.booking.BookingApp.domain.enums.AccommodationType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -11,10 +12,10 @@ public class AccommodationDTO {
     private Long id;
     private String name;
     private String description;
-    private String address;
-    private String type;
+    private AddressDTO address;
+    private AccommodationType type;
 
-    public AccommodationDTO(Long id, String name, String description, String address, String type) {
+    public AccommodationDTO(Long id, String name, String description, AddressDTO address, AccommodationType type) {
         this.id = id;
         this.name = name;
         this.description = description;
