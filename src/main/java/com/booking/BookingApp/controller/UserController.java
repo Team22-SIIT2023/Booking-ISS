@@ -42,9 +42,9 @@ public class UserController {
         return new ResponseEntity<Collection<UserDTO>>(users, HttpStatus.OK);
     }
 
-    @GetMapping(value = "/account", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<UserDTO> getUserByEmail(@RequestParam("account") AccountDTO userAccount) {
-        UserDTO user = userService.findOneByEmail(userAccount.getEmail());
+    @GetMapping(value = "/userEmail", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<UserDTO> getUserByEmail(@RequestParam("userEmail") String userEmail) {
+        UserDTO user = userService.findOneByEmail(userEmail);
         if (user == null) {
             return new ResponseEntity<UserDTO>(HttpStatus.NOT_FOUND);
         }
