@@ -9,10 +9,12 @@ import lombok.Setter;
 @NoArgsConstructor
 public class ReportDTO {
 
+    private Long accommodationId;
     private int totalProfit;
     private int numberOfReservations;
 
-    public ReportDTO(int total, int numOfRes) {
+    public ReportDTO(Long accommodationId,int total, int numOfRes) {
+        this.accommodationId = accommodationId;
         this.totalProfit = total;
         this.numberOfReservations = numOfRes;
     }
@@ -20,6 +22,7 @@ public class ReportDTO {
     @Override
     public String toString() {
         return "ReportDTO{" +
+                "AccommodationId=" + accommodationId +
                 "TotalProfit=" + totalProfit +
                 ", numberOfReservations=" + numberOfReservations +
                 '}';

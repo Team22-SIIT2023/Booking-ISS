@@ -12,11 +12,11 @@ public class UserDTO {
     private Long id;
     private String firstName;
     private String lastName;
-    private Address address;
+    private AddressDTO address;
     private String phoneNumber;
     private AccountDTO accountDTO;
 
-    public UserDTO(Long id, String firstName, String lastName, Address address, String phoneNumber, AccountDTO accountDTO) {
+    public UserDTO(Long id, String firstName, String lastName, AddressDTO address, String phoneNumber, AccountDTO accountDTO) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -31,7 +31,7 @@ public class UserDTO {
                 "id=" + id +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
-                ", address=" + address +
+                ", addressDTO=" + address +
                 ", phoneNumber='" + phoneNumber + '\'' +
                 ", accountDTO=" + accountDTO +
                 '}';
