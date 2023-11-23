@@ -23,14 +23,14 @@ public class Accommodation {
     private AccommodationType type;
     private boolean pricePerGuest;
     private boolean automaticConfirmation;
-    private String hostEmail;
+    private Long hostId;
     private Status status;
     private int reservationDeadline;
     private ArrayList<TimeSlot> freeTimeSlots;
     private ArrayList<Amenity> amenities;
     private ArrayList<PricelistItem> priceList;
 
-    public Accommodation(Long id, String name, String description, Address address, ArrayList<Image> images, int minGuests, int maxGuests, AccommodationType type, boolean pricePerGuest, boolean automaticConfirmation, String hostEmail, Status status, int reservationDeadline, ArrayList<TimeSlot> freeTimeSlots, ArrayList<Amenity> amenities, ArrayList<PricelistItem> priceList) {
+    public Accommodation(Long id, String name, String description, Address address, ArrayList<Image> images, int minGuests, int maxGuests, AccommodationType type, boolean pricePerGuest, boolean automaticConfirmation, Long hostId, Status status, int reservationDeadline, ArrayList<TimeSlot> freeTimeSlots, ArrayList<Amenity> amenities, ArrayList<PricelistItem> priceList) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -41,7 +41,7 @@ public class Accommodation {
         this.type = type;
         this.pricePerGuest = pricePerGuest;
         this.automaticConfirmation = automaticConfirmation;
-        this.hostEmail = hostEmail;
+        this.hostId = hostId;
         this.status = status;
         this.reservationDeadline = reservationDeadline;
         this.freeTimeSlots = freeTimeSlots;
@@ -62,7 +62,7 @@ public class Accommodation {
                 ", type=" + type +
                 ", pricePerGuest=" + pricePerGuest +
                 ", automaticConfirmation=" + automaticConfirmation +
-                ", hostEmail='" + hostEmail + '\'' +
+                ", hostId='" + hostId + '\'' +
                 ", status=" + status +
                 ", reservationDeadline=" + reservationDeadline +
                 ", freeTimeSlots=" + freeTimeSlots +
