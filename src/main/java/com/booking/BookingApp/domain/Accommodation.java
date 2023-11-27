@@ -70,4 +70,22 @@ public class Accommodation {
                 ", priceList=" + priceList +
                 '}';
     }
+    public void copyValues(Accommodation accommodation) {
+        this.id = accommodation.getId();
+        this.name = accommodation.getName();
+        this.description = accommodation.getDescription();
+        this.address = accommodation.getAddress();
+        this.images = new ArrayList<>(accommodation.getImages());
+        this.minGuests = accommodation.getMinGuests();
+        this.maxGuests = accommodation.getMaxGuests();
+        this.type = accommodation.getType();
+        this.pricePerGuest = accommodation.isPricePerGuest();
+        this.automaticConfirmation = accommodation.isAutomaticConfirmation();
+        this.hostId = accommodation.getHostId();
+        this.status = accommodation.getStatus();
+        this.reservationDeadline = accommodation.getReservationDeadline();
+        this.freeTimeSlots = new ArrayList<>(accommodation.getFreeTimeSlots());
+        this.amenities = new ArrayList<>(accommodation.getAmenities());
+        this.priceList = new ArrayList<>(accommodation.getPriceList());
+    }
 }

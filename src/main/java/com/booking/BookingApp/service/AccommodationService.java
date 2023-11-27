@@ -14,70 +14,54 @@ import java.util.List;
 
 @Service
 public class AccommodationService implements IAccommodationService {
+
     @Override
-    public Collection<AccommodationDTO> findAll() {
+    public Collection<Accommodation> findAll(Date begin, Date end, int guestNumber, AccommodationType type, double startPrice, double endPrice, Status status, String country, String city, List<String> amenities) {
         return data();
     }
-
     @Override
-    public AccommodationDTO findOne(Long id) {
-        return new AccommodationDTO(1L, "Hotel A", "Description A", null, AccommodationType.HOTEL);
+    public Accommodation findOne(Long id) {
+        return new Accommodation(
+                1L, "Hotel ABC", "A cozy hotel in the city center",
+                null,
+                new ArrayList<>(), 2, 4, AccommodationType.HOTEL,
+                true, true, 1L, Status.ACTIVE,
+                3, new ArrayList<>(), new ArrayList<>(), new ArrayList<>()
+        );
     }
-
     @Override
-    public AccommodationDTO create(AccommodationDTO accommodation) throws Exception {
+    public Accommodation create(Accommodation accommodation) throws Exception {
         return null;
     }
 
     @Override
-    public AccommodationDTO update(AccommodationDTO accommodation) throws Exception {
+    public Accommodation update(Accommodation accommodation) throws Exception {
         return null;
     }
 
     @Override
     public void delete(Long id) {}
 
-    @Override
-    public List<AccommodationDTO> findAllForDates(Date begin, Date end) {
-        return data();
-    }
 
-    @Override
-    public List<AccommodationDTO> findAllForGuestNumber(int guestNumber) {
-        return data();
-    }
+    public List<Accommodation> data() {
+        List<Accommodation> accommodationList = new ArrayList<>();
+        Accommodation accommodation1 = new Accommodation(
+                1L, "Hotel ABC", "A cozy hotel in the city center",
+                null,
+                new ArrayList<>(), 2, 4, AccommodationType.HOTEL,
+                true, true, 1L, Status.ACTIVE,
+                3, new ArrayList<>(), new ArrayList<>(), new ArrayList<>()
+        );
 
-    @Override
-    public List<AccommodationDTO> findAllForType(AccommodationType type) {
-        return data();
-    }
-
-    @Override
-    public List<AccommodationDTO> findAllForPrice(double startPrice, double endPrice) {
-        return data();
-    }
-
-    @Override
-    public List<AccommodationDTO> findAllForStatus(Status status) {
-        return data();
-    }
-
-    @Override
-    public List<AccommodationDTO> findAllForLocation(String country, String city) {
-        return data();
-    }
-
-    @Override
-    public List<AccommodationDTO> findAllForAmenities(List<String> amenities) {
-        return data();
-    }
-
-    public List<AccommodationDTO> data() {
-        List<AccommodationDTO> accommodationList = new ArrayList<>();
-
-        // Add instances of AccommodationDTO to the list
-        accommodationList.add(new AccommodationDTO(1L, "Hotel A", "Description A", null, AccommodationType.HOTEL));
-        accommodationList.add(new AccommodationDTO(2L, "Resort B", "Description B", null, AccommodationType.VILLA));
+        Accommodation accommodation2 = new Accommodation(
+                2L, "Apartment XYZ", "Spacious apartment with a great view",
+                null,
+                new ArrayList<>(), 3, 6, AccommodationType.APARTMENT,
+                false, false, 1L, Status.BLOCKED,
+                5, new ArrayList<>(), new ArrayList<>(), new ArrayList<>()
+        );
+        accommodationList.add(accommodation1);
+        accommodationList.add(accommodation2);
         return accommodationList;
     }
 }
