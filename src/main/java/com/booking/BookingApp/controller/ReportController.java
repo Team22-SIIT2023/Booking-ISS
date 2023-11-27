@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.ZoneId;
 import java.util.Date;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/api/report")
 public class ReportController {

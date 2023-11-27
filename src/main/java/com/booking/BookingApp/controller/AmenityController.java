@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/api/amenities")
 public class AmenityController {
