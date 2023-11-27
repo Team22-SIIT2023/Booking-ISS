@@ -27,7 +27,7 @@ public class FavoriteAccommodationController {
     }
     //get favorite accommodations for a guest
     @GetMapping(value = "/guest",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Collection<FavoriteAccommodationDTO>> getGuestFavoriteAccommodation(@RequestParam("guestId") Long id) {
+    public ResponseEntity<Collection<FavoriteAccommodationDTO>> getGuestFavoriteAccommodations(@RequestParam("guestId") Long id) {
         Collection<FavoriteAccommodationDTO>accommodations=favoriteAccommodationService.findAllForGuest(id);
         return new ResponseEntity<>(accommodations, HttpStatus.OK);
     }

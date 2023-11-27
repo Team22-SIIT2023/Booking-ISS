@@ -13,30 +13,30 @@ import java.util.Collection;
 
 public class AmenityService implements IAmenityService {
     @Override
-    public Collection<AmenityDTO> findAll() {return data();}
+    public Collection<Amenity> findAll() {return data();}
 
     @Override
-    public AmenityDTO findById(Long id) {
-        return new AmenityDTO(1L, "Swimming Pool", null);
+    public Amenity findById(Long id) {
+        return new Amenity(1L, "Swimming Pool", null);
     }
 
     @Override
-    public AmenityDTO create(AmenityDTO amenity) {return null;}
+    public Amenity create(Amenity amenity) {return null;}
 
     @Override
-    public AmenityDTO update(AmenityDTO amenity) {return null;}
+    public Amenity update(Amenity amenity) {return null;}
 
     @Override
-    public AmenityDTO delete(Long id) {return null;}
+    public Amenity delete(Long id) {return null;}
 
-    public Collection<AmenityDTO> data() {
-        Collection<AmenityDTO> amenityList = new ArrayList<>();
+    public Collection<Amenity> data() {
+        Collection<Amenity> amenityList = new ArrayList<>();
 
-        // Add instances of AmenityDTO to the list
-        amenityList.add(new AmenityDTO(1L, "Swimming Pool", null));
-        amenityList.add(new AmenityDTO(2L, "Gym", null));
-        amenityList.add(new AmenityDTO(3L, "WiFi", null));
-        amenityList.add(new AmenityDTO(3L, "WiFi", null));
+        // Add instances of Amenity to the list
+        amenityList.add(new Amenity(1L, "Swimming Pool", null));
+        amenityList.add(new Amenity(2L, "Gym", null));
+        amenityList.add(new Amenity(3L, "WiFi", null));
+        amenityList.add(new Amenity(3L, "WiFi", null));
 
         return amenityList;
     }

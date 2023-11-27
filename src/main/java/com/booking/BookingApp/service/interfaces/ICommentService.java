@@ -9,23 +9,23 @@ import java.util.Collection;
 
 public interface ICommentService {
 
-    Collection<CommentsDTO> findAll();
+    Collection<Comments> findAll(Status status);
 
-    CommentsDTO findById(Long id);
+    Comments findById(Long id);
 
-    Collection<CommentsDTO> findByHostId(Long id);
+    Collection<Comments> findByHostId(Long id);
 
-    Collection<CommentsDTO> findByAccommodationId(Long id);
+    Collection<Comments> findByAccommodationId(Long id);
 
-    Collection<CommentsDTO> findByStatus(Status status);
+    Collection<Comments> findByStatus(Status status);
 
     int findHostRating(Long id);
 
     int findAccommodationRating(Long id);
 
-    CommentsDTO create(CommentsDTO comment);
+    Comments create(Comments comment);
 
-    CommentsDTO update(CommentsDTO comment);
+    Comments update(Comments comment);
 
     void delete(Long id);
 }

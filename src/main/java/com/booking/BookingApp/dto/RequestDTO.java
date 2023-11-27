@@ -1,6 +1,7 @@
 package com.booking.BookingApp.dto;
 
 import com.booking.BookingApp.domain.Guest;
+import com.booking.BookingApp.domain.Request;
 import com.booking.BookingApp.domain.TimeSlot;
 import com.booking.BookingApp.domain.enums.RequestStatus;
 import lombok.Getter;
@@ -25,6 +26,11 @@ public class RequestDTO {
         this.guest = guest;
         this.accommodationDTO = accommodationDTO;
         this.status = status;
+    }
+
+    public RequestDTO(Request request) {
+        this(request.getId(), request.getTimeSlot(), request.getPrice(), request.getGuest(), null,
+                request.getStatus());
     }
 
     @Override

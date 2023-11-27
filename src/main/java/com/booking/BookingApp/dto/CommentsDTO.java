@@ -1,5 +1,6 @@
 package com.booking.BookingApp.dto;
 
+import com.booking.BookingApp.domain.Comments;
 import com.booking.BookingApp.domain.Guest;
 import com.booking.BookingApp.domain.enums.Status;
 import lombok.Getter;
@@ -26,6 +27,11 @@ public class CommentsDTO {
         this.rating = rating;
         this.status = status;
         this.guest = guest;
+    }
+
+    public CommentsDTO(Comments comments) {
+        this(comments.getId(), comments.getText(), comments.getDate(), comments.getRating(), comments.getStatus(),
+                comments.getGuest());
     }
 
     @Override

@@ -7,13 +7,13 @@ import java.util.Collection;
 
 public interface IAmenityService {
 
-    Collection<AmenityDTO> findAll();
+    Collection<Amenity> findAll();
 
-    AmenityDTO findById(Long id);
+    Amenity findById(Long id);
 
-    AmenityDTO create(AmenityDTO amenity);
+    Amenity create(Amenity amenity);
 
-    AmenityDTO update(AmenityDTO amenity);
+    Amenity update(Amenity amenity);
 
-    AmenityDTO delete(Long id);
+    Amenity delete(Long id);
 }
