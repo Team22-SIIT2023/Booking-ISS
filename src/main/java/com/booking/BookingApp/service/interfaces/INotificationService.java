@@ -7,12 +7,12 @@ import com.booking.BookingApp.dto.NotificationDTO;
 import java.util.Collection;
 
 public interface INotificationService {
-    NotificationDTO findOne(Long id);
-    Collection<NotificationDTO> findAllForGuest(Long id);
-    Collection<NotificationDTO> findAllForHost(Long id);
-    NotificationDTO create(NotificationDTO notification) throws Exception;
+    Notification findOne(Long id);
+    Collection<Notification> findAllForGuest(Long id);
+    Collection<Notification> findAllForHost(Long id);
+    Notification create(Notification notification) throws Exception;
 
-    NotificationDTO update(NotificationDTO notification) throws Exception;
+    Notification update(Notification notification) throws Exception;
 
     void delete(Long id);
 }

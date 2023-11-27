@@ -11,30 +11,30 @@ import java.util.Collection;
 @Service
 public class FavoriteAccommodationService implements IFavoriteAccommodationService {
     @Override
-    public FavoriteAccommodationDTO findOne(Long id) {
-        return new FavoriteAccommodationDTO(1L, 101L, 1L);
+    public FavoriteAccommodation findOne(Long id) {
+        return new FavoriteAccommodation(1L, 101L, 1L);
     }
 
     @Override
-    public Collection<FavoriteAccommodationDTO> findAllForGuest(Long id) {
+    public Collection<FavoriteAccommodation> findAllForGuest(Long id) {
         return data();
     }
 
     @Override
-    public FavoriteAccommodationDTO create(FavoriteAccommodationDTO favoriteAccommodation) throws Exception {
-        return null;
+    public FavoriteAccommodation create(FavoriteAccommodation favoriteAccommodation) throws Exception {
+        return new FavoriteAccommodation(1L, 101L, 1L);
     }
 
     @Override
     public void delete(Long id) {}
 
-    public Collection<FavoriteAccommodationDTO> data() {
-        Collection<FavoriteAccommodationDTO> favoritesList = new ArrayList<>();
+    public Collection<FavoriteAccommodation> data() {
+        Collection<FavoriteAccommodation> favoritesList = new ArrayList<>();
 
-        // Add instances of FavoriteAccommodationDTO to the list
-        favoritesList.add(new FavoriteAccommodationDTO(1L, 101L, 1L));
-        favoritesList.add(new FavoriteAccommodationDTO(2L, 102L, 2L));
-        favoritesList.add(new FavoriteAccommodationDTO(3L, 103L, 3L));
+        // Add instances of FavoriteAccommodation to the list
+        favoritesList.add(new FavoriteAccommodation(1L, 101L, 1L));
+        favoritesList.add(new FavoriteAccommodation(2L, 102L, 2L));
+        favoritesList.add(new FavoriteAccommodation(3L, 103L, 3L));
 
         return favoritesList;
     }

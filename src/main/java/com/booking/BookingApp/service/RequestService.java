@@ -3,7 +3,6 @@ package com.booking.BookingApp.service;
 import com.booking.BookingApp.domain.Request;
 import com.booking.BookingApp.domain.TimeSlot;
 import com.booking.BookingApp.domain.enums.RequestStatus;
-import com.booking.BookingApp.dto.RequestDTO;
 import com.booking.BookingApp.service.interfaces.IRequestService;
 import org.springframework.stereotype.Service;
 
@@ -14,69 +13,68 @@ import java.util.Collection;
 @Service
 public class RequestService implements IRequestService {
     @Override
-    public Collection<RequestDTO> findAll() {
-        return null;
+    public Collection<Request> findAll() {
+        return data();
     }
 
     @Override
-    public RequestDTO findById(Long id) {
+    public Request findById(Long id) {
         return oneRequest();
     }
 
     @Override
-    public Collection<RequestDTO> findByHostId(Long id) {
+    public Collection<Request> findByHostId(Long id) {
         return data();
     }
 
     @Override
-    public Collection<RequestDTO> findByGuestId(Long id) {return data();}
+    public Collection<Request> findByGuestId(Long id) {return data();}
 
     @Override
-    public Collection<RequestDTO> findByStatus(RequestStatus status) {
+    public Collection<Request> findByStatus(RequestStatus status) {
         return data();
     }
 
     @Override
-    public Collection<RequestDTO> findReservationByGuestId(Long id, RequestStatus status) {
+    public Collection<Request> findReservationByGuestId(Long id, RequestStatus status) {
         return data();
     }
 
     @Override
-    public Collection<RequestDTO> findWaitingRequest(Long id) {return data();}
+    public Collection<Request> findWaitingRequest(Long id) {return data();}
 
     @Override
-    public RequestDTO findByAccommodationId(Long id) {
+    public Request findByAccommodationId(Long id) {
         return oneRequest();
     }
 
     @Override
-    public RequestDTO create(RequestDTO request) {
-        return null;
+    public Request create(Request request) {
+        return oneRequest();
     }
 
     @Override
-    public RequestDTO update(RequestDTO request) {
-        return null;
+    public Request update(Request request) {
+        return oneRequest();
     }
 
     @Override
     public void delete(Long id) {}
 
-    public Collection<RequestDTO> data() {
-        Collection<RequestDTO> requestList = new ArrayList<>();
+    public Collection<Request> data() {
+        Collection<Request> requestList = new ArrayList<>();
 
         TimeSlot timeSlot1 = new TimeSlot(LocalDate.of(2023, 1, 1), LocalDate.of(2023, 1, 5));
         TimeSlot timeSlot2 = new TimeSlot(LocalDate.of(2023, 2, 1), LocalDate.of(2023, 2, 7));
 
-        // Add instances of RequestDTO to the list
-        requestList.add(new RequestDTO(1L, timeSlot1, 100.0, null, null, RequestStatus.CANCELLED));
-        requestList.add(new RequestDTO(2L, timeSlot2, 150.0, null, null, RequestStatus.ACCEPTED));
+        requestList.add(new Request(1L, timeSlot1, 100.0, null, null,5, RequestStatus.CANCELLED));
+        requestList.add(new Request(2L, timeSlot2, 150.0, null, null,5, RequestStatus.ACCEPTED));
 
         return requestList;
     }
 
-    public RequestDTO oneRequest() {
+    public Request oneRequest() {
         TimeSlot timeSlot1 = new TimeSlot(LocalDate.of(2023, 1, 1), LocalDate.of(2023, 1, 5));
-        return new RequestDTO(1L, timeSlot1, 100.0, null, null, RequestStatus.CANCELLED);
+        return new Request(1L, timeSlot1, 100.0, null, null,5, RequestStatus.CANCELLED);
     }
 }

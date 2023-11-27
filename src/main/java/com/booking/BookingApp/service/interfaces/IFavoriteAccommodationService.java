@@ -7,8 +7,8 @@ import com.booking.BookingApp.dto.FavoriteAccommodationDTO;
 import java.util.Collection;
 
 public interface IFavoriteAccommodationService {
-    FavoriteAccommodationDTO findOne(Long id);
-    Collection<FavoriteAccommodationDTO> findAllForGuest(Long id);
-    FavoriteAccommodationDTO create(FavoriteAccommodationDTO favoriteAccommodation) throws Exception;
+    FavoriteAccommodation findOne(Long id);
+    Collection<FavoriteAccommodation> findAllForGuest(Long id);
+    FavoriteAccommodation create(FavoriteAccommodation favoriteAccommodation) throws Exception;
     void delete(Long id);
 }

@@ -10,25 +10,12 @@ import java.util.Date;
 import java.util.List;
 
 public interface IAccommodationService {
-    Collection<AccommodationDTO> findAll();
-    AccommodationDTO findOne(Long id);
-    AccommodationDTO create(AccommodationDTO accommodation) throws Exception;
+    Collection<Accommodation> findAll(Date begin, Date end, int guestNumber, AccommodationType type, double startPrice, double endPrice, Status status, String country, String city, List<String> amenities);
 
-    AccommodationDTO update(AccommodationDTO accommodation) throws Exception;
+    Accommodation findOne(Long id);
+    Accommodation create(Accommodation accommodation) throws Exception;
+
+    Accommodation update(Accommodation accommodation) throws Exception;
 
     void delete(Long id);
-
-    List<AccommodationDTO> findAllForDates(Date begin, Date end);
-
-    List<AccommodationDTO> findAllForGuestNumber(int guestNumber);
-
-    List<AccommodationDTO> findAllForType(AccommodationType type);
-
-    List<AccommodationDTO> findAllForPrice(double startPrice, double endPrice);
-
-    List<AccommodationDTO> findAllForStatus(Status status);
-
-    List<AccommodationDTO> findAllForLocation(String country, String city);
-
-    List<AccommodationDTO> findAllForAmenities(List<String> amenities);
 }
