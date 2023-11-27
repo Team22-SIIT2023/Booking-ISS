@@ -43,7 +43,7 @@ public class NotificationController {
     }
 
     @GetMapping(value = "/host/{hostId}",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Collection<NotificationDTO>> getHostNotifications(@PathVariable("guestId") Long id) {
+    public ResponseEntity<Collection<NotificationDTO>> getHostNotifications(@PathVariable("hostId") Long id) {
         Collection<Notification> notifications=notificationService.findAllForHost(id);
         Collection<NotificationDTO> notificationDTOS = notifications.stream()
                 .map(NotificationDTOMapper::fromNotificationtoDTO)

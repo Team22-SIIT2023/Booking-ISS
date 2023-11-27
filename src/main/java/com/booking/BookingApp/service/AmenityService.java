@@ -21,13 +21,13 @@ public class AmenityService implements IAmenityService {
     }
 
     @Override
-    public Amenity create(Amenity amenity) {return null;}
+    public Amenity create(Amenity amenity) {return new Amenity(1L, "Swimming Pool", null);}
 
     @Override
-    public Amenity update(Amenity amenity) {return null;}
+    public Amenity update(Amenity amenity) {return new Amenity(1L, "Swimming Pool", null);}
 
     @Override
-    public Amenity delete(Long id) {return null;}
+    public void delete(Long id) {}
 
     public Collection<Amenity> data() {
         Collection<Amenity> amenityList = new ArrayList<>();

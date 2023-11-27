@@ -50,12 +50,12 @@ public class RequestService implements IRequestService {
 
     @Override
     public Request create(Request request) {
-        return null;
+        return oneRequest();
     }
 
     @Override
     public Request update(Request request) {
-        return null;
+        return oneRequest();
     }
 
     @Override

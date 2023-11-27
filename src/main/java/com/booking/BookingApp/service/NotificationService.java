@@ -14,12 +14,12 @@ import java.util.Collection;
 public class NotificationService implements INotificationService{
     @Override
     public Notification create(Notification notification) throws Exception {
-        return null;
+        return new Notification(1L, "New message received",LocalDate.now(),true, NotificationType.HOST_RATED);
     }
 
     @Override
     public Notification update(Notification notification) throws Exception {
-        return null;
+        return new Notification(1L, "New message received",LocalDate.now(),true, NotificationType.HOST_RATED);
     }
 
     @Override

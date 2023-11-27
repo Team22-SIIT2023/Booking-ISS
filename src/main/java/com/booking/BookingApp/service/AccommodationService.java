@@ -31,12 +31,24 @@ public class AccommodationService implements IAccommodationService {
     }
     @Override
     public Accommodation create(Accommodation accommodation) throws Exception {
-        return null;
+        return new Accommodation(
+                1L, "Hotel ABC", "A cozy hotel in the city center",
+                null,
+                new ArrayList<>(), 2, 4, AccommodationType.HOTEL,
+                true, true, 1L, Status.ACTIVE,
+                3, new ArrayList<>(), new ArrayList<>(), new ArrayList<>()
+        );
     }
 
     @Override
     public Accommodation update(Accommodation accommodation) throws Exception {
-        return null;
+        return new Accommodation(
+                1L, "Hotel ABC", "A cozy hotel in the city center",
+                null,
+                new ArrayList<>(), 2, 4, AccommodationType.HOTEL,
+                true, true, 1L, Status.ACTIVE,
+                3, new ArrayList<>(), new ArrayList<>(), new ArrayList<>()
+        );
     }
 
     @Override

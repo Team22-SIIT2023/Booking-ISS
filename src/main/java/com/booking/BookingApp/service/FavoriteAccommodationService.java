@@ -22,7 +22,7 @@ public class FavoriteAccommodationService implements IFavoriteAccommodationServi
 
     @Override
     public FavoriteAccommodation create(FavoriteAccommodation favoriteAccommodation) throws Exception {
-        return null;
+        return new FavoriteAccommodation(1L, 101L, 1L);
     }
 
     @Override
