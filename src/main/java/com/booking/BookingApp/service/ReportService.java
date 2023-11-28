@@ -15,13 +15,13 @@ public class ReportService implements IReportService {
 
 
     @Override
-    public ReportDTO findOneByHostAndTimeSlot(Long hostId, TimeSlotDTO timeslot) {
-        return new ReportDTO(1L,4,3);
+    public Report findOneByHostAndTimeSlot(Long hostId, TimeSlot timeslot) {
+        return new Report(1L,4,3);
     }
 
     @Override
-    public ReportDTO findAnnualByAccommodation(Long accommodationId, int year) {
-        return new ReportDTO(1L,4,3);
+    public Report findAnnualByAccommodation(Long accommodationId, int year) {
+        return new Report(1L,4,3);
     }
 
 }

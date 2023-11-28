@@ -12,7 +12,7 @@ public class UserDTO {
     private Long id;
     private String firstName;
     private String lastName;
-    private AddressDTO address;
+    private AddressDTO addressDTO;
     private String phoneNumber;
     private AccountDTO accountDTO;
 
@@ -20,7 +20,7 @@ public class UserDTO {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.address = address;
+        this.addressDTO = address;
         this.phoneNumber = phoneNumber;
         this.accountDTO = accountDTO;
     }
@@ -31,7 +31,7 @@ public class UserDTO {
                 "id=" + id +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
-                ", addressDTO=" + address +
+                ", addressDTO=" + addressDTO +
                 ", phoneNumber='" + phoneNumber + '\'' +
                 ", accountDTO=" + accountDTO +
                 '}';

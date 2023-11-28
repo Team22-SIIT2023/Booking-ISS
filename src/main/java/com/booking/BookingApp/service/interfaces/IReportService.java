@@ -9,7 +9,7 @@ import java.util.Collection;
 
 public interface IReportService {
 
-    ReportDTO findOneByHostAndTimeSlot(Long hostId, TimeSlotDTO timeslot);
-    ReportDTO findAnnualByAccommodation(Long accommodationId,  int year);
+    Report findOneByHostAndTimeSlot(Long hostId, TimeSlot timeslot);
+    Report findAnnualByAccommodation(Long accommodationId,  int year);
 
 }
