@@ -1,5 +1,8 @@
 package com.booking.BookingApp.service;
 
+import com.booking.BookingApp.domain.Account;
+import com.booking.BookingApp.domain.Address;
+import com.booking.BookingApp.domain.User;
 import com.booking.BookingApp.domain.enums.Status;
 import com.booking.BookingApp.domain.enums.UserType;
 import com.booking.BookingApp.dto.AccountDTO;
@@ -17,54 +20,54 @@ import java.util.List;
 public class UserService implements IUserService {
 
     @Override
-    public Collection<UserDTO> findAll() {
+    public Collection<User> findAll() {
         return data();
     }
 
     @Override
-    public UserDTO findOne(Long id) {
-        AddressDTO addressDTO = new AddressDTO("Srbija","Novi Sad","Futoska 1");
-        AccountDTO accountDTO = new AccountDTO("isidorica",Status.ACTIVE, UserType.GUEST);
-        return new UserDTO(1L,"Isidora","Aleksic",addressDTO,"0692104221",accountDTO);
+    public User findOne(Long id) {
+        Address address = new Address("Srbija","Novi Sad","21000","Futoska 1");
+        Account account = new Account("isidorica","slatkica",Status.ACTIVE, UserType.GUEST);
+        return new User(1L,"Isidora","Aleksic",address,"0692104221",account);
     }
 
     @Override
-    public Collection<UserDTO> findAllByStatus(Status userStatus) {
+    public Collection<User> findAllByStatus(Status userStatus) {
         return data();
     }
 
     @Override
-    public UserDTO findOneByEmail(String email) {
-        AddressDTO addressDTO = new AddressDTO("Srbija","Novi Sad","Futoska 1");
-        AccountDTO accountDTO = new AccountDTO("isidorica",Status.ACTIVE, UserType.GUEST);
-        return new UserDTO(1L,"Isidora","Aleksic",addressDTO,"0692104221",accountDTO);
+    public User findOneByEmail(String email) {
+        Address address = new Address("Srbija","Novi Sad","21000","Futoska 1");
+        Account account = new Account("isidorica","slatkica",Status.ACTIVE, UserType.GUEST);
+        return new User(1L,"Isidora","Aleksic",address,"0692104221",account);
     }
 
     @Override
-    public UserDTO create(UserDTO user) throws Exception {
-        return null;
+    public User create(User user) throws Exception {
+        Address address = new Address("Srbija","Novi Sad","21000","Futoska 1");
+        Account account = new Account("isidorica","slatkica",Status.ACTIVE, UserType.GUEST);
+        return new User(1L,"Isidora","Aleksic",address,"0692104221",account);
     }
 
     @Override
-    public UserDTO update(UserDTO user) throws Exception {
-        return null;
+    public User update(User user) throws Exception {
+        Address address = new Address("Srbija","Novi Sad","21000","Futoska 1");
+        Account account = new Account("isidorica","slatkica",Status.ACTIVE, UserType.GUEST);
+        return new User(1L,"Isidora","Aleksic",address,"0692104221",account);
     }
 
     @Override
-    public void delete(Long id) {
-
-    }
+    public void delete(Long id) {}
 
 
-    public List<UserDTO> data() {
-        List<UserDTO> userDTOS = new ArrayList<>();
-
-        AddressDTO addressDTO = new AddressDTO("Srbija","Novi Sad","Futoska 1");
-        AccountDTO accountDTO = new AccountDTO("isidorica",Status.ACTIVE, UserType.GUEST);
-        // Add instances of AccommodationDTO to the list
-        userDTOS.add(new UserDTO(1L,"Isidora","Aleksic",addressDTO,"0692104221",accountDTO));
-        userDTOS.add(new UserDTO(2L,"Tamara","Aleksic",addressDTO,"0692104221",accountDTO));
-        return userDTOS;
+    public List<User> data() {
+        List<User> users = new ArrayList<>();
+        Address address = new Address("Srbija","Novi Sad","21000","Futoska 1");
+        Account account = new Account("isidorica","slatkica",Status.ACTIVE, UserType.GUEST);
+        users.add(new User(1L,"Isidora","Aleksic",address,"0692104221",account));
+        users.add(new User(2L,"Tamara","Aleksic",address,"0692104221",account));
+        return users;
     }
 }
 
