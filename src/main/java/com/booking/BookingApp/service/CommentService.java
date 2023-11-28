@@ -44,12 +44,12 @@ public class CommentService implements ICommentService {
     }
 
     @Override
-    public Comments createHostComment(Comments comment) {
+    public Comments createHostComment(Comments comment, Long id) {
         return new Comments(1L, "Great comment!", LocalDate.now(), 4.5, Status.ACTIVE, null);
     }
 
     @Override
-    public Comments createAccommodationComment(Comments comment) {
+    public Comments createAccommodationComment(Comments comment, Long id) {
         return new Comments(1L, "Great comment!", LocalDate.now(), 4.5, Status.ACTIVE, null);
     }
 

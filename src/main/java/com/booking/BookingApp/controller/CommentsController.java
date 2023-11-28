@@ -82,29 +82,26 @@ public class CommentsController {
         return new ResponseEntity<Integer>(rating,HttpStatus.OK);
     }
 
-    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<CommentsDTO> createHostComment(@RequestBody CommentsDTO commentDTO) {
+    @PostMapping(value = "/host/{hostId}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<CommentsDTO> createHostComment(@RequestBody CommentsDTO commentDTO,
+                                                         @PathVariable("hostId") Long id) {
         Comments commentModel = CommentsDTOMapper.fromDTOtoComments(commentDTO);
-        Comments savedComment = commentService.createHostComment(commentModel);
+        Comments savedComment = commentService.createHostComment(commentModel, id);
         return new ResponseEntity<CommentsDTO>(new CommentsDTO(savedComment), HttpStatus.CREATED);
     }
 
-    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<CommentsDTO> createAccommodationComment(@RequestBody CommentsDTO commentDTO) {
+    @PostMapping(value = "/accommodation/{accommodationId}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<CommentsDTO> createAccommodationComment(@RequestBody CommentsDTO commentDTO,
+                                                                  @PathVariable("accommodationId") Long id) {
         Comments commentModel = CommentsDTOMapper.fromDTOtoComments(commentDTO);
-        Comments savedComment = commentService.createAccommodationComment(commentModel);
+        Comments savedComment = commentService.createAccommodationComment(commentModel, id);
         return new ResponseEntity<CommentsDTO>(new CommentsDTO(savedComment), HttpStatus.CREATED);
     }
 
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CommentsDTO> updateComment(@RequestBody CommentsDTO comment,@PathVariable("id") Long id) {
         Comments commentForUpdate = commentService.findById(id);
-        commentForUpdate.setDate(comment.getDate());
-        commentForUpdate.setGuest(comment.getGuest());
-        commentForUpdate.setStatus(comment.getStatus());
-        commentForUpdate.setText(comment.getText());
         Comments updatedComment = commentService.update(commentForUpdate);
-        // proveriti jel ok!
         return new ResponseEntity<CommentsDTO>(new CommentsDTO(updatedComment), HttpStatus.OK);
     }
 

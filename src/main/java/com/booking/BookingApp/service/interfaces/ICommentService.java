@@ -21,9 +21,9 @@ public interface ICommentService {
 
     int findAccommodationRating(Long id);
 
-    Comments createHostComment(Comments comment);
+    Comments createHostComment(Comments comment, Long id);
 
-    Comments createAccommodationComment(Comments comment);
+    Comments createAccommodationComment(Comments comment, Long id);
 
     Comments update(Comments comment);
 

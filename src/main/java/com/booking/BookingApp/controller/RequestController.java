@@ -70,30 +70,6 @@ public class RequestController {
         return new ResponseEntity<Collection<RequestDTO>>(guestRequestDTO, HttpStatus.OK);
     }
 
-    // kod filtera moze da menja po vrsti zahteva
-//    @GetMapping(value = "/status/{status}", produces = MediaType.APPLICATION_JSON_VALUE)
-//    public ResponseEntity<Collection<RequestDTO>> getByStatus(@PathVariable("status") RequestStatus status) {
-//        Collection<Request> guestRequests = requestService.findByStatus(status);
-//
-//        Collection<RequestDTO> guestRequestsDTO = guestRequests.stream()
-//                .map(RequestDTOMapper::fromRequesttoDTO)
-//                .collect(Collectors.toList());
-//
-//        return new ResponseEntity<Collection<RequestDTO>>(guestRequestsDTO, HttpStatus.OK);
-//    }
-
-//    @GetMapping(value = "/guestReservations/{guestId}", produces = MediaType.APPLICATION_JSON_VALUE)
-//    public ResponseEntity<Collection<RequestDTO>> getGuestReservation(@PathVariable("guestId") Long id,
-//                                                                   @RequestParam("status") RequestStatus status) {
-//        Collection<Request> guestRequests = requestService.findReservationByGuestId(id, status);
-//
-//        Collection<RequestDTO> guestRequestsDTO = guestRequests.stream()
-//                .map(RequestDTOMapper::fromRequesttoDTO)
-//                .collect(Collectors.toList());
-//
-//        return new ResponseEntity<Collection<RequestDTO>>(guestRequestsDTO, HttpStatus.OK);
-//    }
-
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<RequestDTO> createRequest(@RequestBody RequestDTO requestDTO) {
         Request requestModel = RequestDTOMapper.fromDTOtoRequest(requestDTO);
@@ -104,13 +80,7 @@ public class RequestController {
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<RequestDTO> updateRequest(@RequestBody RequestDTO request, @PathVariable("id") Long id) {
         Request requestForUpdate = requestService.findById(id);
-        requestForUpdate.setGuest(request.getGuest());
-        requestForUpdate.setStatus(request.getStatus());
-        requestForUpdate.setPrice(request.getPrice());
-        requestForUpdate.setTimeSlot(request.getTimeSlot());
-//        requestForUpdated.setAccommodationDTO(request.getAccommodationDTO());
         Request updatedRequest = requestService.update(requestForUpdate);
-        // proveriti ovoooooo!
         return new ResponseEntity<RequestDTO>(new RequestDTO(updatedRequest), HttpStatus.OK);
     }
 
