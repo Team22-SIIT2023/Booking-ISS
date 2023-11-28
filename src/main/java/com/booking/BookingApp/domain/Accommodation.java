@@ -1,5 +1,6 @@
 package com.booking.BookingApp.domain;
 
+import com.booking.BookingApp.domain.enums.AccommodationStatus;
 import com.booking.BookingApp.domain.enums.AccommodationType;
 import com.booking.BookingApp.domain.enums.Status;
 import lombok.Getter;
@@ -24,13 +25,13 @@ public class Accommodation {
     private boolean pricePerGuest;
     private boolean automaticConfirmation;
     private Long hostId;
-    private Status status;
+    private AccommodationStatus status;
     private int reservationDeadline;
     private ArrayList<TimeSlot> freeTimeSlots;
     private ArrayList<Amenity> amenities;
     private ArrayList<PricelistItem> priceList;
 
-    public Accommodation(Long id, String name, String description, Address address, ArrayList<Image> images, int minGuests, int maxGuests, AccommodationType type, boolean pricePerGuest, boolean automaticConfirmation, Long hostId, Status status, int reservationDeadline, ArrayList<TimeSlot> freeTimeSlots, ArrayList<Amenity> amenities, ArrayList<PricelistItem> priceList) {
+    public Accommodation(Long id, String name, String description, Address address, ArrayList<Image> images, int minGuests, int maxGuests, AccommodationType type, boolean pricePerGuest, boolean automaticConfirmation, Long hostId, AccommodationStatus status, int reservationDeadline, ArrayList<TimeSlot> freeTimeSlots, ArrayList<Amenity> amenities, ArrayList<PricelistItem> priceList) {
         this.id = id;
         this.name = name;
         this.description = description;

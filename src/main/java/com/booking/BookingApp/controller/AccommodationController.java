@@ -1,6 +1,7 @@
 package com.booking.BookingApp.controller;
 
 import com.booking.BookingApp.domain.Accommodation;
+import com.booking.BookingApp.domain.enums.AccommodationStatus;
 import com.booking.BookingApp.domain.enums.AccommodationType;
 import com.booking.BookingApp.domain.enums.Status;
 import com.booking.BookingApp.dto.AccommodationDTO;
@@ -32,7 +33,7 @@ public class AccommodationController {
             @RequestParam(value = "type", required = false) AccommodationType type,
             @RequestParam(value = "start_price", defaultValue = "0") double startPrice,
             @RequestParam(value = "end_price", defaultValue = "0") double endPrice,
-            @RequestParam(value = "status", required = false) Status status,
+            @RequestParam(value = "status", required = false) AccommodationStatus status,
             @RequestParam(value = "country", required = false) String country,
             @RequestParam(value = "city", required = false) String city,
             @RequestParam(value = "amenities", required = false) List<String> amenities

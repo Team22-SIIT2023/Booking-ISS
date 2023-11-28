@@ -3,6 +3,7 @@ package com.booking.BookingApp.service;
 import com.booking.BookingApp.domain.Accommodation;
 import com.booking.BookingApp.domain.Address;
 import com.booking.BookingApp.domain.Amenity;
+import com.booking.BookingApp.domain.enums.AccommodationStatus;
 import com.booking.BookingApp.domain.enums.AccommodationType;
 import com.booking.BookingApp.domain.enums.Status;
 import com.booking.BookingApp.dto.AccommodationDTO;
@@ -18,7 +19,7 @@ import java.util.List;
 public class AccommodationService implements IAccommodationService {
 
     @Override
-    public Collection<Accommodation> findAll(Date begin, Date end, int guestNumber, AccommodationType type, double startPrice, double endPrice, Status status, String country, String city, List<String> amenities) {
+    public Collection<Accommodation> findAll(Date begin, Date end, int guestNumber, AccommodationType type, double startPrice, double endPrice, AccommodationStatus status, String country, String city, List<String> amenities) {
         return data();
     }
     @Override
@@ -33,7 +34,7 @@ public class AccommodationService implements IAccommodationService {
                 "All units are fitted with a flat-screen TV with cable channels, fridge, a kettle, a walk-in shower, a hair dryer and a wardrobe. With a private bathroom, units at the apartment complex also boast free WiFi.",
                 new Address("Srbija","Novi Sad","21000","Futoska 14"),
                 new ArrayList<>(), 2, 4, AccommodationType.HOTEL,
-                true, true, 1L, Status.ACTIVE,
+                true, true, 1L, AccommodationStatus.ACCEPTED,
                 3, new ArrayList<>(), amenities, new ArrayList<>()
         );
     }
@@ -43,7 +44,7 @@ public class AccommodationService implements IAccommodationService {
                 1L, "Hotel ABC", "A cozy hotel in the city center",
                 new Address("Srbija","Novi Sad","21000","Futoska 14"),
                 new ArrayList<>(), 2, 4, AccommodationType.HOTEL,
-                true, true, 1L, Status.ACTIVE,
+                true, true, 1L, AccommodationStatus.CREATED,
                 3, new ArrayList<>(), new ArrayList<>(), new ArrayList<>()
         );
     }
@@ -54,7 +55,7 @@ public class AccommodationService implements IAccommodationService {
                 1L, "Hotel ABC", "A cozy hotel in the city center",
                 new Address("Srbija","Novi Sad","21000","Futoska 14"),
                 new ArrayList<>(), 2, 4, AccommodationType.HOTEL,
-                true, true, 1L, Status.ACTIVE,
+                true, true, 1L, AccommodationStatus.ACCEPTED,
                 3, new ArrayList<>(), new ArrayList<>(), new ArrayList<>()
         );
     }
@@ -73,7 +74,7 @@ public class AccommodationService implements IAccommodationService {
                 1L, "Hotel ABC", "A cozy hotel in the city center",
                 new Address("Srbija","Novi Sad","21000","Futoska 14"),
                 new ArrayList<>(), 2, 4, AccommodationType.HOTEL,
-                true, true, 1L, Status.ACTIVE,
+                true, true, 1L, AccommodationStatus.CREATED,
                 3, new ArrayList<>(), amenities, new ArrayList<>()
         );
 
@@ -81,7 +82,7 @@ public class AccommodationService implements IAccommodationService {
                 2L, "Apartment XYZ", "Spacious apartment with a great view",
                 new Address("Srbija","Novi Sad","21000","Futoska 14"),
                 new ArrayList<>(), 3, 6, AccommodationType.APARTMENT,
-                false, false, 3L, Status.BLOCKED,
+                false, false, 3L, AccommodationStatus.ACCEPTED,
                 5, new ArrayList<>(), amenities, new ArrayList<>()
         );
         accommodationList.add(accommodation1);

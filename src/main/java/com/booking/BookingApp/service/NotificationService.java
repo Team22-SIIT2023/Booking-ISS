@@ -12,18 +12,7 @@ import java.util.Collection;
 
 @Service
 public class NotificationService implements INotificationService{
-    @Override
-    public Notification create(Notification notification) throws Exception {
-        return new Notification(1L, "New message received",LocalDate.now(),true, NotificationType.HOST_RATED);
-    }
 
-    @Override
-    public Notification update(Notification notification) throws Exception {
-        return new Notification(1L, "New message received",LocalDate.now(),true, NotificationType.HOST_RATED);
-    }
-
-    @Override
-    public void delete(Long id) {}
 
     @Override
     public Notification findOne(Long id) {
@@ -40,6 +29,23 @@ public class NotificationService implements INotificationService{
     public Collection<Notification> findAllForHost(Long id) {
         return data();
     }
+
+    @Override
+    public Notification createHostNotification(Long id, Notification notification) throws Exception {
+        return null;
+    }
+
+    @Override
+    public Notification createGuestNotification(Long id, Notification notification) throws Exception {
+        return null;
+    }
+
+    @Override
+    public Notification update(Notification notification) throws Exception {
+        return new Notification(1L, "New message received",LocalDate.now(),true, NotificationType.HOST_RATED);
+    }
+    @Override
+    public void delete(Long id) {}
 
     public Collection<Notification> data() {
         Collection<Notification> notificationList = new ArrayList<>();

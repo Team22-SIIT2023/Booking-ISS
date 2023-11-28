@@ -4,6 +4,7 @@ import com.booking.BookingApp.domain.Address;
 import com.booking.BookingApp.domain.Amenity;
 import com.booking.BookingApp.domain.PricelistItem;
 import com.booking.BookingApp.domain.TimeSlot;
+import com.booking.BookingApp.domain.enums.AccommodationStatus;
 import com.booking.BookingApp.domain.enums.AccommodationType;
 import com.booking.BookingApp.domain.enums.Status;
 import lombok.Getter;
@@ -29,12 +30,12 @@ public class AccommodationDTO {
     private boolean pricePerGuest;
     private boolean automaticConfirmation;
     private Long hostId;
-    private Status status;
+    private AccommodationStatus status;
     private int reservationDeadline;
     private ArrayList<AmenityDTO> amenities;
 
     public AccommodationDTO(Long id, String name, String description, AddressDTO address, ArrayList<Image> images, int minGuests, int maxGuests, AccommodationType type, boolean pricePerGuest, boolean automaticConfirmation, Long hostId,
-                            Status status, int reservationDeadline, ArrayList<AmenityDTO> amenities) {
+                            AccommodationStatus status, int reservationDeadline, ArrayList<AmenityDTO> amenities) {
         this.id = id;
         this.name = name;
         this.description = description;

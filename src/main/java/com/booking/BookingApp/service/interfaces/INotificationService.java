@@ -10,7 +10,9 @@ public interface INotificationService {
     Notification findOne(Long id);
     Collection<Notification> findAllForGuest(Long id);
     Collection<Notification> findAllForHost(Long id);
-    Notification create(Notification notification) throws Exception;
+    Notification createHostNotification(Long id,Notification notification) throws Exception;
+
+    Notification createGuestNotification(Long id,Notification notification) throws Exception;
 
     Notification update(Notification notification) throws Exception;
 

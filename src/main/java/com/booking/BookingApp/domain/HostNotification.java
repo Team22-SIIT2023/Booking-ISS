@@ -8,4 +8,5 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class HostNotification extends Notification{
+    private Long hostId;
 }
