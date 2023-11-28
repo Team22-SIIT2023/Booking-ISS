@@ -14,14 +14,16 @@ public class User {
     private Address address;
     private String phoneNumber;
     private Account account;
+    private String picturePath;
 
-    public User(Long id, String firstName, String lastName, Address address, String phoneNumber, Account account) {
+    public User(Long id, String firstName, String lastName, Address address, String phoneNumber, Account account, String picturePath) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.address = address;
         this.phoneNumber = phoneNumber;
         this.account = account;
+        this.picturePath = picturePath;
     }
 
     @Override
@@ -33,6 +35,7 @@ public class User {
                 ", address=" + address +
                 ", phoneNumber='" + phoneNumber + '\'' +
                 ", account=" + account +
+                ",picturePath" + picturePath +
                 '}';
     }
 }
