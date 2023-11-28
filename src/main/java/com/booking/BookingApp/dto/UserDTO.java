@@ -15,14 +15,16 @@ public class UserDTO {
     private AddressDTO addressDTO;
     private String phoneNumber;
     private AccountDTO accountDTO;
+    private String picturePath;
 
-    public UserDTO(Long id, String firstName, String lastName, AddressDTO address, String phoneNumber, AccountDTO accountDTO) {
+    public UserDTO(Long id, String firstName, String lastName, AddressDTO address, String phoneNumber, AccountDTO accountDTO, String picturePath) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.addressDTO = address;
         this.phoneNumber = phoneNumber;
         this.accountDTO = accountDTO;
+        this.picturePath = picturePath;
     }
 
     @Override
@@ -34,6 +36,7 @@ public class UserDTO {
                 ", addressDTO=" + addressDTO +
                 ", phoneNumber='" + phoneNumber + '\'' +
                 ", accountDTO=" + accountDTO +
+                ", picturePath=" + picturePath +
                 '}';
     }
 }
