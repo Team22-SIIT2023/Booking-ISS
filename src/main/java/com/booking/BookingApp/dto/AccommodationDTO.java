@@ -33,9 +33,12 @@ public class AccommodationDTO {
     private AccommodationStatus status;
     private int reservationDeadline;
     private ArrayList<AmenityDTO> amenities;
+    private ArrayList<PricelistItem> priceList;
+    private ArrayList<TimeSlot> freeTimeSlots;
 
     public AccommodationDTO(Long id, String name, String description, AddressDTO address, ArrayList<Image> images, int minGuests, int maxGuests, AccommodationType type, boolean pricePerGuest, boolean automaticConfirmation, Long hostId,
-                            AccommodationStatus status, int reservationDeadline, ArrayList<AmenityDTO> amenities) {
+                            AccommodationStatus status, int reservationDeadline, ArrayList<AmenityDTO> amenities,
+                            ArrayList<PricelistItem> priceList,ArrayList<TimeSlot> freeTimeSlots) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -50,6 +53,8 @@ public class AccommodationDTO {
         this.status = status;
         this.reservationDeadline = reservationDeadline;
         this.amenities = amenities;
+        this.priceList=priceList;
+        this.freeTimeSlots=freeTimeSlots;
     }
 
     @Override

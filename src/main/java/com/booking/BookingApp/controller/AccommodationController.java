@@ -68,8 +68,6 @@ public class AccommodationController {
     public ResponseEntity<AccommodationDTO> updateAccommodation(@RequestBody AccommodationDTO accommodationDTO, @PathVariable Long id)
             throws Exception {
         Accommodation accommodationForUpdate = accommodationService.findOne(id);
-        Accommodation accommodation=AccommodationDTOMapper.fromDTOtoAccommodation(accommodationDTO);
-//        accommodationForUpdate.copyValues(accommodation);
         Accommodation updatedAccommodation = accommodationService.update(accommodationForUpdate);
 
         if (updatedAccommodation == null) {

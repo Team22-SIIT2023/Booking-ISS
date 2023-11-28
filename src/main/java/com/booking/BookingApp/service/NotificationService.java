@@ -3,6 +3,7 @@ package com.booking.BookingApp.service;
 import com.booking.BookingApp.domain.Notification;
 import com.booking.BookingApp.domain.enums.NotificationType;
 import com.booking.BookingApp.dto.NotificationDTO;
+import com.booking.BookingApp.dto.NotificationSettingsDTO;
 import com.booking.BookingApp.service.interfaces.INotificationService;
 import org.springframework.stereotype.Service;
 
@@ -46,6 +47,17 @@ public class NotificationService implements INotificationService{
     }
     @Override
     public void delete(Long id) {}
+
+    @Override
+    public Collection<Notification> updateGuestSettings(Long id, NotificationSettingsDTO settingsDTO) {
+        return data();
+    }
+
+    @Override
+    public Collection<Notification> updateHostSettings(Long id, NotificationSettingsDTO settingsDTO) {
+        return data();
+    }
+
 
     public Collection<Notification> data() {
         Collection<Notification> notificationList = new ArrayList<>();

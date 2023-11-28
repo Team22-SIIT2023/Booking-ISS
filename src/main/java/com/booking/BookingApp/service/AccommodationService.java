@@ -71,7 +71,7 @@ public class AccommodationService implements IAccommodationService {
         amenities.add(new Amenity(1L,"parking",null));
         List<Accommodation> accommodationList = new ArrayList<>();
         Accommodation accommodation1 = new Accommodation(
-                1L, "Hotel ABC", "A cozy hotel in the city center",
+                1L, "Hotel ABC", "Boasting a garden and views of inner courtyard, The Gate rooms is a sustainable apartment situated in Novi Sad, 1.9 km from SPENS Sports Centre. It is located 2.8 km from Promenada Shopping Mall and features a shared kitchen.",
                 new Address("Srbija","Novi Sad","21000","Futoska 14"),
                 new ArrayList<>(), 2, 4, AccommodationType.HOTEL,
                 true, true, 1L, AccommodationStatus.CREATED,
@@ -79,7 +79,7 @@ public class AccommodationService implements IAccommodationService {
         );
 
         Accommodation accommodation2 = new Accommodation(
-                2L, "Apartment XYZ", "Spacious apartment with a great view",
+                2L, "Apartment XYZ", "Boasting a garden and views of inner courtyard, The Gate rooms is a sustainable apartment situated in Novi Sad, 1.9 km from SPENS Sports Centre. It is located 2.8 km from Promenada Shopping Mall and features a shared kitchen.",
                 new Address("Srbija","Novi Sad","21000","Futoska 14"),
                 new ArrayList<>(), 3, 6, AccommodationType.APARTMENT,
                 false, false, 3L, AccommodationStatus.ACCEPTED,
