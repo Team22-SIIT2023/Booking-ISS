@@ -6,12 +6,14 @@ import com.booking.BookingApp.dto.RequestDTO;
 import com.booking.BookingApp.mapper.RequestDTOMapper;
 import com.booking.BookingApp.service.RequestService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.stream.Collectors;
 
 @CrossOrigin
@@ -23,8 +25,11 @@ public class RequestController {
     private RequestService requestService;
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Collection<RequestDTO>> getRequests() {
-        Collection<Request> requests = requestService.findAll();
+    public ResponseEntity<Collection<RequestDTO>> getRequests(@RequestParam(value = "status", required = false) RequestStatus status,
+                                                              @RequestParam(value = "begin", required = false) @DateTimeFormat(pattern="yyyy-MM-dd") Date begin,
+                                                              @RequestParam(value = "end", required = false) @DateTimeFormat(pattern="yyyy-MM-dd") Date end,
+                                                              @RequestParam(value = "accommodationName", required = false) String name) {
+        Collection<Request> requests = requestService.findAll(status, begin, end, name);
 
         Collection<RequestDTO> requestsDTO = requests.stream()
                 .map(RequestDTOMapper::fromRequesttoDTO)
@@ -42,8 +47,9 @@ public class RequestController {
 
     //ako se ne prosledi status vracaju se svi zahtevi a ako se prosledi onda samo zahtevi koji su prosledjenog statusa
     @GetMapping(value = "/host/{hostId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Collection<RequestDTO>> getByHostId(@PathVariable("hostId") Long id, @RequestParam("status") RequestStatus status) {
-        Collection<Request> hostRequests = requestService.findByHostId(id);
+    public ResponseEntity<Collection<RequestDTO>> getByHostId(@PathVariable("hostId") Long id,
+                                                              @RequestParam(value = "status", required = false) RequestStatus status) {
+        Collection<Request> hostRequests = requestService.findByHostId(id, status);
 
         Collection<RequestDTO> hostRequestDTO = hostRequests.stream()
                 .map(RequestDTOMapper::fromRequesttoDTO)
@@ -53,8 +59,9 @@ public class RequestController {
     }
 
     @GetMapping(value = "/guest/{guestId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Collection<RequestDTO>> getByGuestId(@PathVariable("guestId") Long id) {
-        Collection<Request> guestRequests = requestService.findByGuestId(id);
+    public ResponseEntity<Collection<RequestDTO>> getByGuestId(@PathVariable("guestId") Long id,
+                                                               @RequestParam(value = "status", required = false) RequestStatus status) {
+        Collection<Request> guestRequests = requestService.findByGuestId(id, status);
 
         Collection<RequestDTO> guestRequestDTO = guestRequests.stream()
                 .map(RequestDTOMapper::fromRequesttoDTO)
@@ -64,33 +71,27 @@ public class RequestController {
     }
 
     // kod filtera moze da menja po vrsti zahteva
-    @GetMapping(value = "/status/{status}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Collection<RequestDTO>> getByStatus(@PathVariable("status") RequestStatus status) {
-        Collection<Request> guestRequests = requestService.findByStatus(status);
+//    @GetMapping(value = "/status/{status}", produces = MediaType.APPLICATION_JSON_VALUE)
+//    public ResponseEntity<Collection<RequestDTO>> getByStatus(@PathVariable("status") RequestStatus status) {
+//        Collection<Request> guestRequests = requestService.findByStatus(status);
+//
+//        Collection<RequestDTO> guestRequestsDTO = guestRequests.stream()
+//                .map(RequestDTOMapper::fromRequesttoDTO)
+//                .collect(Collectors.toList());
+//
+//        return new ResponseEntity<Collection<RequestDTO>>(guestRequestsDTO, HttpStatus.OK);
+//    }
 
-        Collection<RequestDTO> guestRequestsDTO = guestRequests.stream()
-                .map(RequestDTOMapper::fromRequesttoDTO)
-                .collect(Collectors.toList());
-
-        return new ResponseEntity<Collection<RequestDTO>>(guestRequestsDTO, HttpStatus.OK);
-    }
-
-    @GetMapping(value = "/guestReservations/{guestId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Collection<RequestDTO>> getGuestReservation(@PathVariable("guestId") Long id,
-                                                                   @RequestParam("status") RequestStatus status) {
-        Collection<Request> guestRequests = requestService.findReservationByGuestId(id, status);
-
-        Collection<RequestDTO> guestRequestsDTO = guestRequests.stream()
-                .map(RequestDTOMapper::fromRequesttoDTO)
-                .collect(Collectors.toList());
-
-        return new ResponseEntity<Collection<RequestDTO>>(guestRequestsDTO, HttpStatus.OK);
-    }
-
-//    @GetMapping(value = "/host/{hostId}", produces = MediaType.APPLICATION_JSON_VALUE)
-//    public ResponseEntity<Collection<RequestDTO>> getWaitingRequest(@PathVariable("hostId") Long id) {
-//        Collection<RequestDTO> guestRequests = requestService.findWaitingRequest(id);
-//        return new ResponseEntity<Collection<RequestDTO>>(guestRequests, HttpStatus.OK);
+//    @GetMapping(value = "/guestReservations/{guestId}", produces = MediaType.APPLICATION_JSON_VALUE)
+//    public ResponseEntity<Collection<RequestDTO>> getGuestReservation(@PathVariable("guestId") Long id,
+//                                                                   @RequestParam("status") RequestStatus status) {
+//        Collection<Request> guestRequests = requestService.findReservationByGuestId(id, status);
+//
+//        Collection<RequestDTO> guestRequestsDTO = guestRequests.stream()
+//                .map(RequestDTOMapper::fromRequesttoDTO)
+//                .collect(Collectors.toList());
+//
+//        return new ResponseEntity<Collection<RequestDTO>>(guestRequestsDTO, HttpStatus.OK);
 //    }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)

@@ -47,8 +47,9 @@ public class CommentsController {
     }
 
     @GetMapping(value = "/host/{hostId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Collection<CommentsDTO>> getHostComments(@PathVariable("hostId") Long id) {
-        Collection<Comments> comments = commentService.findByHostId(id);
+    public ResponseEntity<Collection<CommentsDTO>> getHostComments(@PathVariable("hostId") Long id,
+                                                                   @RequestParam(value = "status", required = false) Status status) {
+        Collection<Comments> comments = commentService.findByHostId(id, status);
 
         Collection<CommentsDTO> commentsDTO = comments.stream()
                 .map(CommentsDTOMapper::fromCommentstoDTO)
@@ -58,8 +59,9 @@ public class CommentsController {
     }
 
     @GetMapping(value = "/accommodation/{accommodationId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Collection<CommentsDTO>> getAccommodationComments(@PathVariable("accommodationId") Long id) {
-        Collection<Comments> comments = commentService.findByAccommodationId(id);
+    public ResponseEntity<Collection<CommentsDTO>> getAccommodationComments(@PathVariable("accommodationId") Long id,
+                                                                            @RequestParam(value = "status", required = false) Status status) {
+        Collection<Comments> comments = commentService.findByAccommodationId(id, status);
 
         Collection<CommentsDTO> commentsDTO = comments.stream()
                 .map(CommentsDTOMapper::fromCommentstoDTO)
@@ -68,35 +70,29 @@ public class CommentsController {
         return new ResponseEntity<Collection<CommentsDTO>>(commentsDTO,HttpStatus.OK);
     }
 
-//    Izbrisati i dodati query param status kada se getuju svi komentari
-//    @GetMapping(value = "/status",produces = MediaType.APPLICATION_JSON_VALUE)
-//    public ResponseEntity<Collection<CommentsDTO>> getByStatus(@RequestParam("status") Status status) {
-//        Collection<CommentsDTO> comments = commentService.findByStatus(status);
-//        return new ResponseEntity<Collection<CommentsDTO>>(comments,HttpStatus.OK);
-//    }
-
     @GetMapping(value = "/host/{hostId}/averageRate", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Integer> getHostRating(@PathVariable("hostId") Long id) {
         int rating = commentService.findHostRating(id);
         return new ResponseEntity<Integer>(rating,HttpStatus.OK);
     }
 
-        @GetMapping(value = "/accommodation/{accommodationId}/averageRate", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/accommodation/{accommodationId}/averageRate", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Integer> getAccommodationRating(@PathVariable("accommodationId") Long id) {
         int rating = commentService.findAccommodationRating(id);
         return new ResponseEntity<Integer>(rating,HttpStatus.OK);
     }
 
-//    @GetMapping(value = "/accommodationRating", produces = MediaType.APPLICATION_JSON_VALUE)
-//    public ResponseEntity<Integer> getAccommodationRating(@RequestParam("idForAccommodationRating") Long id) {
-//        int rating = commentService.findAccommodationRating(id);
-//        return new ResponseEntity<Integer>(rating,HttpStatus.OK);
-//    }
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<CommentsDTO> createHostComment(@RequestBody CommentsDTO commentDTO) {
+        Comments commentModel = CommentsDTOMapper.fromDTOtoComments(commentDTO);
+        Comments savedComment = commentService.createHostComment(commentModel);
+        return new ResponseEntity<CommentsDTO>(new CommentsDTO(savedComment), HttpStatus.CREATED);
+    }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<CommentsDTO> createComment(@RequestBody CommentsDTO commentDTO) {
+    public ResponseEntity<CommentsDTO> createAccommodationComment(@RequestBody CommentsDTO commentDTO) {
         Comments commentModel = CommentsDTOMapper.fromDTOtoComments(commentDTO);
-        Comments savedComment = commentService.create(commentModel);
+        Comments savedComment = commentService.createAccommodationComment(commentModel);
         return new ResponseEntity<CommentsDTO>(new CommentsDTO(savedComment), HttpStatus.CREATED);
     }
 
@@ -113,7 +109,7 @@ public class CommentsController {
     }
 
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<CommentsDTO> deleteRequest(@PathVariable("id") Long id) {
+    public ResponseEntity<CommentsDTO> deleteComment(@PathVariable("id") Long id) {
         commentService.delete(id);
         return new ResponseEntity<CommentsDTO>(HttpStatus.NO_CONTENT);
     }

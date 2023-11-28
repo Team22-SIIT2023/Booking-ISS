@@ -13,17 +13,17 @@ public interface ICommentService {
 
     Comments findById(Long id);
 
-    Collection<Comments> findByHostId(Long id);
+    Collection<Comments> findByHostId(Long id, Status status);
 
-    Collection<Comments> findByAccommodationId(Long id);
-
-    Collection<Comments> findByStatus(Status status);
+    Collection<Comments> findByAccommodationId(Long id, Status status);
 
     int findHostRating(Long id);
 
     int findAccommodationRating(Long id);
 
-    Comments create(Comments comment);
+    Comments createHostComment(Comments comment);
+
+    Comments createAccommodationComment(Comments comment);
 
     Comments update(Comments comment);
 

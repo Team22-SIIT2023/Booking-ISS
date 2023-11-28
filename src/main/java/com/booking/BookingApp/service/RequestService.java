@@ -9,13 +9,12 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 
 @Service
 public class RequestService implements IRequestService {
     @Override
-    public Collection<Request> findAll() {
-        return data();
-    }
+    public Collection<Request> findAll(RequestStatus status, Date begin, Date end, String accommodationName) { return data(); }
 
     @Override
     public Request findById(Long id) {
@@ -23,17 +22,12 @@ public class RequestService implements IRequestService {
     }
 
     @Override
-    public Collection<Request> findByHostId(Long id) {
+    public Collection<Request> findByHostId(Long id, RequestStatus status) {
         return data();
     }
 
     @Override
-    public Collection<Request> findByGuestId(Long id) {return data();}
-
-    @Override
-    public Collection<Request> findByStatus(RequestStatus status) {
-        return data();
-    }
+    public Collection<Request> findByGuestId(Long id, RequestStatus status) {return data();}
 
     @Override
     public Collection<Request> findReservationByGuestId(Long id, RequestStatus status) {

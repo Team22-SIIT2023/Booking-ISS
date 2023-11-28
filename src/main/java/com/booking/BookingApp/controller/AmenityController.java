@@ -41,14 +41,14 @@ public class AmenityController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<AmenityDTO> createRequest(@RequestBody AmenityDTO amenityDTO) {
+    public ResponseEntity<AmenityDTO> createAmenity(@RequestBody AmenityDTO amenityDTO) {
         Amenity amenityModel = AmenityDTOMapper.fromDTOtoAmenity(amenityDTO);
         Amenity savedAmenity = amenityService.create(amenityModel);
         return new ResponseEntity<AmenityDTO>(new AmenityDTO(savedAmenity), HttpStatus.CREATED);
     }
 
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<AmenityDTO> updateRequest(@RequestBody AmenityDTO amenityDTO, @PathVariable("id") Long id) {
+    public ResponseEntity<AmenityDTO> updateAmenity(@RequestBody AmenityDTO amenityDTO, @PathVariable("id") Long id) {
         Amenity amenityForUpdate = amenityService.findById(id);
         amenityForUpdate.setId(amenityDTO.getId());
         amenityForUpdate.setName(amenityDTO.getName());
@@ -58,7 +58,7 @@ public class AmenityController {
     }
 
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<AmenityDTO> deleteRequest(@PathVariable("id") Long id) {
+    public ResponseEntity<AmenityDTO> deleteAmenity(@PathVariable("id") Long id) {
         amenityService.delete(id);
         return new ResponseEntity<AmenityDTO>(HttpStatus.NO_CONTENT);
     }
