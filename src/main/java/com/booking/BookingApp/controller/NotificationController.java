@@ -1,10 +1,10 @@
 package com.booking.BookingApp.controller;
 
-import com.booking.BookingApp.domain.Accommodation;
 import com.booking.BookingApp.domain.Notification;
-import com.booking.BookingApp.dto.FavoriteAccommodationDTO;
+import com.booking.BookingApp.domain.enums.AccommodationType;
+import com.booking.BookingApp.domain.enums.NotificationType;
 import com.booking.BookingApp.dto.NotificationDTO;
-import com.booking.BookingApp.mapper.FavoriteAccommodationDTOMapper;
+import com.booking.BookingApp.dto.NotificationSettingsDTO;
 import com.booking.BookingApp.mapper.NotificationDTOMapper;
 import com.booking.BookingApp.service.interfaces.INotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,28 +52,51 @@ public class NotificationController {
         return new ResponseEntity<>(notificationDTOS, HttpStatus.OK);
     }
 
-    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<NotificationDTO> createNotification(@RequestBody NotificationDTO notification) throws Exception {
-        Notification savedNotification = notificationService.create(NotificationDTOMapper.fromDTOtoNotification(notification));
+    @PostMapping(value = "/guest/{guestId}",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<NotificationDTO> createGuestNotification(@RequestBody NotificationDTO notification,
+                                                                   @PathVariable("guestId") Long id) throws Exception {
+        Notification savedNotification = notificationService.createGuestNotification(id,NotificationDTOMapper.fromDTOtoNotification(notification));
+        return new ResponseEntity<NotificationDTO>(NotificationDTOMapper.fromNotificationtoDTO(savedNotification), HttpStatus.CREATED);
+    }
+    @PostMapping(value = "/host/{hostId}",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<NotificationDTO> createHostNotification(@RequestBody NotificationDTO notification,
+                                                                   @PathVariable("hostId") Long id) throws Exception {
+        Notification savedNotification = notificationService.createHostNotification(id,NotificationDTOMapper.fromDTOtoNotification(notification));
         return new ResponseEntity<NotificationDTO>(NotificationDTOMapper.fromNotificationtoDTO(savedNotification), HttpStatus.CREATED);
     }
 
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<NotificationDTO> updateNotification(@RequestBody NotificationDTO notification, @PathVariable Long id)
+    public ResponseEntity<NotificationDTO> updateNotification(@RequestBody NotificationDTO notificationDTO, @PathVariable("id") Long id)
             throws Exception {
         Notification notificationForUpdate = notificationService.findOne(id);
-        notificationForUpdate.setId(notification.getId());
-        notificationForUpdate.setText(notification.getText());
-        notificationForUpdate.setType(notification.getType());
-        notificationForUpdate.setTurnedOn(true);
-        Notification updatedNotification = notificationService.update(notificationForUpdate);
+        Notification notification=NotificationDTOMapper.fromDTOtoNotification(notificationDTO);
+        Notification updatedNotification = notificationService.update(notification,notificationForUpdate);
 
         if (updatedNotification == null) {
             return new ResponseEntity<NotificationDTO>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
         return new ResponseEntity<NotificationDTO>(NotificationDTOMapper.fromNotificationtoDTO(updatedNotification), HttpStatus.OK);
     }
+    @PutMapping(value = "/guest/{guestId}/settings", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Collection<NotificationDTO>> updateGuestNotificationSettings(@PathVariable("guestId") Long id,
+                                                                               @RequestBody NotificationSettingsDTO settingsDTO) throws Exception {
 
+        Collection<Notification> notifications= notificationService.updateGuestSettings(id,settingsDTO);
+        Collection<NotificationDTO> notificationDTOS = notifications.stream()
+                .map(NotificationDTOMapper::fromNotificationtoDTO)
+                .collect(Collectors.toList());
+        return new ResponseEntity<>(notificationDTOS, HttpStatus.OK);
+    }
+    @PutMapping(value = "/host/{hostId}/settings", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Collection<NotificationDTO>> updateHostNotificationSettings(@PathVariable("hostId") Long id,
+                                                                              @RequestBody NotificationSettingsDTO settingsDTO) throws Exception {
+
+        Collection<Notification> notifications= notificationService.updateHostSettings(id,settingsDTO);
+        Collection<NotificationDTO> notificationDTOS = notifications.stream()
+                .map(NotificationDTOMapper::fromNotificationtoDTO)
+                .collect(Collectors.toList());
+        return new ResponseEntity<>(notificationDTOS, HttpStatus.OK);
+    }
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<NotificationDTO> deleteNotification(@PathVariable("id") Long id) {
         notificationService.delete(id);
