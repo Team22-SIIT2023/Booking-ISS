@@ -23,7 +23,6 @@ public class AccommodationDTO {
     private String name;
     private String description;
     private AddressDTO address;
-    private ArrayList<Image> images;
     private int minGuests;
     private int maxGuests;
     private AccommodationType type;
@@ -36,14 +35,13 @@ public class AccommodationDTO {
     private ArrayList<PricelistItem> priceList;
     private ArrayList<TimeSlot> freeTimeSlots;
 
-    public AccommodationDTO(Long id, String name, String description, AddressDTO address, ArrayList<Image> images, int minGuests, int maxGuests, AccommodationType type, boolean pricePerGuest, boolean automaticConfirmation, Long hostId,
+    public AccommodationDTO(Long id, String name, String description, AddressDTO address, int minGuests, int maxGuests, AccommodationType type, boolean pricePerGuest, boolean automaticConfirmation, Long hostId,
                             AccommodationStatus status, int reservationDeadline, ArrayList<AmenityDTO> amenities,
                             ArrayList<PricelistItem> priceList,ArrayList<TimeSlot> freeTimeSlots) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.address = address;
-        this.images = images;
         this.minGuests = minGuests;
         this.maxGuests = maxGuests;
         this.type = type;
@@ -63,8 +61,18 @@ public class AccommodationDTO {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
-                ", address='" + address + '\'' +
-                ", type='" + type + '\'' +
+                ", address=" + address +
+                ", minGuests=" + minGuests +
+                ", maxGuests=" + maxGuests +
+                ", type=" + type +
+                ", pricePerGuest=" + pricePerGuest +
+                ", automaticConfirmation=" + automaticConfirmation +
+                ", hostId=" + hostId +
+                ", status=" + status +
+                ", reservationDeadline=" + reservationDeadline +
+                ", amenities=" + amenities +
+                ", priceList=" + priceList +
+                ", freeTimeSlots=" + freeTimeSlots +
                 '}';
     }
 }

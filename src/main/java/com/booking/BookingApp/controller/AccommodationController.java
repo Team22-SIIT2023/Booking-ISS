@@ -68,7 +68,8 @@ public class AccommodationController {
     public ResponseEntity<AccommodationDTO> updateAccommodation(@RequestBody AccommodationDTO accommodationDTO, @PathVariable Long id)
             throws Exception {
         Accommodation accommodationForUpdate = accommodationService.findOne(id);
-        Accommodation updatedAccommodation = accommodationService.update(accommodationForUpdate);
+        Accommodation accommodation=AccommodationDTOMapper.fromDTOtoAccommodation(accommodationDTO);
+        Accommodation updatedAccommodation = accommodationService.update(accommodation,accommodationForUpdate);
 
         if (updatedAccommodation == null) {
             return new ResponseEntity<AccommodationDTO>(HttpStatus.INTERNAL_SERVER_ERROR);

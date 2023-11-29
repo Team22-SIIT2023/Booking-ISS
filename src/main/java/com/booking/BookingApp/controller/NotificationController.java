@@ -66,10 +66,11 @@ public class NotificationController {
     }
 
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<NotificationDTO> updateNotification(@RequestBody NotificationDTO notification, @PathVariable("id") Long id)
+    public ResponseEntity<NotificationDTO> updateNotification(@RequestBody NotificationDTO notificationDTO, @PathVariable("id") Long id)
             throws Exception {
         Notification notificationForUpdate = notificationService.findOne(id);
-        Notification updatedNotification = notificationService.update(notificationForUpdate);
+        Notification notification=NotificationDTOMapper.fromDTOtoNotification(notificationDTO);
+        Notification updatedNotification = notificationService.update(notification,notificationForUpdate);
 
         if (updatedNotification == null) {
             return new ResponseEntity<NotificationDTO>(HttpStatus.INTERNAL_SERVER_ERROR);

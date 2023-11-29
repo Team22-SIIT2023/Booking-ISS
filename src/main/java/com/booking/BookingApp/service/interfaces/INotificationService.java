@@ -1,9 +1,6 @@
 package com.booking.BookingApp.service.interfaces;
 
-import com.booking.BookingApp.domain.Accommodation;
 import com.booking.BookingApp.domain.Notification;
-import com.booking.BookingApp.domain.enums.NotificationType;
-import com.booking.BookingApp.dto.NotificationDTO;
 import com.booking.BookingApp.dto.NotificationSettingsDTO;
 
 import java.util.Collection;
@@ -16,7 +13,7 @@ public interface INotificationService {
 
     Notification createGuestNotification(Long id,Notification notification) throws Exception;
 
-    Notification update(Notification notification) throws Exception;
+    Notification update(Notification notification, Notification notificationForUpdate) throws Exception;
 
     void delete(Long id);
 

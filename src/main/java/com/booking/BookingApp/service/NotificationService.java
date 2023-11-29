@@ -2,7 +2,6 @@ package com.booking.BookingApp.service;
 
 import com.booking.BookingApp.domain.Notification;
 import com.booking.BookingApp.domain.enums.NotificationType;
-import com.booking.BookingApp.dto.NotificationDTO;
 import com.booking.BookingApp.dto.NotificationSettingsDTO;
 import com.booking.BookingApp.service.interfaces.INotificationService;
 import org.springframework.stereotype.Service;
@@ -33,16 +32,16 @@ public class NotificationService implements INotificationService{
 
     @Override
     public Notification createHostNotification(Long id, Notification notification) throws Exception {
-        return null;
+        return new Notification(1L, "New message received",LocalDate.now(),true, NotificationType.HOST_RATED);
     }
 
     @Override
     public Notification createGuestNotification(Long id, Notification notification) throws Exception {
-        return null;
+        return new Notification(1L, "New message received",LocalDate.now(),true, NotificationType.HOST_RATED);
     }
 
     @Override
-    public Notification update(Notification notification) throws Exception {
+    public Notification update(Notification notification, Notification notificationForUpdate) throws Exception {
         return new Notification(1L, "New message received",LocalDate.now(),true, NotificationType.HOST_RATED);
     }
     @Override
