@@ -16,6 +16,8 @@ public interface IUserService {
 
     User findOneByEmail(String email);
 
+    boolean activateUser(Long id);
+
     User create(User user) throws Exception;
 
     User update(User user) throws Exception;

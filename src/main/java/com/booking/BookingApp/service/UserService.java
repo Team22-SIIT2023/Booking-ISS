@@ -44,6 +44,10 @@ public class UserService implements IUserService {
     }
 
     @Override
+    public boolean activateUser(Long id){
+        return true;
+    }
+    @Override
     public User create(User user) throws Exception {
         Address address = new Address("Srbija","Novi Sad","21000","Futoska 1");
         Account account = new Account("isidorica","slatkica",Status.ACTIVE, UserType.GUEST);

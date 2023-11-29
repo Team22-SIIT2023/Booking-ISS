@@ -18,13 +18,13 @@ import java.util.Date;
 
 @CrossOrigin
 @RestController
-@RequestMapping("/api/report")
+@RequestMapping("/api/reports")
 public class ReportController {
 
     @Autowired
     private IReportService reportService;
 
-    @GetMapping(value = "/hostAndTimeslot",produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ReportDTO> getReportByHostAndTimeSlot(
             @RequestParam("hostId") Long hostId,
             @RequestParam("begin") @DateTimeFormat(pattern="yyyy-MM-dd") Date begin,
