@@ -50,7 +50,8 @@ public class AmenityController {
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AmenityDTO> updateAmenity(@RequestBody AmenityDTO amenityDTO, @PathVariable("id") Long id) {
         Amenity amenityForUpdate = amenityService.findById(id);
-        Amenity updatedAmenity = amenityService.update(amenityForUpdate);
+        Amenity amenity = AmenityDTOMapper.fromDTOtoAmenity(amenityDTO);
+        Amenity updatedAmenity = amenityService.update(amenityForUpdate, amenity);
         return new ResponseEntity<AmenityDTO>(new AmenityDTO(updatedAmenity), HttpStatus.OK);
     }
 

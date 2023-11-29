@@ -54,7 +54,7 @@ public class CommentService implements ICommentService {
     }
 
     @Override
-    public Comments update(Comments comment) {
+    public Comments update(Comments commentForUpdate,  Comments comment) {
         return new Comments(1L, "Great comment!", LocalDate.now(), 4.5, Status.ACTIVE, null);
     }
 

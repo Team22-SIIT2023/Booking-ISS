@@ -12,12 +12,12 @@ import javax.swing.*;
 public class Amenity {
     private Long id;
     private String name;
-    private ImageIcon icon;
+//    private ImageIcon icon;
 
-    public Amenity(Long id, String name, ImageIcon icon) {
+    public Amenity(Long id, String name) {
         this.id = id;
         this.name = name;
-        this.icon = icon;
+//        this.icon = icon;
     }
 
     @Override
@@ -25,7 +25,6 @@ public class Amenity {
         return "Amenity{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", icon=" + icon +
                 '}';
     }
 }

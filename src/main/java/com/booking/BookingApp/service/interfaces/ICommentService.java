@@ -25,7 +25,7 @@ public interface ICommentService {
 
     Comments createAccommodationComment(Comments comment, Long id);
 
-    Comments update(Comments comment);
+    Comments update(Comments commentForUpdate,  Comments comment);
 
     void delete(Long id);
 }

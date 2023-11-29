@@ -4,6 +4,7 @@ import com.booking.BookingApp.domain.Comments;
 import com.booking.BookingApp.domain.enums.Status;
 import com.booking.BookingApp.dto.CommentsDTO;
 import com.booking.BookingApp.dto.RequestDTO;
+import com.booking.BookingApp.mapper.AccommodationDTOMapper;
 import com.booking.BookingApp.mapper.CommentsDTOMapper;
 import com.booking.BookingApp.mapper.RequestDTOMapper;
 import com.booking.BookingApp.service.CommentService;
@@ -99,9 +100,10 @@ public class CommentsController {
     }
 
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<CommentsDTO> updateComment(@RequestBody CommentsDTO comment,@PathVariable("id") Long id) {
+    public ResponseEntity<CommentsDTO> updateComment(@RequestBody CommentsDTO commentDTO, @PathVariable("id") Long id) {
         Comments commentForUpdate = commentService.findById(id);
-        Comments updatedComment = commentService.update(commentForUpdate);
+        Comments comment = CommentsDTOMapper.fromDTOtoComments(commentDTO);
+        Comments updatedComment = commentService.update(commentForUpdate, comment);
         return new ResponseEntity<CommentsDTO>(new CommentsDTO(updatedComment), HttpStatus.OK);
     }
 

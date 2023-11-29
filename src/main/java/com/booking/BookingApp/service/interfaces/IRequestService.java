@@ -25,7 +25,7 @@ public interface IRequestService {
 
     Request create(Request request);
 
-    Request update(Request request);
+    Request update(Request requestForUpdate, Request request);
 
     void delete(Long id);
 }

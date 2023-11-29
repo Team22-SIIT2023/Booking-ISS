@@ -17,14 +17,14 @@ public class AmenityService implements IAmenityService {
 
     @Override
     public Amenity findById(Long id) {
-        return new Amenity(1L, "Swimming Pool", null);
+        return new Amenity(1L, "Swimming Pool");
     }
 
     @Override
-    public Amenity create(Amenity amenity) {return new Amenity(1L, "Swimming Pool", null);}
+    public Amenity create(Amenity amenity) {return new Amenity(1L, "Swimming Pool");}
 
     @Override
-    public Amenity update(Amenity amenity) {return new Amenity(1L, "Swimming Pool", null);}
+    public Amenity update(Amenity amenityForUpdate, Amenity amenity) {return new Amenity(1L, "Swimming Pool");}
 
     @Override
     public void delete(Long id) {}
@@ -33,10 +33,10 @@ public class AmenityService implements IAmenityService {
         Collection<Amenity> amenityList = new ArrayList<>();
 
         // Add instances of Amenity to the list
-        amenityList.add(new Amenity(1L, "Swimming Pool", null));
-        amenityList.add(new Amenity(2L, "Gym", null));
-        amenityList.add(new Amenity(3L, "WiFi", null));
-        amenityList.add(new Amenity(3L, "WiFi", null));
+        amenityList.add(new Amenity(1L, "Swimming Pool"));
+        amenityList.add(new Amenity(2L, "Gym"));
+        amenityList.add(new Amenity(3L, "WiFi"));
+        amenityList.add(new Amenity(3L, "WiFi"));
 
         return amenityList;
     }

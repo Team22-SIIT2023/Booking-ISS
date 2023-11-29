@@ -24,9 +24,9 @@ public class AccommodationService implements IAccommodationService {
     @Override
     public Accommodation findOne(Long id) {
         ArrayList<Amenity> amenities=new ArrayList<>();
-        amenities.add(new Amenity(1L,"pool",null));
-        amenities.add(new Amenity(1L,"pets",null));
-        amenities.add(new Amenity(1L,"wifi",null));
+        amenities.add(new Amenity(1L,"pool"));
+        amenities.add(new Amenity(1L,"pets"));
+        amenities.add(new Amenity(1L,"wifi"));
         return new Accommodation(
                 1L, "Hotel ABC", "Boasting a garden and views of inner courtyard, The Gate rooms is a sustainable apartment situated in Novi Sad, 1.9 km from SPENS Sports Centre. It is located 2.8 km from Promenada Shopping Mall and features a shared kitchen. The apartment has family rooms.\n" +
                 "\n" +
@@ -65,9 +65,9 @@ public class AccommodationService implements IAccommodationService {
 
     public List<Accommodation> data() {
         ArrayList<Amenity> amenities=new ArrayList<>();
-        amenities.add(new Amenity(1L,"pool",null));
-        amenities.add(new Amenity(1L,"pets",null));
-        amenities.add(new Amenity(1L,"parking",null));
+        amenities.add(new Amenity(1L,"pool"));
+        amenities.add(new Amenity(1L,"pets"));
+        amenities.add(new Amenity(1L,"parking"));
         List<Accommodation> accommodationList = new ArrayList<>();
         Accommodation accommodation1 = new Accommodation(
                 1L, "Hotel ABC", "A cozy hotel in the city center",

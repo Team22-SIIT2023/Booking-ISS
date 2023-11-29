@@ -78,9 +78,10 @@ public class RequestController {
     }
 
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<RequestDTO> updateRequest(@RequestBody RequestDTO request, @PathVariable("id") Long id) {
+    public ResponseEntity<RequestDTO> updateRequest(@RequestBody RequestDTO requestDTO, @PathVariable("id") Long id) {
         Request requestForUpdate = requestService.findById(id);
-        Request updatedRequest = requestService.update(requestForUpdate);
+        Request request = RequestDTOMapper.fromDTOtoRequest(requestDTO);
+        Request updatedRequest = requestService.update(requestForUpdate, request);
         return new ResponseEntity<RequestDTO>(new RequestDTO(updatedRequest), HttpStatus.OK);
     }
 
