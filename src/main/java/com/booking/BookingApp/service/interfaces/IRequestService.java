@@ -5,18 +5,17 @@ import com.booking.BookingApp.domain.enums.RequestStatus;
 
 
 import java.util.Collection;
+import java.util.Date;
 
 public interface IRequestService {
 
-    Collection<Request> findAll();
+    Collection<Request> findAll(RequestStatus status, Date begin, Date end, String accommodationName);
 
     Request findById(Long id);
 
-    Collection<Request> findByHostId(Long id);
+    Collection<Request> findByHostId(Long id, RequestStatus status);
 
-    Collection<Request> findByGuestId(Long id);
-
-    Collection<Request> findByStatus(RequestStatus status);
+    Collection<Request> findByGuestId(Long id, RequestStatus status);
 
     Collection<Request> findReservationByGuestId(Long id, RequestStatus status);
 
@@ -26,7 +25,7 @@ public interface IRequestService {
 
     Request create(Request request);
 
-    Request update(Request request);
+    Request update(Request requestForUpdate, Request request);
 
     void delete(Long id);
 }

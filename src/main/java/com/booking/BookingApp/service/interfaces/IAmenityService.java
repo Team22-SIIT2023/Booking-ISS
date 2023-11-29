@@ -13,7 +13,7 @@ public interface IAmenityService {
 
     Amenity create(Amenity amenity);
 
-    Amenity update(Amenity amenity);
+    Amenity update(Amenity amenityForUpdate, Amenity amenity);
 
     void delete(Long id);
 }

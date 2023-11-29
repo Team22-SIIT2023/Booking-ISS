@@ -8,5 +8,5 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class AccommodationComments extends Comments{
-
+    private Long accommodationId;
 }

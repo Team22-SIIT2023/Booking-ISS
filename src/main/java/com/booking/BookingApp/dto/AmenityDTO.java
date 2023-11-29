@@ -13,16 +13,16 @@ import javax.swing.*;
 public class AmenityDTO {
     private Long id;
     private String name;
-    private ImageIcon icon;
+//    private ImageIcon icon;
 
-    public AmenityDTO(Long id, String name, ImageIcon icon) {
+    public AmenityDTO(Long id, String name) {
         this.id = id;
         this.name = name;
-        this.icon = icon;
+//        this.icon = icon;
     }
 
     public AmenityDTO(Amenity amenity) {
-        this(amenity.getId(), amenity.getName(), amenity.getIcon());
+        this(amenity.getId(), amenity.getName());
     }
 
     @Override
@@ -30,7 +30,6 @@ public class AmenityDTO {
         return "AmenityDTO{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", icon=" + icon +
                 '}';
     }
 }

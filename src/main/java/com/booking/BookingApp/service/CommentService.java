@@ -24,17 +24,12 @@ public class CommentService implements ICommentService {
     }
 
     @Override
-    public Collection<Comments> findByHostId(Long id) {
+    public Collection<Comments> findByHostId(Long id, Status status) {
         return data();
     }
 
     @Override
-    public Collection<Comments> findByAccommodationId(Long id) {
-        return data();
-    }
-
-    @Override
-    public Collection<Comments> findByStatus(Status status) {
+    public Collection<Comments> findByAccommodationId(Long id, Status status) {
         return data();
     }
 
@@ -49,12 +44,17 @@ public class CommentService implements ICommentService {
     }
 
     @Override
-    public Comments create(Comments comment) {
+    public Comments createHostComment(Comments comment, Long id) {
         return new Comments(1L, "Great comment!", LocalDate.now(), 4.5, Status.ACTIVE, null);
     }
 
     @Override
-    public Comments update(Comments comment) {
+    public Comments createAccommodationComment(Comments comment, Long id) {
+        return new Comments(1L, "Great comment!", LocalDate.now(), 4.5, Status.ACTIVE, null);
+    }
+
+    @Override
+    public Comments update(Comments commentForUpdate,  Comments comment) {
         return new Comments(1L, "Great comment!", LocalDate.now(), 4.5, Status.ACTIVE, null);
     }
 
