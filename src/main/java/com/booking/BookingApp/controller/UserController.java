@@ -10,6 +10,7 @@ import com.booking.BookingApp.dto.UserDTO;
 import com.booking.BookingApp.mapper.AccommodationDTOMapper;
 import com.booking.BookingApp.mapper.UserDTOMapper;
 import com.booking.BookingApp.service.interfaces.IUserService;
+import jakarta.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -65,6 +66,14 @@ public class UserController {
         return new ResponseEntity<UserDTO>(UserDTOMapper.fromUsertoDTO(user), HttpStatus.OK);
     }
 
+    @PostMapping("/user-account-activation/{id}")
+    public ResponseEntity<String> activateUser(@PathVariable Long id){
+        boolean isActivated = userService.activateUser(id);
+        if(isActivated){
+            return new ResponseEntity<String>("User account is successfully activated.",HttpStatus.OK);
+        }
+        return new ResponseEntity<String>("Failed to activate user account.",HttpStatus.BAD_REQUEST);
+    }
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserDTO> createUser(@RequestBody UserDTO userDTO) throws Exception {
         User newUser = UserDTOMapper.fromDTOtoUser(userDTO);
