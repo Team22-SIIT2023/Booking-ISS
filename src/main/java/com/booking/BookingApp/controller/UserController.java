@@ -1,16 +1,10 @@
 package com.booking.BookingApp.controller;
 
-import com.booking.BookingApp.domain.Accommodation;
-import com.booking.BookingApp.domain.Account;
 import com.booking.BookingApp.domain.User;
 import com.booking.BookingApp.domain.enums.Status;
-import com.booking.BookingApp.dto.AccommodationDTO;
-import com.booking.BookingApp.dto.AccountDTO;
 import com.booking.BookingApp.dto.UserDTO;
-import com.booking.BookingApp.mapper.AccommodationDTOMapper;
 import com.booking.BookingApp.mapper.UserDTOMapper;
 import com.booking.BookingApp.service.interfaces.IUserService;
-import jakarta.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -18,8 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @CrossOrigin
 @RestController
@@ -40,11 +32,9 @@ public class UserController {
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserDTO> getUser(@PathVariable("id") Long id) {
         User user = userService.findOne(id);
-
         if (user == null) {
             return new ResponseEntity<UserDTO>(HttpStatus.NOT_FOUND);
         }
-
         return new ResponseEntity<UserDTO>(UserDTOMapper.fromUsertoDTO(user), HttpStatus.OK);
     }
 
