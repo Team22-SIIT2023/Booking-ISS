@@ -1,0 +1,1 @@
+INSERT INTO account (id, email, password, status, type) VALUES (1, 'email@example.com', 'password', 'ACTIVE', 'HOST');
