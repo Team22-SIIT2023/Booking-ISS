@@ -12,6 +12,8 @@ public interface IUserService {
 
     User findOne(Long id);
 
+    User findLoggedUser(String username, String password);
+
     Collection<User> findAllByStatus(Status userStatus);
 
     User findOneByEmail(String email);

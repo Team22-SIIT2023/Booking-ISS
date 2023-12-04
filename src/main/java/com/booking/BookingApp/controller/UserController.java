@@ -1,17 +1,24 @@
 package com.booking.BookingApp.controller;
 
+import com.booking.BookingApp.domain.Report;
+import com.booking.BookingApp.domain.TimeSlot;
 import com.booking.BookingApp.domain.User;
 import com.booking.BookingApp.domain.enums.Status;
+import com.booking.BookingApp.dto.ReportDTO;
 import com.booking.BookingApp.dto.UserDTO;
+import com.booking.BookingApp.mapper.ReportDTOMapper;
 import com.booking.BookingApp.mapper.UserDTOMapper;
 import com.booking.BookingApp.service.interfaces.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.ZoneId;
 import java.util.Collection;
+import java.util.Date;
 
 @CrossOrigin
 @RestController
@@ -37,6 +44,17 @@ public class UserController {
         }
         return new ResponseEntity<UserDTO>(UserDTOMapper.fromUsertoDTO(user), HttpStatus.OK);
     }
+
+    @GetMapping(value ="/log-in", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<UserDTO> getReportByHostAndTimeSlot(
+            @RequestParam("username") String username,
+            @RequestParam("password") String password) {
+        User user = userService.findLoggedUser(username,password);
+        if (user == null) {
+            return new ResponseEntity<UserDTO>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<UserDTO>(UserDTOMapper.fromUsertoDTO(user), HttpStatus.OK);
+    };
 
     @GetMapping(value = "/status", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Collection<UserDTO>> getUsersByStatus(@RequestParam("status") Status status) {
