@@ -27,14 +27,14 @@ public class UserService implements IUserService {
     @Override
     public User findOne(Long id) {
         Address address = new Address("Srbija","Novi Sad","21000","Futoska 1");
-        Account account = new Account("isidorica","slatkica",Status.ACTIVE, UserType.GUEST);
+        Account account = new Account(1L, "isidorica","slatkica",Status.ACTIVE, UserType.GUEST);
         return new User(1L,"Isidora","Aleksic",address,"0692104221",account,"../../../assets/images/userpicture.jpg");
     }
 
     @Override
     public User findLoggedUser(String username, String password) {
         Address address = new Address("Srbija","Novi Sad","21000","Futoska 1");
-        Account account = new Account("isidorica","slatkica",Status.ACTIVE, UserType.GUEST);
+        Account account = new Account(1L, "isidorica","slatkica",Status.ACTIVE, UserType.GUEST);
         return new User(1L,"Isidora","Aleksic",address,"0692104221",account,"../../../assets/images/userpicture.jpg");
     }
 
@@ -46,7 +46,7 @@ public class UserService implements IUserService {
     @Override
     public User findOneByEmail(String email) {
         Address address = new Address("Srbija","Novi Sad","21000","Futoska 1");
-        Account account = new Account("isidorica","slatkica",Status.ACTIVE, UserType.GUEST);
+        Account account = new Account(1L, "isidorica","slatkica",Status.ACTIVE, UserType.GUEST);
         return new User(1L,"Isidora","Aleksic",address,"0692104221",account,"../../../assets/images/userpicture.jpg");
     }
 
@@ -57,14 +57,14 @@ public class UserService implements IUserService {
     @Override
     public User create(User user) throws Exception {
         Address address = new Address("Srbija","Novi Sad","21000","Futoska 1");
-        Account account = new Account("isidorica","slatkica",Status.ACTIVE, UserType.GUEST);
+        Account account = new Account(1L, "isidorica","slatkica",Status.ACTIVE, UserType.GUEST);
         return new User(1L,"Isidora","Aleksic",address,"0692104221",account,"../../../assets/images/userpicture.jpg");
     }
 
     @Override
     public User update(User user) throws Exception {
         Address address = new Address("Srbija","Novi Sad","21000","Futoska 1");
-        Account account = new Account("isidorica","slatkica",Status.ACTIVE, UserType.GUEST);
+        Account account = new Account(1L, "isidorica","slatkica",Status.ACTIVE, UserType.GUEST);
         return new User(1L,"Isidora","Aleksic",address,"0692104221",account,"../../../assets/images/userpicture.jpg");
     }
 
@@ -75,7 +75,7 @@ public class UserService implements IUserService {
     public List<User> data() {
         List<User> users = new ArrayList<>();
         Address address = new Address("Srbija","Novi Sad","21000","Futoska 1");
-        Account account = new Account("isidorica","slatkica",Status.ACTIVE, UserType.GUEST);
+        Account account = new Account(1L, "isidorica","slatkica",Status.ACTIVE, UserType.GUEST);
         users.add(new User(1L,"Isidora","Aleksic",address,"0692104221",account,"../../../assets/images/userpicture.jpg"));
         users.add(new User(2L,"Tamara","Aleksic",address,"0692104221",account,"../../../assets/images/userpicture.jpg"));
         return users;
