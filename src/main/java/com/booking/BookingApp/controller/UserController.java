@@ -56,17 +56,17 @@ public class UserController {
         return new ResponseEntity<UserDTO>(UserDTOMapper.fromUsertoDTO(user), HttpStatus.OK);
     };
 
-    @GetMapping(value = "/status", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Collection<UserDTO>> getUsersByStatus(@RequestParam("status") Status status) {
-        Collection<User> users = userService.findAllByStatus(status);
-        Collection<UserDTO> usersDTO = users.stream()
-                .map(UserDTOMapper::fromUsertoDTO)
-                .toList();
-        return new ResponseEntity<Collection<UserDTO>>(usersDTO, HttpStatus.OK);
-    }
+//    @GetMapping(value = "/status/{status}", produces = MediaType.APPLICATION_JSON_VALUE)
+//    public ResponseEntity<Collection<UserDTO>> getUsersByStatus(@PathVariable("status") Status status) {
+//        Collection<User> users = userService.findAllByStatus(status);
+//        Collection<UserDTO> usersDTO = users.stream()
+//                .map(UserDTOMapper::fromUsertoDTO)
+//                .toList();
+//        return new ResponseEntity<Collection<UserDTO>>(usersDTO, HttpStatus.OK);
+//    }
 
-    @GetMapping(value = "/userEmail", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<UserDTO> getUserByEmail(@RequestParam("userEmail") String userEmail) {
+    @GetMapping(value = "/userEmail/{userEmail}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<UserDTO> getUserByEmail(@PathVariable("userEmail") String userEmail) {
         User user = userService.findOneByEmail(userEmail);
         if (user == null) {
             return new ResponseEntity<UserDTO>(HttpStatus.NOT_FOUND);
@@ -105,8 +105,4 @@ public class UserController {
         userService.delete(id);
         return new ResponseEntity<UserDTO>(HttpStatus.NO_CONTENT);
     }
-
-
-
-
 }

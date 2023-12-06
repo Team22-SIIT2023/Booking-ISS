@@ -1,5 +1,8 @@
 package com.booking.BookingApp.domain;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -8,7 +11,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class Report {
-
+    private Long id;
     private Long accommodationId;
     private int totalProfit;
     private int numberOfReservations;

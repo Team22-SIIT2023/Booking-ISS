@@ -2,6 +2,7 @@ package com.booking.BookingApp.mapper;
 
 import com.booking.BookingApp.domain.Accommodation;
 import com.booking.BookingApp.dto.AccommodationDTO;
+import com.booking.BookingApp.dto.CreateAccommodationDTO;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -19,7 +20,15 @@ public class AccommodationDTOMapper {
         return modelMapper.map(dto, Accommodation.class);
     }
 
+    public static Accommodation fromCreateDTOtoAccommodation(CreateAccommodationDTO dto) {
+        return modelMapper.map(dto, Accommodation.class);
+    }
+
     public static AccommodationDTO fromAccommodationtoDTO(Accommodation dto) {
         return modelMapper.map(dto, AccommodationDTO.class);
     }
+
+//    public static AccommodationDTO fromAccommodationtoCreateDTO(Accommodation dto) {
+//        return modelMapper.map(dto, CreateAccommodationDTO.class);
+//    }
 }

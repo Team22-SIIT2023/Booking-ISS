@@ -11,15 +11,24 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @Entity
+@Table(name = "accounts")
 public class Account {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(name = "email")
     private String email;
+
+    @Column(name = "password")
     private String password;
+
     @Enumerated(EnumType.STRING)
+    @Column(name = "status")
     private Status status;
+
     @Enumerated(EnumType.STRING)
+    @Column(name = "type")
     private UserType type;
 
     public Account(Long id, String email, String password, Status status, UserType type) {
