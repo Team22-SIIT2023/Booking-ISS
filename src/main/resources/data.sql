@@ -1,1 +1,1 @@
-INSERT INTO account (id, email, password, status, type) VALUES (1, 'email@example.com', 'password', 'ACTIVE', 'HOST');
+INSERT INTO addresses (id, country, city, postal_code, address) VALUES (1, 'email@example.com', 'password', 'ACTIVE', 'HOST');

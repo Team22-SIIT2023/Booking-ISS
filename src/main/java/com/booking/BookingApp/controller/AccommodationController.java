@@ -5,6 +5,7 @@ import com.booking.BookingApp.domain.enums.AccommodationStatus;
 import com.booking.BookingApp.domain.enums.AccommodationType;
 import com.booking.BookingApp.domain.enums.Status;
 import com.booking.BookingApp.dto.AccommodationDTO;
+import com.booking.BookingApp.dto.CreateAccommodationDTO;
 import com.booking.BookingApp.mapper.AccommodationDTOMapper;
 import com.booking.BookingApp.service.interfaces.IAccommodationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,8 +59,8 @@ public class AccommodationController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<AccommodationDTO> createAccommodation(@RequestBody AccommodationDTO accommodation) throws Exception {
-        Accommodation newAccommodation=AccommodationDTOMapper.fromDTOtoAccommodation(accommodation);
+    public ResponseEntity<AccommodationDTO> createAccommodation(@RequestBody CreateAccommodationDTO accommodation) throws Exception {
+        Accommodation newAccommodation=AccommodationDTOMapper.fromCreateDTOtoAccommodation(accommodation);
         Accommodation savedAccommodation = accommodationService.create(newAccommodation);
         return new ResponseEntity<AccommodationDTO>(AccommodationDTOMapper.fromAccommodationtoDTO(savedAccommodation), HttpStatus.CREATED);
     }

@@ -32,7 +32,7 @@ public class AccommodationService implements IAccommodationService {
                 "All units are fitted with a flat-screen TV with cable channels, fridge, a kettle, a walk-in shower, a hair dryer and a wardrobe. With a private bathroom, units at the apartment complex also boast free WiFi.",
                 new Address("Srbija","Novi Sad","21000","Futoska 14"),
                  2, 4, AccommodationType.HOTEL,
-                true, true, 1L, AccommodationStatus.ACCEPTED,
+                true, true, null, AccommodationStatus.ACCEPTED,
                 3, new ArrayList<>(), amenities, new ArrayList<>()
         );
     }
@@ -42,7 +42,7 @@ public class AccommodationService implements IAccommodationService {
                 1L, "Hotel ABC", "A cozy hotel in the city center",
                 new Address("Srbija","Novi Sad","21000","Futoska 14"),
                  2, 4, AccommodationType.HOTEL,
-                true, true, 1L, AccommodationStatus.CREATED,
+                true, true, null, AccommodationStatus.CREATED,
                 3, new ArrayList<>(), new ArrayList<>(), new ArrayList<>()
         );
     }
@@ -53,7 +53,7 @@ public class AccommodationService implements IAccommodationService {
                 1L, "Hotel ABC", "A cozy hotel in the city center",
                 new Address("Srbija","Novi Sad","21000","Futoska 14"),
                 2, 4, AccommodationType.HOTEL,
-                true, true, 1L, AccommodationStatus.ACCEPTED,
+                true, true, null, AccommodationStatus.ACCEPTED,
                 3, new ArrayList<>(), new ArrayList<>(), new ArrayList<>()
         );
     }
@@ -72,7 +72,7 @@ public class AccommodationService implements IAccommodationService {
                 1L, "Hotel ABC", "Boasting a garden and views of inner courtyard, The Gate rooms is a sustainable apartment situated in Novi Sad, 1.9 km from SPENS Sports Centre. It is located 2.8 km from Promenada Shopping Mall and features a shared kitchen.",
                 new Address("Srbija","Novi Sad","21000","Futoska 14"),
                  2, 4, AccommodationType.HOTEL,
-                true, true, 1L, AccommodationStatus.CREATED,
+                true, true, null, AccommodationStatus.CREATED,
                 3, new ArrayList<>(), amenities, new ArrayList<>()
         );
 
@@ -80,7 +80,7 @@ public class AccommodationService implements IAccommodationService {
                 2L, "Apartment XYZ", "Boasting a garden and views of inner courtyard, The Gate rooms is a sustainable apartment situated in Novi Sad, 1.9 km from SPENS Sports Centre. It is located 2.8 km from Promenada Shopping Mall and features a shared kitchen.",
                 new Address("Srbija","Novi Sad","21000","Futoska 14"),
                 3, 6, AccommodationType.APARTMENT,
-                false, false, 3L, AccommodationStatus.ACCEPTED,
+                false, false, null, AccommodationStatus.ACCEPTED,
                 5, new ArrayList<>(), amenities, new ArrayList<>()
         );
         accommodationList.add(accommodation1);
