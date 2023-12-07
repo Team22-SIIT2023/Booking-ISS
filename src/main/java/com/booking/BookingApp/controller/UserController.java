@@ -1,11 +1,14 @@
 package com.booking.BookingApp.controller;
 
+import com.booking.BookingApp.domain.Accommodation;
 import com.booking.BookingApp.domain.Report;
 import com.booking.BookingApp.domain.TimeSlot;
 import com.booking.BookingApp.domain.User;
 import com.booking.BookingApp.domain.enums.Status;
+import com.booking.BookingApp.dto.AccommodationDTO;
 import com.booking.BookingApp.dto.ReportDTO;
 import com.booking.BookingApp.dto.UserDTO;
+import com.booking.BookingApp.mapper.AccommodationDTOMapper;
 import com.booking.BookingApp.mapper.ReportDTOMapper;
 import com.booking.BookingApp.mapper.UserDTOMapper;
 import com.booking.BookingApp.service.interfaces.IUserService;
@@ -43,6 +46,18 @@ public class UserController {
             return new ResponseEntity<UserDTO>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<UserDTO>(UserDTOMapper.fromUsertoDTO(user), HttpStatus.OK);
+    }
+    @GetMapping(value = "/guest/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Collection<AccommodationDTO>> getGuestFavorites(@PathVariable("id") Long id) {
+        Collection<Accommodation> accommodations= userService.findFavorites(id);
+        if (accommodations == null) {
+            return new ResponseEntity<Collection<AccommodationDTO>>(HttpStatus.NOT_FOUND);
+        }
+        Collection<AccommodationDTO> accommodationDTOS = accommodations.stream()
+                .map(AccommodationDTOMapper::fromAccommodationtoDTO)
+                .toList();
+        return new ResponseEntity<Collection<AccommodationDTO>>(accommodationDTOS, HttpStatus.OK);
+
     }
 
     @GetMapping(value ="/log-in", produces = MediaType.APPLICATION_JSON_VALUE)

@@ -12,8 +12,10 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.Collection;
 import java.util.Date;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @CrossOrigin
@@ -26,10 +28,10 @@ public class RequestController {
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Collection<RequestDTO>> getRequests(@RequestParam(value = "status", required = false) RequestStatus status,
-                                                              @RequestParam(value = "begin", required = false) @DateTimeFormat(pattern="yyyy-MM-dd") Date begin,
-                                                              @RequestParam(value = "end", required = false) @DateTimeFormat(pattern="yyyy-MM-dd") Date end,
-                                                              @RequestParam(value = "accommodationName", required = false) String name) {
-        Collection<Request> requests = requestService.findAll(status, begin, end, name);
+                                                              @RequestParam(value = "begin", required = false) @DateTimeFormat(pattern="yyyy-MM-dd") LocalDate begin,
+                                                              @RequestParam(value = "end", required = false) @DateTimeFormat(pattern="yyyy-MM-dd") LocalDate end,
+                                                              @RequestParam(value = "accommodationName", required = false) String accommodationName) {
+        Collection<Request> requests = requestService.findAll(status, begin, end, accommodationName);
 
         Collection<RequestDTO> requestsDTO = requests.stream()
                 .map(RequestDTOMapper::fromRequesttoDTO)
@@ -41,7 +43,6 @@ public class RequestController {
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<RequestDTO> getById(@PathVariable("id") Long id) {
         Request request = requestService.findById(id);
-
         return new ResponseEntity<RequestDTO>(new RequestDTO(request), HttpStatus.OK);
     }
 
