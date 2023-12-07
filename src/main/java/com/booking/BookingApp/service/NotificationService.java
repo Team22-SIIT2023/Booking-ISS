@@ -3,7 +3,9 @@ package com.booking.BookingApp.service;
 import com.booking.BookingApp.domain.Notification;
 import com.booking.BookingApp.domain.enums.NotificationType;
 import com.booking.BookingApp.dto.NotificationSettingsDTO;
+import com.booking.BookingApp.repository.NotificationRepository;
 import com.booking.BookingApp.service.interfaces.INotificationService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -13,17 +15,17 @@ import java.util.Collection;
 @Service
 public class NotificationService implements INotificationService{
 
+    @Autowired
+    NotificationRepository notificationRepository;
 
     @Override
     public Notification findOne(Long id) {
-
+//        return notificationRepository.findById(id);
         return new Notification(1L, "New message received",LocalDate.now(),true, NotificationType.HOST_RATED);
     }
 
     @Override
-    public Collection<Notification> findAllForGuest(Long id) {
-        return data();
-    }
+    public Collection<Notification> findAllForGuest(Long id) {return data();}
 
     @Override
     public Collection<Notification> findAllForHost(Long id) {

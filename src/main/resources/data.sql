@@ -1,1 +1,1 @@
-INSERT INTO addresses (id, country, city, postal_code, address) VALUES (1, 'email@example.com', 'password', 'ACTIVE', 'HOST');
+INSERT INTO addresses (country, city, postal_code, address) VALUES ('email@example.com', 'password', 'ACTIVE', 'HOST');
