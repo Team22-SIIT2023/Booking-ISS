@@ -75,9 +75,16 @@ public class UserService implements IUserService {
     public List<User> data() {
         List<User> users = new ArrayList<>();
         Address address = new Address("Srbija","Novi Sad","21000","Futoska 1");
-        Account account = new Account(1L, "isidorica","slatkica",Status.ACTIVE, UserType.GUEST);
+        Account account = new Account(1L, "aleksicisidora@yahoo.com","682002",Status.ACTIVE, UserType.GUEST);
         users.add(new User(1L,"Isidora","Aleksic",address,"0692104221",account,"../../../assets/images/userpicture.jpg"));
         users.add(new User(2L,"Tamara","Aleksic",address,"0692104221",account,"../../../assets/images/userpicture.jpg"));
+        users.add(new User(3L,"Kikica","Aleksic",address,"0692104221",account,"../../../assets/images/userpicture.jpg"));
+        users.add(new User(4L,"Kile","Aleksic",address,"0692104221",account,"../../../assets/images/userpicture.jpg"));
+        users.add(new User(5L,"Isidorica","Aleksic",address,"0692104221",account,"../../../assets/images/userpicture.jpg"));
+        users.add(new User(6L,"Isi","Aleksic",address,"0692104221",account,"../../../assets/images/userpicture.jpg"));
+        users.add(new User(7L,"Kika","Aleksic",address,"0692104221",account,"../../../assets/images/userpicture.jpg"));
+        users.add(new User(8L,"Tamarica","Aleksic",address,"0692104221",account,"../../../assets/images/userpicture.jpg"));
+        users.add(new User(9L,"Taki","Aleksic",address,"0692104221",account,"../../../assets/images/userpicture.jpg"));
         return users;
     }
 }
