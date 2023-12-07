@@ -6,6 +6,7 @@ import com.booking.BookingApp.domain.enums.AccommodationType;
 import com.booking.BookingApp.domain.enums.Status;
 import com.booking.BookingApp.dto.AccommodationDTO;
 import com.booking.BookingApp.dto.CreateAccommodationDTO;
+import com.booking.BookingApp.dto.EditAccommodationDTO;
 import com.booking.BookingApp.mapper.AccommodationDTOMapper;
 import com.booking.BookingApp.service.interfaces.IAccommodationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,10 +67,10 @@ public class AccommodationController {
     }
 
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<AccommodationDTO> updateAccommodation(@RequestBody AccommodationDTO accommodationDTO, @PathVariable Long id)
+    public ResponseEntity<AccommodationDTO> updateAccommodation(@RequestBody EditAccommodationDTO accommodationDTO, @PathVariable Long id)
             throws Exception {
         Accommodation accommodationForUpdate = accommodationService.findOne(id);
-        Accommodation accommodation=AccommodationDTOMapper.fromDTOtoAccommodation(accommodationDTO);
+        Accommodation accommodation=AccommodationDTOMapper.fromEditDTOtoAccommodation(accommodationDTO);
         Accommodation updatedAccommodation = accommodationService.update(accommodation,accommodationForUpdate);
 
         if (updatedAccommodation == null) {

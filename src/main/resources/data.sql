@@ -1,9 +1,9 @@
-INSERT INTO addresses (id, country, city, postal_code, address) VALUES (1, 'Srbija', 'Novi Sad', '21000', 'Futoska 12');
-INSERT INTO accounts(id, email, password, status, type) VALUES (1, 'email@example.com', 'password', 'ACTIVE', 'HOST');
-INSERT INTO accounts(id, email, password, status, type) VALUES (2, 'email@example.com', 'password', 'ACTIVE', 'HOST');
+INSERT INTO addresses (country, city, postal_code, address) VALUES ('Srbija', 'Novi Sad', '21000', 'Futoska 12');
+INSERT INTO accounts(email, password, status, type) VALUES ('email@example.com', 'password', 'ACTIVE', 'HOST');
+INSERT INTO accounts(email, password, status, type) VALUES ('email@example.com', 'password', 'ACTIVE', 'HOST');
 
-insert into users(id,first_name,last_name,address_id,phone_number,account_id,picture_path) values (1,'pera','peric',1,'1234',1,'putanja');
-insert into users(id,first_name,last_name,address_id,phone_number,account_id,picture_path) values (2,'mika','peric',1,'1234',2,'putanja');
+insert into users(first_name,last_name,address_id,phone_number,account_id,picture_path) values ('pera','peric',1,'1234',1,'putanja');
+insert into users(first_name,last_name,address_id,phone_number,account_id,picture_path) values ('mika','peric',1,'1234',2,'putanja');
 
 insert into guests values (1);
 
@@ -18,20 +18,16 @@ VALUES ('2024-01-21 10:00:00','2024-01-24 12:00:00');
 INSERT INTO timeslots (start_date, end_date)
 VALUES ('2024-04-01 10:00:00','2024-04-11 12:00:00');
 
+INSERT INTO amenities (amenity_name)
+VALUES ('WiFi');
 
-
-VALUES (1,'2023-01-01 10:00:00','2023-01-01 12:00:00');
-INSERT INTO amenities (id, amenity_name)
-VALUES (1,'WiFi');
-
-INSERT INTO pricelist_items (id, time_slot_id, price)
-VALUES (1, 1,100.00);
+INSERT INTO pricelist_items (time_slot_id, price)
+VALUES (1,100.00);
 INSERT INTO accommodations (
-    id, name, description, address_id, min_guest, max_guest,
+    name, description, address_id, min_guest, max_guest,
     acc_type, price_per_guest, automatic_conf, acc_status,
     reservation_deadline)
 VALUES (
-           1,
            'Accommodation Name',
            'Accommodation Description',
            1,
