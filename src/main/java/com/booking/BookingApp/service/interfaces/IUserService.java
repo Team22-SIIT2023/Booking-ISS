@@ -1,5 +1,6 @@
 package com.booking.BookingApp.service.interfaces;
 
+import com.booking.BookingApp.domain.Accommodation;
 import com.booking.BookingApp.domain.User;
 import com.booking.BookingApp.domain.enums.Status;
 import com.booking.BookingApp.dto.UserDTO;
@@ -26,5 +27,5 @@ public interface IUserService {
 
     void delete(Long id);
 
-
+    Collection<Accommodation> findFavorites(Long id);
 }

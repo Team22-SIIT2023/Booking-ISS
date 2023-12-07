@@ -1,5 +1,6 @@
 package com.booking.BookingApp.service;
 
+import com.booking.BookingApp.domain.Accommodation;
 import com.booking.BookingApp.domain.Account;
 import com.booking.BookingApp.domain.Address;
 import com.booking.BookingApp.domain.User;
@@ -9,7 +10,9 @@ import com.booking.BookingApp.dto.AccountDTO;
 import com.booking.BookingApp.dto.AddressDTO;
 import com.booking.BookingApp.dto.ReportDTO;
 import com.booking.BookingApp.dto.UserDTO;
+import com.booking.BookingApp.repository.UserRepository;
 import com.booking.BookingApp.service.interfaces.IUserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -18,6 +21,8 @@ import java.util.List;
 
 @Service
 public class UserService implements IUserService {
+    @Autowired
+    UserRepository userRepository;
 
     @Override
     public Collection<User> findAll() {
@@ -70,6 +75,11 @@ public class UserService implements IUserService {
 
     @Override
     public void delete(Long id) {}
+
+    @Override
+    public Collection<Accommodation> findFavorites(Long id) {
+        return userRepository.findFavoriteAccommodationsByGuestId(id);
+    }
 
 
     public List<User> data() {
