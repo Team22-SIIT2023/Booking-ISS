@@ -26,4 +26,5 @@ public class Guest extends User {
         super(id, firstName, lastName, address, phoneNumber, account, picturePath);
         this.favoriteAccommodations = favoriteAccommodations;
     }
+
 }
