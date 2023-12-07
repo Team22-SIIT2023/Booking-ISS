@@ -16,7 +16,7 @@ public class RequestDTO {
     private TimeSlot timeSlot;
     private double price;
     private Guest guest;
-    private AccommodationDTO accommodationDTO;
+    private AccommodationDTO accommodation;
     private RequestStatus status;
 
     public RequestDTO(Long id, TimeSlot timeSlot, double price, Guest guest, AccommodationDTO accommodationDTO, RequestStatus status) {
@@ -24,7 +24,7 @@ public class RequestDTO {
         this.timeSlot = timeSlot;
         this.price = price;
         this.guest = guest;
-        this.accommodationDTO = accommodationDTO;
+        this.accommodation = accommodationDTO;
         this.status = status;
     }
 
@@ -40,7 +40,7 @@ public class RequestDTO {
                 ", timeSlot=" + timeSlot +
                 ", price=" + price +
                 ", guest=" + guest +
-                ", accommodation=" + accommodationDTO +
+                ", accommodation=" + accommodation +
                 ", status=" + status +
                 '}';
     }
