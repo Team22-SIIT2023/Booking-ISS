@@ -66,7 +66,8 @@ public class CommentService implements ICommentService {
     public Collection<Comments> data() {
         Collection<Comments> commentsList = new ArrayList<>();
         Address address = new Address("Srbija","Novi Sad","21000","Futoska 1");
-        Account account = new Account(1L, "aleksicisidora@yahoo.com","slatkica",Status.ACTIVE, UserType.GUEST);
+        Role role=new Role(1L,"guest");
+        Account account = new Account(1L, "aleksicisidora@yahoo.com","slatkica",Status.ACTIVE, role);
         Guest guest = new Guest(1L,"Isidora","Aleksic",address,"0692104221",account,"../../../assets/images/userpicture.jpg",null);
         // Adding instances to the collection
         commentsList.add(new Comments(1L, "Great comment!", LocalDate.now(), 4.5, Status.ACTIVE, guest));

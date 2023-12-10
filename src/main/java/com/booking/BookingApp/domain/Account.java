@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Collection;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -17,8 +19,8 @@ public class Account {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "email")
-    private String email;
+    @Column(name = "username")
+    private String username;
 
     @Column(name = "password")
     private String password;
@@ -27,25 +29,23 @@ public class Account {
     @Column(name = "status")
     private Status status;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "type")
-    private UserType type;
+    @ManyToOne(cascade = {CascadeType.ALL})
+    private Role role;
 
-    public Account(Long id, String email, String password, Status status, UserType type) {
+    public Account(Long id, String username, String password, Status status, Role role) {
         this.id = id;
-        this.email = email;
+        this.username =username;
         this.password = password;
         this.status = status;
-        this.type = type;
+        this.role = role;
     }
 
     @Override
     public String toString() {
         return "Account{" +
-                "email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 ", status=" + status +
-                ", type=" + type +
+                ", role=" + role +
                 '}';
     }
 }

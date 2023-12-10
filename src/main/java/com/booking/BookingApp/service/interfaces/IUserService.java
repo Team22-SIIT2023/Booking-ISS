@@ -10,6 +10,7 @@ import java.util.Collection;
 public interface IUserService {
 
     Collection<User> findAll();
+    User findByUsername(String username);
 
     User findOne(Long id);
 
@@ -28,4 +29,6 @@ public interface IUserService {
     void delete(Long id);
 
     Collection<Accommodation> findFavorites(Long id);
+
+    User save(User user);
 }

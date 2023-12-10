@@ -12,5 +12,5 @@ import java.util.Optional;
 public interface AccountRepository extends JpaRepository<Account, Long> {
     public Collection<Account> findAllBy();
     public Optional<Account> findById(Long id);
-    public Account findByEmail(String email);
+    public Account findByUsername(String username);
 }
