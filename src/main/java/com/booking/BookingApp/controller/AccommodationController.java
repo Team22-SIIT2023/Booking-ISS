@@ -16,6 +16,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -57,6 +58,14 @@ public class AccommodationController {
         }
 
         return new ResponseEntity<AccommodationDTO>(AccommodationDTOMapper.fromAccommodationtoDTO(accommodation), HttpStatus.OK);
+    }
+    @GetMapping("/calculatePrice/{id}")
+    public double calculateTotalPriceForAccommodation(
+            @PathVariable("id") Long id,
+            @RequestParam(value = "guestNumber") int guestNumber,
+            @RequestParam(value = "begin")@DateTimeFormat(pattern="yyyy-MM-dd") Date begin,
+            @RequestParam(value = "end")@DateTimeFormat(pattern="yyyy-MM-dd") Date end) {
+        return accommodationService.calculatePriceForAccommodation(id, guestNumber, begin, end);
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)

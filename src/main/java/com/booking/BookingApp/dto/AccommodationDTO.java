@@ -1,9 +1,6 @@
 package com.booking.BookingApp.dto;
 
-import com.booking.BookingApp.domain.Address;
-import com.booking.BookingApp.domain.Amenity;
-import com.booking.BookingApp.domain.PricelistItem;
-import com.booking.BookingApp.domain.TimeSlot;
+import com.booking.BookingApp.domain.*;
 import com.booking.BookingApp.domain.enums.AccommodationStatus;
 import com.booking.BookingApp.domain.enums.AccommodationType;
 import com.booking.BookingApp.domain.enums.Status;
@@ -28,14 +25,14 @@ public class AccommodationDTO {
     private AccommodationType type;
     private boolean pricePerGuest;
     private boolean automaticConfirmation;
-    private Long hostId;
+    private Host host;
     private AccommodationStatus status;
     private int reservationDeadline;
     private ArrayList<AmenityDTO> amenities;
     private ArrayList<PricelistItem> priceList;
     private ArrayList<TimeSlot> freeTimeSlots;
 
-    public AccommodationDTO(Long id, String name, String description, AddressDTO address, int minGuests, int maxGuests, AccommodationType type, boolean pricePerGuest, boolean automaticConfirmation, Long hostId,
+    public AccommodationDTO(Long id, String name, String description, AddressDTO address, int minGuests, int maxGuests, AccommodationType type, boolean pricePerGuest, boolean automaticConfirmation, Host host,
                             AccommodationStatus status, int reservationDeadline, ArrayList<AmenityDTO> amenities,
                             ArrayList<PricelistItem> priceList,ArrayList<TimeSlot> freeTimeSlots) {
         this.id = id;
@@ -47,7 +44,7 @@ public class AccommodationDTO {
         this.type = type;
         this.pricePerGuest = pricePerGuest;
         this.automaticConfirmation = automaticConfirmation;
-        this.hostId = hostId;
+        this.host = host;
         this.status = status;
         this.reservationDeadline = reservationDeadline;
         this.amenities = amenities;
@@ -67,7 +64,6 @@ public class AccommodationDTO {
                 ", type=" + type +
                 ", pricePerGuest=" + pricePerGuest +
                 ", automaticConfirmation=" + automaticConfirmation +
-                ", hostId=" + hostId +
                 ", status=" + status +
                 ", reservationDeadline=" + reservationDeadline +
                 ", amenities=" + amenities +

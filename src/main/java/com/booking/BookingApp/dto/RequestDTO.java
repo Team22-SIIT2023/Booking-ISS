@@ -16,21 +16,23 @@ public class RequestDTO {
     private TimeSlot timeSlot;
     private double price;
     private Guest guest;
+    private int guestNumber;
     private AccommodationDTO accommodation;
     private RequestStatus status;
 
-    public RequestDTO(Long id, TimeSlot timeSlot, double price, Guest guest, AccommodationDTO accommodationDTO, RequestStatus status) {
+    public RequestDTO(Long id, TimeSlot timeSlot, double price, Guest guest, AccommodationDTO accommodationDTO, RequestStatus status,int number) {
         this.id = id;
         this.timeSlot = timeSlot;
         this.price = price;
         this.guest = guest;
         this.accommodation = accommodationDTO;
         this.status = status;
+        this.guestNumber=number;
     }
 
     public RequestDTO(Request request) {
         this(request.getId(), request.getTimeSlot(), request.getPrice(), request.getGuest(), null,
-                request.getStatus());
+                request.getStatus(),request.getGuestNumber());
     }
 
     @Override

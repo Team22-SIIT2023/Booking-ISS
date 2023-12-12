@@ -58,7 +58,10 @@ public class Accommodation {
     @OneToMany(cascade = {CascadeType.ALL})
     private Collection<TimeSlot> freeTimeSlots;
 
-    @OneToMany(cascade = {CascadeType.ALL})
+    @ManyToMany()
+    @JoinTable(name="amenities_accommodation",
+              joinColumns = @JoinColumn(name="accommodation_id"),
+                inverseJoinColumns = @JoinColumn(name = "amenity_id"))
     private Collection<Amenity> amenities;
 
     @OneToMany(cascade = {CascadeType.ALL})

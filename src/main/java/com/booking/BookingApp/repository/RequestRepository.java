@@ -3,11 +3,15 @@ package com.booking.BookingApp.repository;
 import com.booking.BookingApp.domain.Request;
 import com.booking.BookingApp.domain.enums.RequestStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.Date;
 
+@Repository
 public interface RequestRepository extends JpaRepository<Request, Long> {
     Collection<Request> findByStatus(RequestStatus status);
     Collection<Request> findByStatusAndAccommodation_Name(RequestStatus status, String accommodationName);

@@ -4,6 +4,7 @@ import com.booking.BookingApp.domain.Accommodation;
 import com.booking.BookingApp.domain.enums.AccommodationStatus;
 import com.booking.BookingApp.domain.enums.AccommodationType;
 
+import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -17,4 +18,6 @@ public interface IAccommodationService {
     Accommodation update(Accommodation accommodation, Accommodation accommodationForUpdate) throws Exception;
 
     void delete(Long id);
+
+    double calculatePriceForAccommodation(Long id, int guestNumber, Date begin, Date end);
 }
