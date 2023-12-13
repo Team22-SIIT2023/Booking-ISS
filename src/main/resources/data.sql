@@ -1,9 +1,13 @@
 INSERT INTO addresses (country, city, postal_code, address) VALUES ('Srbija', 'Novi Sad', '21000', 'Futoska 12');
--- INSERT INTO accounts(email, password, status, type) VALUES ('email@example.com', 'password', 'ACTIVE', 'HOST');
--- INSERT INTO accounts(email, password, status, type) VALUES ('email@example.com', 'password', 'ACTIVE', 'HOST');
---
--- insert into users(first_name,last_name,address_id,phone_number,account_id,picture_path) values ('pera','peric',1,'1234',1,'putanja');
--- insert into users(first_name,last_name,address_id,phone_number,account_id,picture_path) values ('mika','peric',1,'1234',2,'putanja');
+
+INSERT INTO roles (name) VALUES ('HOST');
+INSERT INTO roles (name) VALUES ('GUEST');
+
+INSERT INTO accounts(username, password, status, role_id) VALUES ('pera@example.com', '123', 'ACTIVE', 1);
+INSERT INTO accounts(username, password, status, role_id) VALUES ('mika@example.com', '123', 'ACTIVE', 2);
+
+insert into users(first_name,last_name,address_id,phone_number,account_id,picture_path,last_password_reset_date) values ('pera','peric',1,'1234',1,'putanja','2023-01-01 12:00:00');
+insert into users(first_name,last_name,address_id,phone_number,account_id,picture_path,last_password_reset_date) values ('mika','peric',1,'1234',2,'putanja','2023-01-01 12:00:00');
 --
 -- insert into guests values (1);
 --
@@ -49,10 +53,10 @@ INSERT INTO addresses (country, city, postal_code, address) VALUES ('Srbija', 'N
 --        );
 -- INSERT INTO accommodations_price_list VALUES (1,1);
 -- INSERT INTO amenities_accommodation VALUES (1,1);
+
 -- INSERT INTO accommodations_free_time_slots VALUES (1,1);
 --
 -- insert into favorite_accommodation values(1,1);
---
 -- --
 -- INSERT INTO requests (time_slot_id,price,accommodation_id,guest_number,request_status)
 -- VALUES (21,150.00,10, 2,'ACCEPTED');

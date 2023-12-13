@@ -15,4 +15,5 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query("SELECT g.favoriteAccommodations FROM User u JOIN Guest g ON u.id = g.id WHERE u.id = :guestId")
     Collection<Accommodation> findFavoriteAccommodationsByGuestId(Long guestId);
 
+    User findByAccount_Username(String username);
 }
