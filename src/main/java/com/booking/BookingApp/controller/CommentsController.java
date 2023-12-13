@@ -78,9 +78,9 @@ public class CommentsController {
     }
 
     @GetMapping(value = "/accommodation/{accommodationId}/averageRate", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Integer> getAccommodationRating(@PathVariable("accommodationId") Long id) {
-        int rating = commentService.findAccommodationRating(id);
-        return new ResponseEntity<Integer>(rating,HttpStatus.OK);
+    public ResponseEntity<Double> getAccommodationRating(@PathVariable("accommodationId") Long id) {
+        double rating = commentService.findAccommodationRating(id);
+        return new ResponseEntity<Double>(rating,HttpStatus.OK);
     }
 
     @PostMapping(value = "/host/{hostId}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)

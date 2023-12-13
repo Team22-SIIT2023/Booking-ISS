@@ -72,10 +72,10 @@ public class RequestController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<RequestDTO> createRequest(@RequestBody RequestDTO requestDTO) {
+    public ResponseEntity<RequestDTO> createRequest(@RequestBody RequestDTO requestDTO) throws Exception {
         Request requestModel = RequestDTOMapper.fromDTOtoRequest(requestDTO);
         Request savedRequest = requestService.create(requestModel);
-        return new ResponseEntity<RequestDTO>(new RequestDTO(savedRequest), HttpStatus.CREATED);
+        return new ResponseEntity<RequestDTO>(RequestDTOMapper.fromRequesttoDTO(savedRequest), HttpStatus.CREATED);
     }
 
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)

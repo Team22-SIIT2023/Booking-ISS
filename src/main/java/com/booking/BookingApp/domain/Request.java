@@ -26,7 +26,7 @@ public class Request {
     @ManyToOne(cascade = {CascadeType.ALL})
     private Guest guest;
 
-    @ManyToOne(cascade = {CascadeType.ALL})
+    @ManyToOne
     private Accommodation accommodation;
 
     @Column(name = "guest_number")

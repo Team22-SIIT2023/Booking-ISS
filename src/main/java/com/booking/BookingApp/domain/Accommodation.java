@@ -59,6 +59,7 @@ public class Accommodation {
     @OneToMany(cascade = {CascadeType.ALL})
     private Collection<TimeSlot> freeTimeSlots;
 
+
     @ManyToMany
     @JoinTable(name = "amenities_accommodation",
             joinColumns = @JoinColumn(name = "accommodation_id"),
