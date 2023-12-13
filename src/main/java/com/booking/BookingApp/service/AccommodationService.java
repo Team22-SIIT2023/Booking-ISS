@@ -16,14 +16,19 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class AccommodationService implements IAccommodationService {
@@ -38,9 +43,79 @@ public class AccommodationService implements IAccommodationService {
     RequestRepository requestRepository;
 
     @Override
-    public Collection<Accommodation> findAll(Date begin, Date end, int guestNumber, AccommodationType type, double startPrice, double endPrice, AccommodationStatus status, String country, String city, List<String> amenities) {
-        return accommodationRepository.findAll();
-        //needs filters!
+    public double calculatePriceForAccommodation(Long id, int guestNumber, Date begin, Date end) {
+        Accommodation accommodation=findOne(id);
+        double price = 0;
+
+        long timeDifference=end.getTime()-begin.getTime();
+        double days=Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+        int counter=0;
+
+        boolean pricePerGuest = accommodation.isPricePerGuest();
+        Collection<PricelistItem> priceList = accommodation.getPriceList();
+
+        if (priceList != null) {
+            for (PricelistItem item : priceList) {
+                long intersectionStart = Math.max(begin.getTime(), java.sql.Date.valueOf(item.getTimeSlot().getStartDate()).getTime());
+                long intersectionEnd = Math.min(end.getTime(), java.sql.Date.valueOf(item.getTimeSlot().getEndDate()).getTime());
+
+                if (intersectionStart < intersectionEnd) {
+                    long daysInIntersection = (intersectionEnd - intersectionStart) / (1000 * 60 * 60 * 24);
+                    price +=daysInIntersection * item.getPrice();
+                    counter+=daysInIntersection;
+                }
+            }
+        }
+        if(counter<days){
+            return 0;
+        }
+        if(pricePerGuest){
+           return price*guestNumber;
+        }
+        return price;
+    }
+
+    @Override
+    public Collection<Accommodation> findAll(LocalDate begin, LocalDate end, int guestNumber, AccommodationType accommodationType, double startPrice, double endPrice, AccommodationStatus status, String country, String city, List<String> amenities) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        Collection<Accommodation> accommodations=new ArrayList<>();
+        int size=0;
+        if(amenities!=null){
+            size=amenities.size();
+        }
+            if(begin!=null && end!=null){
+                accommodations= accommodationRepository.findAccommodationsByCountryTypeGuestNumberTimeRangeAndAmenities(
+                        country,
+                        city,
+                        accommodationType,
+                        guestNumber,
+                        formatter.format(begin),
+                        formatter.format(end),
+                        amenities,
+                        size
+                );
+            }else{
+                accommodations= accommodationRepository.findAccommodationsByCountryTypeGuestNumberAndAmenities(
+                        country,
+                        city,
+                        accommodationType,
+                        guestNumber,
+                        amenities,
+                        size
+                );
+            }
+
+            if(endPrice>0 && startPrice>0 && begin!=null && end!=null && guestNumber>0){
+                Date beginDate = Date.from(begin.atStartOfDay(ZoneId.systemDefault()).toInstant());
+                Date endDate = Date.from(end.atStartOfDay(ZoneId.systemDefault()).toInstant());
+                return accommodations.stream()
+                        .filter(accommodation ->
+                                calculatePriceForAccommodation(accommodation.getId(),
+                                        guestNumber,beginDate,endDate) >= startPrice &&
+                                        calculatePriceForAccommodation(accommodation.getId(),guestNumber,beginDate,endDate)<= endPrice)
+                        .collect(Collectors.toList());
+            }
+            return accommodations;
     }
 
     @Override

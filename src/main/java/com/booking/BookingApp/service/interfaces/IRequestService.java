@@ -26,7 +26,7 @@ public interface IRequestService {
 //
 //    Request findByAccommodationId(Long id);
 
-    Request create(Request request);
+    Request create(Request request) throws Exception;
 
     Request update(Request requestForUpdate, Request request);
 
