@@ -1,14 +1,18 @@
 package com.booking.BookingApp.repository;
 
 import com.booking.BookingApp.domain.Accommodation;
-import com.booking.BookingApp.domain.Account;
+import com.booking.BookingApp.domain.FavoriteAccommodation;
+import com.booking.BookingApp.domain.Host;
 import com.booking.BookingApp.domain.User;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.booking.BookingApp.domain.enums.Status;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.Collection;
+import java.util.Optional;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
@@ -16,4 +20,10 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Collection<Accommodation> findFavoriteAccommodationsByGuestId(Long guestId);
 
     User findByAccount_Username(String username);
+
+    Collection<User> findByAccount_Status(Status userStatus);
+
+    @Modifying
+    @Query(value = "DELETE FROM favorite_accommodation WHERE accommodation_id = :accommodationId", nativeQuery = true)
+    void deleteFavoriteAccommodationsByAccommodationId(@Param("accommodationId") Long accommodationId);
 }

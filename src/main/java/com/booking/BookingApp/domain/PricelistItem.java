@@ -15,7 +15,7 @@ public class PricelistItem {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne(cascade = {CascadeType.ALL})
+    @OneToOne(cascade = {CascadeType.ALL},orphanRemoval = true)
     private TimeSlot timeSlot;
 
     @Column(name = "price")

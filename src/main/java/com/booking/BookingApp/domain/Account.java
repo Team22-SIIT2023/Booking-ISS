@@ -29,7 +29,7 @@ public class Account {
     @Column(name = "status")
     private Status status;
 
-    @ManyToOne(cascade = {CascadeType.ALL})
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
     private Role role;
 
     public Account(Long id, String username, String password, Status status, Role role) {

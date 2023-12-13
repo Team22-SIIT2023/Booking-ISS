@@ -28,6 +28,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.time.ZoneId;
 import java.util.Collection;
 import java.util.Date;
+import java.util.Optional;
 
 @CrossOrigin
 @RestController
@@ -125,8 +126,8 @@ public class UserController {
 //    }
 
     @GetMapping(value = "/userEmail/{userEmail}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<UserDTO> getUserByEmail(@PathVariable("userEmail") String userEmail) {
-        User user = userService.findOneByEmail(userEmail);
+    public ResponseEntity<UserDTO> getUserByAccountUsername(@PathVariable("userEmail") String userEmail) {
+        User user = userService.findByUsername(userEmail);
         if (user == null) {
             return new ResponseEntity<UserDTO>(HttpStatus.NOT_FOUND);
         }
@@ -144,15 +145,15 @@ public class UserController {
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserDTO> createUser(@RequestBody UserDTO userDTO) throws Exception {
         User newUser = UserDTOMapper.fromDTOtoUser(userDTO);
-        User savedUser = userService.create(newUser);
+        User savedUser = userService.save(newUser);
         return new ResponseEntity<UserDTO>(UserDTOMapper.fromUsertoDTO(savedUser), HttpStatus.CREATED);
     }
 
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<UserDTO> updateUser(@RequestBody UserDTO useDTO, @PathVariable Long id)
+    public ResponseEntity<UserDTO> updateUser(@RequestBody UserDTO userDTO, @PathVariable Long id)
             throws Exception {
-        User userForUpdate = userService.findOne(id);
-        User updatedUser = userService.update(userForUpdate);
+        User user = UserDTOMapper.fromDTOtoUser(userDTO);
+        User updatedUser = userService.update(user);
         if (updatedUser == null) {
             return new ResponseEntity<UserDTO>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -161,6 +162,7 @@ public class UserController {
 
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<UserDTO> deleteUser(@PathVariable("id") Long id) {
+        System.out.println("brisese");
         userService.delete(id);
         return new ResponseEntity<UserDTO>(HttpStatus.NO_CONTENT);
     }
