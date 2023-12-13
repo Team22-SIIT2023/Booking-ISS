@@ -61,27 +61,33 @@ public class AccommodationService implements IAccommodationService {
     @Override
     public Collection<Accommodation> findAll(LocalDate begin, LocalDate end, int guestNumber, AccommodationType accommodationType, double startPrice, double endPrice, AccommodationStatus status, String country, String city, List<String> amenities) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        String formattedBegin = null;
-        String formattedEnd = null;
+        Collection<Accommodation> accommodations=new ArrayList<>();
         int size=0;
+        if(amenities!=null){
+            size=amenities.size();
+        }
             if(begin!=null && end!=null){
-                formattedBegin = formatter.format(begin);
-                formattedEnd = formatter.format(end);
+                accommodations= accommodationRepository.findAccommodationsByCountryTypeGuestNumberTimeRangeAndAmenities(
+                        country,
+                        city,
+                        accommodationType,
+                        guestNumber,
+                        formatter.format(begin),
+                        formatter.format(end),
+                        amenities,
+                        size
+                );
+            }else{
+                accommodations= accommodationRepository.findAccommodationsByCountryTypeGuestNumberAndAmenities(
+                        country,
+                        city,
+                        accommodationType,
+                        guestNumber,
+                        amenities,
+                        size
+                );
             }
-            if(amenities!=null){
-                size=amenities.size();
-            }
-        System.out.println(formattedBegin);
-            System.out.println(formattedEnd);
-        Collection<Accommodation> accommodations= accommodationRepository.findAccommodationsByCountryTypeGuestNumberTimeRangeAndAmenities(
-                    country,
-                    accommodationType,
-                    guestNumber,
-                    formattedBegin,
-                    formattedEnd,
-                    amenities,
-                    size
-                    );
+
             if(endPrice>0 && startPrice>0 && begin!=null && end!=null && guestNumber>0){
                 Date beginDate = Date.from(begin.atStartOfDay(ZoneId.systemDefault()).toInstant());
                 Date endDate = Date.from(end.atStartOfDay(ZoneId.systemDefault()).toInstant());
