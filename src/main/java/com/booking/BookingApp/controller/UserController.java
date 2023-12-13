@@ -72,6 +72,7 @@ public class UserController {
         return new ResponseEntity<Collection<AccommodationDTO>>(accommodationDTOS, HttpStatus.OK);
 
     }
+
     @PostMapping(value ="/login", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserTokenState> createAuthenticationToken(
             @RequestBody UserCredentialsDTO userCredentials, HttpServletResponse response) {
@@ -91,7 +92,8 @@ public class UserController {
         // Vrati token kao odgovor na uspesnu autentifikaciju
         return ResponseEntity.ok(new UserTokenState(jwt, expiresIn));
     };
-    @PostMapping("/signup")
+
+    @PostMapping(value = "/signup", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<User> addUser(@RequestBody User user, UriComponentsBuilder ucBuilder) {
         User existUser = this.userService.findByUsername(user.getUsername());
 

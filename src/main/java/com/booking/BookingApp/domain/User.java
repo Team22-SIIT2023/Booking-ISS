@@ -11,6 +11,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -49,6 +50,13 @@ public class User implements UserDetails{
     @Column(name = "last_password_reset_date")
     private Timestamp lastPasswordResetDate;
 
+    @Column(name="activation_link")
+    private String activationLink;
+
+    @Column(name="activation_link_date")
+    private LocalDate activationLinkDate;
+
+
     public User(Long id, String firstName, String lastName, Address address, String phoneNumber, Account account, String picturePath) {
         this.id = id;
         this.firstName = firstName;
@@ -77,7 +85,6 @@ public class User implements UserDetails{
         List<Role> userTypeList=new ArrayList<>();
         userTypeList.add(this.account.getRole());
         return userTypeList;
-
     }
 
     @Override
@@ -95,6 +102,9 @@ public class User implements UserDetails{
         return this.account.getUsername();
     }
     public void setUsername(String username) {
+        if (this.account == null) {
+            this.account = new Account();
+        }
         this.account.setUsername(username);
     }
 
@@ -131,6 +141,4 @@ public class User implements UserDetails{
     public void setLastPasswordResetDate(Timestamp lastPasswordResetDate) {
         this.lastPasswordResetDate = lastPasswordResetDate;
     }
-
-
 }
