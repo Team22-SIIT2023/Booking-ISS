@@ -122,7 +122,7 @@ public class WebSecurityConfig {
         });
 
         http.authorizeHttpRequests(requests -> {
-            requests .requestMatchers("/api/users/*").permitAll()
+            requests .requestMatchers("/api/users/**").permitAll()
                     .requestMatchers("/api/accommodations/**").permitAll()
                     .requestMatchers("/api/requests/**").permitAll()
                     .requestMatchers("api/amenities/**").permitAll()

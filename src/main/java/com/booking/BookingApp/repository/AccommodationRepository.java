@@ -21,63 +21,28 @@ public interface AccommodationRepository extends JpaRepository<Accommodation, Lo
     @Query(
             "SELECT DISTINCT a FROM Accommodation a " +
                     "JOIN a.freeTimeSlots fts " +
-                    "WHERE a.address.country = :country AND " +
-                    "a.type = :accommodationType AND " +
-                    "a.maxGuests >= :guestNumber AND " +
-                    "a.minGuests <= :guestNumber AND " +
-                    "(:startDate IS NULL OR :endDate IS NULL OR " +
-                    "(fts.startDate <= TO_DATE(:endDate, 'yyyy-MM-dd') AND fts.endDate >= TO_DATE(:startDate, 'yyyy-MM-dd')))")
-    Collection<Accommodation> findAccommodationsByCountryTypeGuestNumberAndTimeRange(
+                    "LEFT JOIN a.amenities amen " +
+                    "WHERE (:country IS NULL OR a.address.country = :country) AND " +
+                    "(:accommodationType IS NULL OR a.type = :accommodationType) AND " +
+                    "(:guestNumber IS NULL OR :guestNumber = 0 OR (a.maxGuests >= :guestNumber AND a.minGuests <= :guestNumber)) AND " +
+                    "(:amenities IS NULL OR " +
+                    "(SELECT COUNT(DISTINCT amen2.name) FROM Accommodation a2 " +
+                    "LEFT JOIN a2.amenities amen2 " +
+                    "WHERE a2.id = a.id AND (:amenities IS NULL OR amen2.name IN :amenities)) = :amenitiesCount) AND " +
+                    "(fts.startDate <= COALESCE(TO_DATE(:endDate, 'YYYY-MM-DD'), fts.startDate) AND fts.endDate >= COALESCE(TO_DATE(:startDate, 'YYYY-MM-DD'), fts.endDate))"
+    )
+    Collection<Accommodation> findAccommodationsByCountryTypeGuestNumberTimeRangeAndAmenities(
             @Param("country") String country,
             @Param("accommodationType") AccommodationType accommodationType,
-            @Param("guestNumber") int guestNumber,
+            @Param("guestNumber") Integer guestNumber,
             @Param("startDate") String startDate,
-            @Param("endDate") String endDate);
+            @Param("endDate") String endDate,
+            @Param("amenities") List<String> amenities,
+            @Param("amenitiesCount") long amenitiesCount
+    );
 
-//    @Query(
-//            "SELECT DISTINCT a FROM Accommodation a " +
-//                    "JOIN a.freeTimeSlots fts " +
-//                    "LEFT JOIN a.amenities amen " + // Add LEFT JOIN for amenities
-//                    "WHERE a.address.country = :country AND " +
-//                    "a.type = :accommodationType AND " +
-//                    "a.maxGuests >= :guestNumber AND " +
-//                    "a.minGuests <= :guestNumber AND " +
-//                    "(:startDate IS NULL OR :endDate IS NULL OR " +
-//                    "(fts.startDate <= TO_DATE(:endDate, 'yyyy-MM-dd') AND fts.endDate >= TO_DATE(:startDate, 'yyyy-MM-dd'))) AND " +
-//                    "(:amenities IS NULL OR amen.name IN :amenities)"
-//    )
-//    Collection<Accommodation> findAccommodationsByCountryTypeGuestNumberTimeRangeAndAmenities(
-//            @Param("country") String country,
-//            @Param("accommodationType") AccommodationType accommodationType,
-//            @Param("guestNumber") int guestNumber,
-//            @Param("startDate") String startDate,
-//            @Param("endDate") String endDate,
-//            @Param("amenities") List<String> amenities
-//    );
-@Query(
-        "SELECT DISTINCT a FROM Accommodation a " +
-                "JOIN a.freeTimeSlots fts " +
-                "LEFT JOIN a.amenities amen " +
-                "WHERE a.address.country = :country AND " +
-                "a.type = :accommodationType AND " +
-                "a.maxGuests >= :guestNumber AND " +
-                "a.minGuests <= :guestNumber AND " +
-                "(:startDate IS NULL OR :endDate IS NULL OR " +
-                "(fts.startDate <= TO_DATE(:endDate, 'yyyy-MM-dd') AND fts.endDate >= TO_DATE(:startDate, 'yyyy-MM-dd'))) AND " +
-                "(:amenities IS NULL OR " +
-                "(SELECT COUNT(DISTINCT amen2.name) FROM Accommodation a2 " +
-                "LEFT JOIN a2.amenities amen2 " +
-                "WHERE a2.id = a.id AND amen2.name IN :amenities) = :amenitiesCount)"
-)
-Collection<Accommodation> findAccommodationsByCountryTypeGuestNumberTimeRangeAndAmenities(
-        @Param("country") String country,
-        @Param("accommodationType") AccommodationType accommodationType,
-        @Param("guestNumber") int guestNumber,
-        @Param("startDate") String startDate,
-        @Param("endDate") String endDate,
-        @Param("amenities") List<String> amenities,
-        @Param("amenitiesCount") long amenitiesCount
-);
+
+
 
 
 

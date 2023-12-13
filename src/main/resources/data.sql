@@ -1,4 +1,4 @@
-INSERT INTO addresses (country, city, postal_code, address) VALUES ('Srbija', 'Novi Sad', '21000', 'Futoska 12');
+INSERT INTO addresses (country, city, postal_code, address) VALUES ('Serbia', 'Novi Sad', '21000', 'Alekse Santica 54');
 
 INSERT INTO roles (name) VALUES ('HOST');
 INSERT INTO roles (name) VALUES ('GUEST');
@@ -14,9 +14,9 @@ insert into guests values (1);
 INSERT INTO timeslots (start_date, end_date)
 VALUES ('2024-01-01 10:00:00','2024-01-10 12:00:00');
 INSERT INTO timeslots (start_date, end_date)
-VALUES ('2024-01-11 10:00:00','2024-01-22 12:00:00');
+VALUES ('2024-01-14 10:00:00','2024-01-22 12:00:00');
 INSERT INTO timeslots (start_date, end_date)
-VALUES ('2024-01-21 10:00:00','2024-01-03 12:00:00');
+VALUES ('2024-03-21 10:00:00','2024-03-30 12:00:00');
 INSERT INTO timeslots (start_date, end_date)
 VALUES ('2024-01-21 10:00:00','2024-01-24 12:00:00');
 INSERT INTO timeslots (start_date, end_date)
@@ -59,12 +59,18 @@ INSERT INTO accommodations_free_time_slots VALUES (1,3);
 insert into favorite_accommodation values(1,1);
 
 INSERT INTO comments (comment_text, date, rating, comment_status, guest_id,id)
-VALUES ('Your comment text', '2023-12-11', 4.5, 'ACTIVE', 1,1);
+VALUES ('For this price great!', '2023-12-11', 4.5, 'ACTIVE', 1,1);
 INSERT INTO comments (comment_text, date, rating, comment_status, guest_id,id)
-VALUES ('Your comment text', '2023-12-11', 3.0, 'ACTIVE', 1,2);
+VALUES ('Okay, can be better.', '2023-12-11', 3.0, 'ACTIVE', 1,2);
+INSERT INTO comments (comment_text, date, rating, comment_status, guest_id,id)
+VALUES ('Loved it!', '2023-12-11', 5.0, 'ACTIVE', 1,3);
+INSERT INTO comments (comment_text, date, rating, comment_status, guest_id,id)
+VALUES ('Very poor', '2023-12-11', 2.0, 'ACTIVE', 1,4);
 
 insert into accommodation_comments values(1,1);
 insert into accommodation_comments values(1,2);
+insert into accommodation_comments values(1,3);
+insert into accommodation_comments values(1,4);
 --
 --
 -- INSERT INTO requests (time_slot_id,price,accommodation_id,guest_number,request_status)

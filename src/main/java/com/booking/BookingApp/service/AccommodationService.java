@@ -59,34 +59,40 @@ public class AccommodationService implements IAccommodationService {
     }
 
     @Override
-    public Collection<Accommodation> findAll(Date begin, Date end, int guestNumber, AccommodationType accommodationType, double startPrice, double endPrice, AccommodationStatus status, String country, String city, List<String> amenities) {
-        if (begin != null && end != null && guestNumber > 0 && accommodationType != null && country != null) {
-            final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-            String formattedBegin = dateFormat.format(begin);
-            String formattedEnd = dateFormat.format(end);
-            if (amenities != null && !amenities.isEmpty() && startPrice>0 && endPrice>0) {
-                Collection<Accommodation> accommodations= accommodationRepository.findAccommodationsByCountryTypeGuestNumberTimeRangeAndAmenities(
-                        country,
-                        accommodationType,
-                        guestNumber,
-                        formattedBegin,
-                        formattedEnd,
-                        amenities,
-                        amenities.size()
-                );
+    public Collection<Accommodation> findAll(LocalDate begin, LocalDate end, int guestNumber, AccommodationType accommodationType, double startPrice, double endPrice, AccommodationStatus status, String country, String city, List<String> amenities) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        String formattedBegin = null;
+        String formattedEnd = null;
+        int size=0;
+            if(begin!=null && end!=null){
+                formattedBegin = formatter.format(begin);
+                formattedEnd = formatter.format(end);
+            }
+            if(amenities!=null){
+                size=amenities.size();
+            }
+        System.out.println(formattedBegin);
+            System.out.println(formattedEnd);
+        Collection<Accommodation> accommodations= accommodationRepository.findAccommodationsByCountryTypeGuestNumberTimeRangeAndAmenities(
+                    country,
+                    accommodationType,
+                    guestNumber,
+                    formattedBegin,
+                    formattedEnd,
+                    amenities,
+                    size
+                    );
+            if(endPrice>0 && startPrice>0 && begin!=null && end!=null && guestNumber>0){
+                Date beginDate = Date.from(begin.atStartOfDay(ZoneId.systemDefault()).toInstant());
+                Date endDate = Date.from(end.atStartOfDay(ZoneId.systemDefault()).toInstant());
                 return accommodations.stream()
                         .filter(accommodation ->
                                 calculatePriceForAccommodation(accommodation.getId(),
-                                        guestNumber,begin,end) >= startPrice &&
-                                        calculatePriceForAccommodation(accommodation.getId(),guestNumber,begin,end)<= endPrice)
+                                        guestNumber,beginDate,endDate) >= startPrice &&
+                                        calculatePriceForAccommodation(accommodation.getId(),guestNumber,beginDate,endDate)<= endPrice)
                         .collect(Collectors.toList());
-
-            } else {
-                return accommodationRepository.findAccommodationsByCountryTypeGuestNumberAndTimeRange(country, accommodationType, guestNumber,
-                        formattedBegin, formattedEnd);
             }
-        }
-        return accommodationRepository.findAll();
+            return accommodations;
     }
     @Override
     public Accommodation findOne(Long id) {

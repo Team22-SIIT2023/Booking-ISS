@@ -5,12 +5,13 @@ import com.booking.BookingApp.domain.enums.AccommodationStatus;
 import com.booking.BookingApp.domain.enums.AccommodationType;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
 public interface IAccommodationService {
-    Collection<Accommodation> findAll(Date begin, Date end, int guestNumber, AccommodationType type, double startPrice, double endPrice, AccommodationStatus status, String country, String city, List<String> amenities);
+    Collection<Accommodation> findAll(LocalDate begin, LocalDate end, int guestNumber, AccommodationType type, double startPrice, double endPrice, AccommodationStatus status, String country, String city, List<String> amenities);
 
     Accommodation findOne(Long id);
     Accommodation create(Accommodation accommodation) throws Exception;

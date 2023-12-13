@@ -17,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -30,12 +31,12 @@ public class AccommodationController {
     private IAccommodationService accommodationService;
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Collection<AccommodationDTO>> getAccommodations(
-            @RequestParam(value = "begin", required = false) @DateTimeFormat(pattern="yyyy-MM-dd") Date begin,
-            @RequestParam(value = "end", required = false) @DateTimeFormat(pattern="yyyy-MM-dd") Date end,
-            @RequestParam(value = "guestNumber", defaultValue = "0") int guestNumber,
+            @RequestParam(value = "begin", required = false) @DateTimeFormat(pattern="yyyy-MM-dd") LocalDate begin,
+            @RequestParam(value = "end", required = false) @DateTimeFormat(pattern="yyyy-MM-dd") LocalDate end,
+            @RequestParam(value = "guestNumber", defaultValue = "0",required = false) int guestNumber,
             @RequestParam(value = "type", required = false) AccommodationType type,
-            @RequestParam(value = "start_price", defaultValue = "0") double startPrice,
-            @RequestParam(value = "end_price", defaultValue = "0") double endPrice,
+            @RequestParam(value = "start_price", defaultValue = "0",required = false) double startPrice,
+            @RequestParam(value = "end_price", defaultValue = "0",required = false) double endPrice,
             @RequestParam(value = "status", required = false) AccommodationStatus status,
             @RequestParam(value = "country", required = false) String country,
             @RequestParam(value = "city", required = false) String city,
