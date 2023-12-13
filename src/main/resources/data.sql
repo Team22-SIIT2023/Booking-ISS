@@ -22,8 +22,16 @@ insert into users(first_name,last_name,address_id,phone_number,account_id,pictur
 -- INSERT INTO timeslots (start_date, end_date)
 -- VALUES ('2024-04-01 10:00:00','2024-04-11 12:00:00');
 --
--- INSERT INTO amenities (amenity_name)
--- VALUES ('WiFi');
+-- INSERT INTO amenities (amenity_name) VALUES ('wifi');
+-- INSERT INTO amenities (amenity_name) VALUES ('pool');
+-- INSERT INTO amenities (amenity_name) VALUES ('air conditioning');
+-- INSERT INTO amenities (amenity_name) VALUES ('spa');
+-- INSERT INTO amenities (amenity_name) VALUES ('tv');
+-- INSERT INTO amenities (amenity_name) VALUES ('breakfast');
+-- INSERT INTO amenities (amenity_name) VALUES ('pet friendly');
+-- INSERT INTO amenities (amenity_name) VALUES ('bar');
+-- INSERT INTO amenities (amenity_name) VALUES ('kitchen');
+-- INSERT INTO amenities (amenity_name) VALUES ('balcony');
 --
 -- INSERT INTO pricelist_items (time_slot_id, price)
 -- VALUES (1,100.00);
@@ -44,14 +52,14 @@ insert into users(first_name,last_name,address_id,phone_number,account_id,pictur
 --            7
 --        );
 -- INSERT INTO accommodations_price_list VALUES (1,1);
--- INSERT INTO accommodations_amenities VALUES (1,1);
+-- INSERT INTO amenities_accommodation VALUES (1,1);
+
 -- INSERT INTO accommodations_free_time_slots VALUES (1,1);
 --
 -- insert into favorite_accommodation values(1,1);
---
---
+-- --
 -- INSERT INTO requests (time_slot_id,price,accommodation_id,guest_number,request_status)
--- VALUES (1,150.00,1, 2,'ACCEPTED' );
+-- VALUES (21,150.00,10, 2,'ACCEPTED');
 --
 -- INSERT INTO requests (time_slot_id,price,accommodation_id,guest_number,request_status)
 -- VALUES (2,3450.00,1, 5,'ACCEPTED' );

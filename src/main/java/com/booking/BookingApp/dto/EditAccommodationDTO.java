@@ -12,17 +12,16 @@ import java.util.ArrayList;
 @Setter
 @NoArgsConstructor
 public class EditAccommodationDTO {
-    private boolean pricePerGuest;
-    private boolean automaticConfirmation;
-    private int reservationDeadline;
+//    private boolean pricePerGuest;
+//    private boolean automaticConfirmation;
+//    private int reservationDeadline;
     private ArrayList<PricelistItem> priceList;
     private ArrayList<TimeSlot> freeTimeSlots;
 
-    public EditAccommodationDTO(boolean pricePerGuest, boolean automaticConfirmation, int reservationDeadline,
-                                  ArrayList<PricelistItem> priceList,ArrayList<TimeSlot> freeTimeSlots) {
-        this.pricePerGuest = pricePerGuest;
-        this.automaticConfirmation = automaticConfirmation;
-        this.reservationDeadline = reservationDeadline;
+    public EditAccommodationDTO(ArrayList<PricelistItem> priceList,ArrayList<TimeSlot> freeTimeSlots) {
+//        this.pricePerGuest = pricePerGuest;
+//        this.automaticConfirmation = automaticConfirmation;
+//        this.reservationDeadline = reservationDeadline;
         this.priceList=priceList;
         this.freeTimeSlots=freeTimeSlots;
     }
@@ -30,9 +29,9 @@ public class EditAccommodationDTO {
     @Override
     public String toString() {
         return "AccommodationDTO{" +
-                ", pricePerGuest=" + pricePerGuest +
-                ", automaticConfirmation=" + automaticConfirmation +
-                ", reservationDeadline=" + reservationDeadline +
+//                ", pricePerGuest=" + pricePerGuest +
+//                ", automaticConfirmation=" + automaticConfirmation +
+//                ", reservationDeadline=" + reservationDeadline +
                 ", priceList=" + priceList +
                 ", freeTimeSlots=" + freeTimeSlots +
                 '}';
