@@ -1,5 +1,6 @@
 package com.booking.BookingApp.dto;
 
+import com.booking.BookingApp.domain.Role;
 import com.booking.BookingApp.domain.enums.Status;
 import com.booking.BookingApp.domain.enums.UserType;
 import lombok.Getter;
@@ -10,22 +11,25 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class AccountDTO {
-    private String email;
+    private String username;
+    private String password;
     private Status status;
-    private UserType type;
+    private Role role;
 
-    public AccountDTO(String email, Status status, UserType type) {
-        this.email = email;
+    public AccountDTO(String email, String password, Status status, Role role) {
+        this.username = email;
+        this.password = password;
         this.status = status;
-        this.type = type;
+        this.role = role;
     }
 
     @Override
     public String toString() {
         return "AccountDTO{" +
-                "email='" + email + '\'' +
+                "email='" + username + '\'' +
+                ", password=" + password +
                 ", status=" + status +
-                ", type=" + type +
+                ", role=" + role +
                 '}';
     }
 }

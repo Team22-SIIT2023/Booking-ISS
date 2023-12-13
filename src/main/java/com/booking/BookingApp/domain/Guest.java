@@ -27,4 +27,5 @@ public class Guest extends User {
         this.favoriteAccommodations = favoriteAccommodations;
     }
 
+
 }

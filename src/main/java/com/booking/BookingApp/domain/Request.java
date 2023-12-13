@@ -6,6 +6,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Getter
 @Setter
@@ -17,16 +19,19 @@ public class Request {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne(cascade = {CascadeType.ALL})
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @OneToOne(cascade = {CascadeType.ALL},orphanRemoval = true)
     private TimeSlot timeSlot;
 
     @Column(name = "price")
     private double price;
 
-    @ManyToOne(cascade = {CascadeType.ALL})
-    private Guest guest;
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
+    private Guest guest;
+  
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
     private Accommodation accommodation;
 
     @Column(name = "guest_number")

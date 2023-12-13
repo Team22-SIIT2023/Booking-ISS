@@ -6,6 +6,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -27,7 +29,7 @@ public class Accommodation {
     @Column(name = "description")
     private String description;
 
-    @OneToOne(cascade = {CascadeType.ALL})
+    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
     private Address address;
 
     @Column(name = "min_guest")
@@ -46,7 +48,8 @@ public class Accommodation {
     @Column(name = "automatic_conf")
     private boolean automaticConfirmation;
 
-    @ManyToOne(cascade = {CascadeType.REFRESH})
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
     private Host host;
 
     @Enumerated(EnumType.STRING)
@@ -56,7 +59,8 @@ public class Accommodation {
     @Column(name = "reservation_deadline")
     private int reservationDeadline;
 
-    @OneToMany(cascade = {CascadeType.ALL})
+
+    @OneToMany(cascade = {CascadeType.ALL},orphanRemoval = true)
     private Collection<TimeSlot> freeTimeSlots;
 
 
@@ -66,7 +70,8 @@ public class Accommodation {
             inverseJoinColumns = @JoinColumn(name = "amenity_id"))
     private Collection<Amenity> amenities;
 
-    @OneToMany(cascade = {CascadeType.ALL})
+
+    @OneToMany(cascade = {CascadeType.ALL},orphanRemoval = true)
     private Collection<PricelistItem> priceList;
 
     @ElementCollection
