@@ -10,18 +10,20 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class PricelistItemDTO {
-    private TimeSlotDTO timeSlotDTO;
+//    private Long id;
+    private TimeSlotDTO timeSlot;
     private double price;
 
-    public PricelistItemDTO(TimeSlotDTO timeSlotDTO, double price) {
-        this.timeSlotDTO = timeSlotDTO;
+    public PricelistItemDTO(TimeSlotDTO timeSlot, double price) {
+//        this.id = id;
+        this.timeSlot = timeSlot;
         this.price = price;
     }
 
     @Override
     public String toString() {
         return "PricelistItemDTO{" +
-                "timeSlotDTO=" + timeSlotDTO +
+                "timeSlot=" + timeSlot +
                 ", price=" + price +
                 '}';
     }

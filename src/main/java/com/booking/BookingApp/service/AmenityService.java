@@ -14,8 +14,10 @@ import java.util.Collection;
 @Service
 
 public class AmenityService implements IAmenityService {
+
     @Autowired
     AmenityRepository amenityRepository;
+
     @Override
     public Collection<Amenity> findAll() {return amenityRepository.findAll();}
 

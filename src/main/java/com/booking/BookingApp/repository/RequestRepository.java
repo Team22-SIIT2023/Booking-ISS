@@ -21,4 +21,6 @@ public interface RequestRepository extends JpaRepository<Request, Long> {
 
     Collection<Request> findByStatusAndGuest_Id(RequestStatus status, Long id);
 
+    Collection<Request> findByStatusAndAccommodation_Id(RequestStatus status, Long id);
+
 }
