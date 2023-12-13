@@ -1,19 +1,20 @@
 package com.booking.BookingApp.service;
 
 import com.booking.BookingApp.domain.*;
-import com.booking.BookingApp.domain.enums.RequestStatus;
 import com.booking.BookingApp.domain.enums.Status;
-import com.booking.BookingApp.domain.enums.UserType;
+import com.booking.BookingApp.repository.AccommodationCommentRepository;
 import com.booking.BookingApp.service.interfaces.ICommentService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 @Service
 public class CommentService implements ICommentService {
+    @Autowired
+    AccommodationCommentRepository accommodationCommentRepository;
 
     @Override
     public Collection<Comments> findAll(Status status) {
@@ -32,7 +33,8 @@ public class CommentService implements ICommentService {
 
     @Override
     public Collection<Comments> findByAccommodationId(Long id, Status status) {
-        return data();
+
+        return accommodationCommentRepository.findAllByAccommodationIdAndStatus(id,status);
     }
 
     @Override
@@ -41,8 +43,17 @@ public class CommentService implements ICommentService {
     }
 
     @Override
-    public int findAccommodationRating(Long id) {
-        return 5;
+    public double findAccommodationRating(Long id) {
+        Collection<Comments> commentsAndRatings= findByAccommodationId(id,Status.ACTIVE);
+        double sum=0;
+        for (Comments comment:commentsAndRatings){
+            sum+=comment.getRating();
+        }
+        if(sum!=0){
+            return (double) (sum/commentsAndRatings.size());
+        }
+        return 0;
+
     }
 
     @Override

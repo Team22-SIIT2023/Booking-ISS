@@ -1,5 +1,6 @@
 package com.booking.BookingApp.dto;
 
+import com.booking.BookingApp.domain.Host;
 import com.booking.BookingApp.domain.PricelistItem;
 import com.booking.BookingApp.domain.TimeSlot;
 import com.booking.BookingApp.domain.enums.AccommodationStatus;
@@ -22,13 +23,13 @@ public class CreateAccommodationDTO {
     private AccommodationType type;
     private boolean pricePerGuest;
     private boolean automaticConfirmation;
-    private Long hostId;
+    private Host host;
     private int reservationDeadline;
     private ArrayList<AmenityDTO> amenities;
     private ArrayList<PricelistItem> priceList;
     private ArrayList<TimeSlot> freeTimeSlots;
 
-    public CreateAccommodationDTO(String name, String description, AddressDTO address, int minGuests, int maxGuests, AccommodationType type, boolean pricePerGuest, boolean automaticConfirmation, Long hostId,
+    public CreateAccommodationDTO(String name, String description, AddressDTO address, int minGuests, int maxGuests, AccommodationType type, boolean pricePerGuest, boolean automaticConfirmation, Host host,
                             int reservationDeadline, ArrayList<AmenityDTO> amenities,
                             ArrayList<PricelistItem> priceList,ArrayList<TimeSlot> freeTimeSlots) {
         this.name = name;
@@ -39,7 +40,7 @@ public class CreateAccommodationDTO {
         this.type = type;
         this.pricePerGuest = pricePerGuest;
         this.automaticConfirmation = automaticConfirmation;
-        this.hostId = hostId;
+        this.host = host;
         this.reservationDeadline = reservationDeadline;
         this.amenities = amenities;
         this.priceList=priceList;
@@ -57,7 +58,6 @@ public class CreateAccommodationDTO {
                 ", type=" + type +
                 ", pricePerGuest=" + pricePerGuest +
                 ", automaticConfirmation=" + automaticConfirmation +
-                ", hostId=" + hostId +
                 ", reservationDeadline=" + reservationDeadline +
                 ", amenities=" + amenities +
                 ", priceList=" + priceList +

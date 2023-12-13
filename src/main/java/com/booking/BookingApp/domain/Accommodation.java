@@ -11,6 +11,7 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 @Getter
 @Setter
@@ -62,9 +63,10 @@ public class Accommodation {
     @OneToMany(cascade = {CascadeType.ALL},orphanRemoval = true)
     private Collection<TimeSlot> freeTimeSlots;
 
-    @ManyToMany()
-    @JoinTable(name="amenities_accommodation",
-            joinColumns = @JoinColumn(name="accommodation_id"),
+
+    @ManyToMany
+    @JoinTable(name = "amenities_accommodation",
+            joinColumns = @JoinColumn(name = "accommodation_id"),
             inverseJoinColumns = @JoinColumn(name = "amenity_id"))
     private Collection<Amenity> amenities;
 
@@ -72,7 +74,13 @@ public class Accommodation {
     @OneToMany(cascade = {CascadeType.ALL},orphanRemoval = true)
     private Collection<PricelistItem> priceList;
 
-    public Accommodation(Long id, String name, String description, Address address, int minGuests, int maxGuests, AccommodationType type, boolean pricePerGuest, boolean automaticConfirmation, Host host, AccommodationStatus status, int reservationDeadline, Collection<TimeSlot> freeTimeSlots, Collection<Amenity> amenities, Collection<PricelistItem> priceList) {
+    @ElementCollection
+    private List<String> images;
+
+    public Accommodation(Long id, String name, String description, Address address, int minGuests, int maxGuests,
+                         AccommodationType type, boolean pricePerGuest, boolean automaticConfirmation, Host host,
+                         AccommodationStatus status, int reservationDeadline, Collection<TimeSlot> freeTimeSlots,
+                         Collection<Amenity> amenities, Collection<PricelistItem> priceList) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -88,6 +96,29 @@ public class Accommodation {
         this.freeTimeSlots = freeTimeSlots;
         this.amenities = amenities;
         this.priceList = priceList;
+    }
+
+
+    public Accommodation(Long id, String name, String description, Address address, int minGuests, int maxGuests,
+                         AccommodationType type, boolean pricePerGuest, boolean automaticConfirmation, Host host,
+                         AccommodationStatus status, int reservationDeadline, Collection<TimeSlot> freeTimeSlots,
+                         Collection<Amenity> amenities, Collection<PricelistItem> priceList, List<String> images) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.address = address;
+        this.minGuests = minGuests;
+        this.maxGuests = maxGuests;
+        this.type = type;
+        this.pricePerGuest = pricePerGuest;
+        this.automaticConfirmation = automaticConfirmation;
+        this.host = host;
+        this.status = status;
+        this.reservationDeadline = reservationDeadline;
+        this.freeTimeSlots = freeTimeSlots;
+        this.amenities = amenities;
+        this.priceList = priceList;
+        this.images = images;
     }
 
     @Override
@@ -109,5 +140,10 @@ public class Accommodation {
                 ", amenities=" + amenities +
                 ", priceList=" + priceList +
                 '}';
+    }
+
+
+    public void setImage(String image) {
+        this.images.add(image);
     }
 }

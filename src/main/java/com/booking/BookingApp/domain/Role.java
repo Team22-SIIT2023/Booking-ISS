@@ -15,7 +15,6 @@ public class Role implements GrantedAuthority {
     String name;
 
     public Role() {
-
     }
 
     @JsonIgnore
@@ -52,5 +51,9 @@ public class Role implements GrantedAuthority {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 '}';
+    }
+  
+    public Role(String name) {
+        this.name = name;
     }
 }

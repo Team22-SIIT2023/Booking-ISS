@@ -19,7 +19,7 @@ public interface ICommentService {
 
     int findHostRating(Long id);
 
-    int findAccommodationRating(Long id);
+    double findAccommodationRating(Long id);
 
     Comments createHostComment(Comments comment, Long id);
 

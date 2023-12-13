@@ -29,7 +29,7 @@ public class Request {
 
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
     private Guest guest;
-
+  
     @OnDelete(action = OnDeleteAction.CASCADE)
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
     private Accommodation accommodation;

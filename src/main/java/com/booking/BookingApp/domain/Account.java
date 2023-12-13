@@ -40,6 +40,13 @@ public class Account {
         this.role = role;
     }
 
+    public Account(String username, String password, Status status, Role role) {
+        this.username =username;
+        this.password = password;
+        this.status = status;
+        this.role = role;
+    }
+
     @Override
     public String toString() {
         return "Account{" +

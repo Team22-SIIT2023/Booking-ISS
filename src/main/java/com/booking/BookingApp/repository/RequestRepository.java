@@ -8,11 +8,13 @@ import com.booking.BookingApp.domain.enums.RequestStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collection;
 
+@Repository
 public interface RequestRepository extends JpaRepository<Request, Long> {
     Collection<Request> findByStatus(RequestStatus status);
     Collection<Request> findByStatusAndAccommodation_Name(RequestStatus status, String accommodationName);
@@ -31,4 +33,7 @@ public interface RequestRepository extends JpaRepository<Request, Long> {
     Collection<Request> findByAccommodation_Host(Host host);
 
     Collection<Request> findByGuest_Id(Long id);
+  
+    Collection<Request> findByStatusAndAccommodation_Id(RequestStatus status, Long id);
+
 }
