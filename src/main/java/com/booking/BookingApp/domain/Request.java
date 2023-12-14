@@ -30,7 +30,7 @@ public class Request {
     private Guest guest;
   
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
+    @ManyToOne(cascade = {CascadeType.REMOVE})
     private Accommodation accommodation;
 
     @Column(name = "guest_number")

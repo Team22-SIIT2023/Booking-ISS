@@ -116,7 +116,7 @@ public class AccommodationController {
     }
 
     @PutMapping(value = "/editPricelist/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasAuthority('ROLE_GUEST') or hasAuthority('ROLE_HOST')")
+    @PreAuthorize("hasAuthority('ROLE_HOST')")
     public ResponseEntity<AccommodationDTO> editAccommodationPricelistItem(@RequestBody PricelistItemDTO pricelistDTO, @PathVariable Long id)
             throws Exception {
         Accommodation accommodationForUpdate = accommodationService.findOne(id);
