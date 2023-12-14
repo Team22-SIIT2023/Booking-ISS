@@ -56,6 +56,7 @@ public class UserService implements IUserService {
     public User findByUsername(String username){
         return userRepository.findByAccount_Username(username);
     }
+  
     @Override
     public boolean activateUser(Long id){
         User user = userRepository.findById(id).orElse(null);
@@ -137,8 +138,6 @@ public class UserService implements IUserService {
         }
     }
 
-
-
     @Override
     public Collection<Accommodation> findFavorites(Long id) {
         return userRepository.findFavoriteAccommodationsByGuestId(id);
@@ -161,8 +160,8 @@ public class UserService implements IUserService {
         u.setPicturePath(userRequest.getPicturePath());
 
         // u primeru se registruju samo obicni korisnici i u skladu sa tim im se i dodeljuje samo rola USER
-        List<Role> roles = roleService.findByName(userRequest.getAccount().getRole().getName());
-        u.getAccount().setRole(roles.get(0));
+        List<Role> roles = roleService.findByName(userRequest.getAccount().getRoles().get(0).getName());
+        u.getAccount().setRoles(roles);
 
         return this.userRepository.save(u);
     }
@@ -178,7 +177,9 @@ public class UserService implements IUserService {
         List<User> users = new ArrayList<>();
         Address address = new Address("Srbija","Novi Sad","21000","Futoska 1");
         Role role=new Role(1L,"guest");
-        Account account = new Account(1L, "aleksicisidora@yahoo.com","682002",Status.ACTIVE, role);
+        List<Role> roles = new ArrayList<>();
+        roles.add(role);
+        Account account = new Account(1L, "aleksicisidora@yahoo.com","682002",Status.ACTIVE, roles);
         users.add(new User(1L,"Isidora","Aleksic",address,"0692104221",account,"../../../assets/images/userpicture.jpg"));
         users.add(new User(2L,"Tamara","Aleksic",address,"0692104221",account,"../../../assets/images/userpicture.jpg"));
         users.add(new User(3L,"Kikica","Aleksic",address,"0692104221",account,"../../../assets/images/userpicture.jpg"));

@@ -61,6 +61,7 @@ public class UserController {
         }
         return new ResponseEntity<UserDTO>(UserDTOMapper.fromUsertoDTO(user), HttpStatus.OK);
     }
+
     @GetMapping(value = "/guest/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Collection<AccommodationDTO>> getGuestFavorites(@PathVariable("id") Long id) {
         Collection<Accommodation> accommodations= userService.findFavorites(id);
@@ -87,11 +88,12 @@ public class UserController {
 
         // Kreiraj token za tog korisnika
         User user = (User) authentication.getPrincipal();
-        String jwt = tokenUtils.generateToken(user.getUsername());
+        String jwt = tokenUtils.generateToken(user.getUsername(), user.getAccount().getRoles().get(0), user.getId());
         int expiresIn = tokenUtils.getExpiredIn();
 
         // Vrati token kao odgovor na uspesnu autentifikaciju
-        return ResponseEntity.ok(new UserTokenState(jwt, expiresIn));
+        System.out.println(jwt);
+        return ResponseEntity.ok(new UserTokenState(jwt, expiresIn, user.getAccount().getRoles().get(0).getName(),user.getId()));
     };
 
     @PostMapping(value = "/signup", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -167,5 +169,11 @@ public class UserController {
         System.out.println("brisese");
         userService.delete(id);
         return new ResponseEntity<UserDTO>(HttpStatus.NO_CONTENT);
+    }
+
+    @GetMapping("/current-user")
+    public ResponseEntity<?> currentUser(){
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return new ResponseEntity<>(UserDTOMapper.fromUsertoDTO(user), HttpStatus.OK);
     }
 }

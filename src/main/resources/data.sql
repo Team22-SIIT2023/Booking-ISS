@@ -1,10 +1,13 @@
 INSERT INTO addresses (country, city, postal_code, address) VALUES ('Serbia', 'Novi Sad', '21000', 'Alekse Santica 54');
 
-INSERT INTO roles (name) VALUES ('HOST');
-INSERT INTO roles (name) VALUES ('GUEST');
+INSERT INTO role (name) VALUES ('ROLE_HOST');
+INSERT INTO role (name) VALUES ('ROLE_GUEST');
 
-INSERT INTO accounts(username, password, status, role_id) VALUES ('pera@example.com', '123', 'ACTIVE', 1);
-INSERT INTO accounts(username, password, status, role_id) VALUES ('mika@example.com', '123', 'ACTIVE', 2);
+INSERT INTO accounts(username, password, status) VALUES ('pera@example.com', '123', 'ACTIVE');
+INSERT INTO accounts(username, password, status) VALUES ('mika@example.com', '123', 'ACTIVE');
+
+INSERT INTO account_role VALUES (1,1);
+INSERT INTO account_role VALUES (2,2);
 
 INSERT INTO users (first_name, last_name, address_id, phone_number, account_id, picture_path, last_password_reset_date)
 VALUES ('pera', 'peric', 1, '1234', 1, '', '2023-01-01 12:00:00');
@@ -42,7 +45,7 @@ INSERT INTO amenities (amenity_name) VALUES ('balcony');
 INSERT INTO accommodations (
     name, description, address_id, min_guest, max_guest,
     acc_type, price_per_guest, automatic_conf, acc_status,
-    reservation_deadline)
+    reservation_deadline,host_id)
 VALUES (
            'Accommodation Name',
            'Accommodation Description',
@@ -53,8 +56,9 @@ VALUES (
            true,
            true,
            'ACCEPTED',
-           7
+           7,1
        );
+INSERT INTO pricelist_items (time_slot_id, price) VALUES (1,100.00);
        
 INSERT INTO accommodations_price_list VALUES (1,1);
 INSERT INTO amenities_accommodation VALUES (1,1);
@@ -63,24 +67,22 @@ INSERT INTO accommodations_free_time_slots VALUES (1,1);
 INSERT INTO accommodations_free_time_slots VALUES (1,2);
 INSERT INTO accommodations_free_time_slots VALUES (1,3);
 
-insert into favorite_accommodation values(1,1);
 
 INSERT INTO comments (comment_text, date, rating, comment_status, guest_id,id)
-VALUES ('For this price great!', '2023-12-11', 4.5, 'ACTIVE', 1,1);
+VALUES ('For this price great!', '2023-12-11', 4.5, 'ACTIVE', 2,1);
 INSERT INTO comments (comment_text, date, rating, comment_status, guest_id,id)
-VALUES ('Okay, can be better.', '2023-12-11', 3.0, 'ACTIVE', 1,2);
+VALUES ('Okay, can be better.', '2023-12-11', 3.0, 'ACTIVE', 2,2);
 INSERT INTO comments (comment_text, date, rating, comment_status, guest_id,id)
-VALUES ('Loved it!', '2023-12-11', 5.0, 'ACTIVE', 1,3);
+VALUES ('Loved it!', '2023-12-11', 5.0, 'ACTIVE', 2,3);
 INSERT INTO comments (comment_text, date, rating, comment_status, guest_id,id)
-VALUES ('Very poor', '2023-12-11', 2.0, 'ACTIVE', 1,4);
+VALUES ('Very poor', '2023-12-11', 2.0, 'ACTIVE', 2,4);
 
 insert into accommodation_comments values(1,1);
 insert into accommodation_comments values(1,2);
 insert into accommodation_comments values(1,3);
 insert into accommodation_comments values(1,4);
 
-INSERT INTO pricelist_items (time_slot_id, price)
-VALUES (1,100.00);
+
 
 
 -- INSERT INTO accommodations (name, description, address_id, min_guest, max_guest, acc_type, price_per_guest, automatic_conf, host_id, acc_status, reservation_deadline)
@@ -93,9 +95,6 @@ VALUES (1,100.00);
 -- VALUES
 --     ('Mountain Cabin', 'Escape to nature in our rustic cabin', 1, 2, 4, 'CABIN', true, true, 1, 'INACTIVE', 10);
 
-INSERT INTO accommodations_price_list VALUES (1,1);
-INSERT INTO amenities_accommodation VALUES (1,1);
-INSERT INTO accommodations_free_time_slots VALUES (1,1);
 
 insert into favorite_accommodation values(1,2);
 
@@ -117,5 +116,6 @@ VALUES (3,350.00,1, 2,'ACCEPTED' );
 
 INSERT INTO requests (time_slot_id,price,accommodation_id,guest_number,request_status)
 VALUES (4,350.00,1, 2,'WAITING' );
+
 
 

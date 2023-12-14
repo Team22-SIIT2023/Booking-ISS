@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Collection;
+import java.util.List;
 
 @Getter
 @Setter
@@ -29,22 +30,26 @@ public class Account {
     @Column(name = "status")
     private Status status;
 
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
-    private Role role;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "account_role",
+            joinColumns = @JoinColumn(name = "account_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
+    private List<Role> roles;
 
-    public Account(Long id, String username, String password, Status status, Role role) {
+
+    public Account(Long id, String username, String password, Status status, List<Role> roles) {
         this.id = id;
         this.username =username;
         this.password = password;
         this.status = status;
-        this.role = role;
+        this.roles = roles;
     }
 
-    public Account(String username, String password, Status status, Role role) {
+    public Account(String username, String password, Status status, List<Role> roles) {
         this.username =username;
         this.password = password;
         this.status = status;
-        this.role = role;
+        this.roles = roles;
     }
 
     @Override
@@ -52,7 +57,7 @@ public class Account {
         return "Account{" +
                 ", password='" + password + '\'' +
                 ", status=" + status +
-                ", role=" + role +
+                ", role=" + roles +
                 '}';
     }
 }

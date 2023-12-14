@@ -1,6 +1,5 @@
 package com.booking.BookingApp.domain;
 
-
 import com.booking.BookingApp.domain.enums.RequestStatus;
 import jakarta.persistence.*;
 import lombok.Getter;

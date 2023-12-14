@@ -26,7 +26,7 @@ import java.util.List;
 @Inheritance(strategy = InheritanceType.JOINED)
 
 @Table(name = "users")
-public class User implements UserDetails{
+public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -84,11 +84,13 @@ public class User implements UserDetails{
                 '}';
     }
 
+    @JsonIgnore
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        List<Role> userTypeList=new ArrayList<>();
-        userTypeList.add(this.account.getRole());
-        return userTypeList;
+//        Collection<Role> userTypeList=new ArrayList<>();
+////        System.out.println("ROLEEEEEE" + this.account.getRole().getName());
+//        userTypeList.add(this.account.getRole());
+        return this.account.getRoles();
     }
 
     @Override
