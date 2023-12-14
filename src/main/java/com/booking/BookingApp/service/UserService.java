@@ -2,25 +2,34 @@ package com.booking.BookingApp.service;
 
 import com.booking.BookingApp.domain.*;
 import com.booking.BookingApp.domain.enums.Status;
-import com.booking.BookingApp.domain.enums.UserType;
-import com.booking.BookingApp.dto.AccountDTO;
-import com.booking.BookingApp.dto.AddressDTO;
-import com.booking.BookingApp.dto.ReportDTO;
-import com.booking.BookingApp.dto.UserDTO;
+import com.booking.BookingApp.repository.AccommodationRepository;
+import com.booking.BookingApp.repository.HostRepository;
+import com.booking.BookingApp.repository.RequestRepository;
 import com.booking.BookingApp.repository.UserRepository;
 import com.booking.BookingApp.service.interfaces.IUserService;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.*;
 
 @Service
+@Transactional
 public class UserService implements IUserService {
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    RequestRepository requestRepository;
+
+    @Autowired
+    HostRepository hostRepository;
+
+    @Autowired
+    AccommodationRepository accommodationRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -35,70 +44,99 @@ public class UserService implements IUserService {
 
     @Override
     public User findOne(Long id) {
-        Role role=new Role(1L,"guest");
-        List<Role> roles = new ArrayList<>();
-        roles.add(role);
-        Address address = new Address("Srbija","Novi Sad","21000","Futoska 1");
-        Account account = new Account(1L, "isidorica","slatkica",Status.ACTIVE, roles);
-        return new User(1L,"Isidora","Aleksic",address,"0692104221",account,"../../../assets/images/userpicture.jpg");
+        return userRepository.findById(id).orElse(null);
     }
 
     @Override
-    public User findLoggedUser(String username, String password) {
-        Address address = new Address("Srbija","Novi Sad","21000","Futoska 1");
-        Role role=new Role(1L,"guest");
-        List<Role> roles = new ArrayList<>();
-        roles.add(role);
-        Account account = new Account(1L, "isidorica","slatkica",Status.ACTIVE, roles);
-        return new User(1L,"Isidora","Aleksic",address,"0692104221",account,"../../../assets/images/userpicture.jpg");
-    }
-
-    @Override
-    public Collection<User> findAllByStatus(Status userStatus) {
-        return data();
+    public Collection<User> findByStatus(Status userStatus) {
+        return userRepository.findByAccount_Status(userStatus);
     }
 
     @Override
     public User findByUsername(String username){
         return userRepository.findByAccount_Username(username);
     }
-
-    @Override
-    public User findOneByEmail(String email) {
-        Address address = new Address("Srbija","Novi Sad","21000","Futoska 1");
-        Role role=new Role(1L,"guest");
-        List<Role> roles = new ArrayList<>();
-        roles.add(role);
-        Account account = new Account(1L, "isidorica","slatkica",Status.ACTIVE,roles);
-        return new User(1L,"Isidora","Aleksic",address,"0692104221",account,"../../../assets/images/userpicture.jpg");
-    }
-
+  
     @Override
     public boolean activateUser(Long id){
-        return true;
-    }
-    @Override
-    public User create(User user) throws Exception {
-        Address address = new Address("Srbija","Novi Sad","21000","Futoska 1");
-        Role role=new Role(1L,"guest");
-        List<Role> roles = new ArrayList<>();
-        roles.add(role);
-        Account account = new Account(1L, "isidorica","slatkica",Status.ACTIVE, roles);
-        return new User(1L,"Isidora","Aleksic",address,"0692104221",account,"../../../assets/images/userpicture.jpg");
+        User user = userRepository.findById(id).orElse(null);
+        if(user != null) {
+            user.getAccount().setStatus(Status.ACTIVE);
+            return true;
+        }
+        return false;
     }
 
     @Override
-    public User update(User user) throws Exception {
-        Address address = new Address("Srbija","Novi Sad","21000","Futoska 1");
-        Role role=new Role(1L,"guest");
-        List<Role> roles = new ArrayList<>();
-        roles.add(role);
-        Account account = new Account(1L, "isidorica","slatkica",Status.ACTIVE, roles);
-        return new User(1L,"Isidora","Aleksic",address,"0692104221",account,"../../../assets/images/userpicture.jpg");
+    public User update(User updatedUser) throws Exception {
+        System.out.println(updatedUser);
+        Long userId = updatedUser.getId();
+        User existingUser = userRepository.findById(userId).orElse(null);
+
+        if (existingUser == null) {
+            throw new Exception("User not found with ID: " + userId);
+        }
+
+        existingUser.setFirstName(updatedUser.getFirstName());
+        existingUser.setLastName(updatedUser.getLastName());
+        existingUser.setAddress(updatedUser.getAddress());
+        existingUser.setAccount(updatedUser.getAccount());
+        existingUser.setPhoneNumber(updatedUser.getPhoneNumber());
+        existingUser.setPicturePath(updatedUser.getPicturePath());
+
+        System.out.println(existingUser);
+
+        return userRepository.save(existingUser);
+    }
+
+
+    @Override
+    public void delete(Long id) {
+        User user = userRepository.findById(id).orElse(null);
+        if (user.getAccount().getRole().getName().equals("GUEST")) {
+            deleteGuest(user);
+        } else if (user.getAccount().getRole().getName().equals("HOST")) {
+            deleteHost(user);
+        }
     }
 
     @Override
-    public void delete(Long id) {}
+    public void deleteGuest(User user) {
+        Guest guest = new Guest(user.getId(), user.getFirstName(), user.getLastName(), user.getAddress(),
+                user.getPhoneNumber(), user.getAccount(), user.getPicturePath(),
+                userRepository.findFavoriteAccommodationsByGuestId(user.getId()));
+        Collection<Request> reservations = requestRepository.findActiveReservationsForGuest(LocalDateTime.now(), guest);
+        if(reservations.isEmpty()) {
+            Collection<Request> requests = requestRepository.findByGuest_Id(guest.getId());
+            if(!requests.isEmpty()){
+                requestRepository.deleteAll(requests);
+            }
+            userRepository.deleteById(user.getId());
+            System.out.println(userRepository.findAll());
+        }
+    }
+
+    @Override
+    public void deleteHost(User user) {
+        Host host = new Host(user.getId(), user.getFirstName(), user.getLastName(),
+                user.getAddress(), user.getPhoneNumber(), user.getAccount(), user.getPicturePath());
+        Collection<Request> reservations = requestRepository.findActiveReservationsForHost(LocalDate.now(), host);
+        if (!reservations.isEmpty()) {
+            Collection<Request> requests = requestRepository.findByAccommodation_Host(host);
+            if (!reservations.isEmpty()) {
+                requestRepository.deleteAll(requests);
+            }
+            Collection<Accommodation> accommodations = accommodationRepository.findAllByHost(host);
+            if(!accommodations.isEmpty()){
+                for(Accommodation a: accommodations){
+                    userRepository.deleteFavoriteAccommodationsByAccommodationId(a.getId());
+                }
+                accommodationRepository.deleteAll(accommodations);
+            }
+            hostRepository.deleteHostById(user.getId());
+            hostRepository.deleteUserById(user.getId());
+        }
+    }
 
     @Override
     public Collection<Accommodation> findFavorites(Long id) {
@@ -129,6 +167,12 @@ public class UserService implements IUserService {
     }
 
 
+    public User dataOne(){
+        Role role=new Role(1L,"guest");
+        Address address = new Address("Srbija","Novi Sad","21000","Futoska 1");
+        Account account = new Account(1L, "isidorica","slatkica",Status.ACTIVE, role);
+        return new User(1L,"Isidora","Aleksic",address,"0692104221",account,"../../../assets/images/userpicture.jpg");
+    }
     public List<User> data() {
         List<User> users = new ArrayList<>();
         Address address = new Address("Srbija","Novi Sad","21000","Futoska 1");

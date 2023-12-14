@@ -1,6 +1,7 @@
 package com.booking.BookingApp.repository;
 
 import com.booking.BookingApp.domain.Accommodation;
+import com.booking.BookingApp.domain.Host;
 import com.booking.BookingApp.domain.TimeSlot;
 import com.booking.BookingApp.domain.enums.AccommodationType;
 import jakarta.persistence.Temporal;
@@ -8,8 +9,9 @@ import jakarta.persistence.TemporalType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import org.springframework.stereotype.Repository;
+import org .springframework.stereotype.Repository;
 
+import java.util.Collection;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.Date;
@@ -18,6 +20,7 @@ import java.util.List;
 @Repository
 public interface AccommodationRepository extends JpaRepository<Accommodation, Long> {
 
+    Collection<Accommodation> findAllByHost(Host host);
 @Query(
         "SELECT DISTINCT a FROM Accommodation a " +
                 "JOIN a.freeTimeSlots fts " +
@@ -70,7 +73,6 @@ Collection<Accommodation> findAccommodationsByCountryTypeGuestNumberTimeRangeAnd
             @Param("amenities") List<String> amenities,
             @Param("amenitiesCount") long amenitiesCount
     );
-
 
 
 

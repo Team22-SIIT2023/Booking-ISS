@@ -131,6 +131,7 @@ public class WebSecurityConfig {
             exceptionHandling.authenticationEntryPoint(restAuthenticationEntryPoint);
         });
 
+
         http.authorizeHttpRequests(requests -> {
             requests .requestMatchers("/api/users/**").permitAll()
 //                    .requestMatchers("/api/accommodations/**").permitAll()

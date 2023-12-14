@@ -7,6 +7,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -35,12 +37,14 @@ public class User implements UserDetails {
     @Column(name = "last_name")
     private String lastName;
 
-    @ManyToOne(cascade = {CascadeType.ALL})
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
     private Address address;
 
     @Column(name = "phone_number")
     private String phoneNumber;
 
+
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @OneToOne(cascade = {CascadeType.ALL})
     private Account account;
 

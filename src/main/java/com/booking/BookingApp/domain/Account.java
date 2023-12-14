@@ -30,9 +30,6 @@ public class Account {
     @Column(name = "status")
     private Status status;
 
-//    @ManyToOne(cascade = {CascadeType.ALL})
-//    private Role role;
-
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "account_role",
             joinColumns = @JoinColumn(name = "account_id", referencedColumnName = "id"),
