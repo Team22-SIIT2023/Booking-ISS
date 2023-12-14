@@ -93,9 +93,9 @@ public class UserService implements IUserService {
     @Override
     public void delete(Long id) {
         User user = userRepository.findById(id).orElse(null);
-        if (user.getAccount().getRole().getName().equals("GUEST")) {
+        if (user.getAccount().getRoles().get(0).getName().equals("ROLE_GUEST")) {
             deleteGuest(user);
-        } else if (user.getAccount().getRole().getName().equals("HOST")) {
+        } else if (user.getAccount().getRoles().get(0).getName().equals("ROLE_HOST")) {
             deleteHost(user);
         }
     }
@@ -122,16 +122,16 @@ public class UserService implements IUserService {
                 user.getAddress(), user.getPhoneNumber(), user.getAccount(), user.getPicturePath());
         Collection<Request> reservations = requestRepository.findActiveReservationsForHost(LocalDate.now(), host);
         if (!reservations.isEmpty()) {
-            Collection<Request> requests = requestRepository.findByAccommodation_Host(host);
-            if (!reservations.isEmpty()) {
-                requestRepository.deleteAll(requests);
-            }
             Collection<Accommodation> accommodations = accommodationRepository.findAllByHost(host);
             if(!accommodations.isEmpty()){
                 for(Accommodation a: accommodations){
                     userRepository.deleteFavoriteAccommodationsByAccommodationId(a.getId());
                 }
                 accommodationRepository.deleteAll(accommodations);
+            }
+            Collection<Request> requests = requestRepository.findByAccommodation_Host(host);
+            if (!reservations.isEmpty()) {
+                requestRepository.deleteAll(requests);
             }
             hostRepository.deleteHostById(user.getId());
             hostRepository.deleteUserById(user.getId());
@@ -169,8 +169,10 @@ public class UserService implements IUserService {
 
     public User dataOne(){
         Role role=new Role(1L,"guest");
+        List<Role> roles = new ArrayList<>();
+        roles.add(role);
         Address address = new Address("Srbija","Novi Sad","21000","Futoska 1");
-        Account account = new Account(1L, "isidorica","slatkica",Status.ACTIVE, role);
+        Account account = new Account(1L, "isidorica","slatkica",Status.ACTIVE, roles);
         return new User(1L,"Isidora","Aleksic",address,"0692104221",account,"../../../assets/images/userpicture.jpg");
     }
     public List<User> data() {
