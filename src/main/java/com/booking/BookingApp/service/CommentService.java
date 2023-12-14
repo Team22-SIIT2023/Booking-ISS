@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 @Service
 public class CommentService implements ICommentService {
@@ -78,7 +79,9 @@ public class CommentService implements ICommentService {
         Collection<Comments> commentsList = new ArrayList<>();
         Address address = new Address("Srbija","Novi Sad","21000","Futoska 1");
         Role role=new Role(1L,"guest");
-        Account account = new Account(1L, "aleksicisidora@yahoo.com","slatkica",Status.ACTIVE, role);
+        List<Role> roles = new ArrayList<>();
+        roles.add(role);
+        Account account = new Account(1L, "aleksicisidora@yahoo.com","slatkica",Status.ACTIVE, roles);
         Guest guest = new Guest(1L,"Isidora","Aleksic",address,"0692104221",account,"../../../assets/images/userpicture.jpg",null);
         // Adding instances to the collection
         commentsList.add(new Comments(1L, "Great comment!", LocalDate.now(), 4.5, Status.ACTIVE, guest));

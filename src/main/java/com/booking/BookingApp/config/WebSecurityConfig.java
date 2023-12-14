@@ -1,7 +1,6 @@
 package com.booking.BookingApp.config;
 
 
-
 import com.booking.BookingApp.security.auth.RestAuthenticationEntryPoint;
 import com.booking.BookingApp.security.auth.TokenAuthenticationFilter;
 import com.booking.BookingApp.service.CustomUserDetailsService;
@@ -12,7 +11,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -25,8 +26,14 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.context.RequestAttributeSecurityContextRepository;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+import java.util.Arrays;
 
 
 @Configuration
@@ -34,22 +41,23 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @EnableWebSecurity
 //Ukljucivanje podrske za anotacije "@Pre*" i "@Post*" koje ce aktivirati autorizacione provere za svaki pristup metodi
 @EnableMethodSecurity
+
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig {
 
     //Podesavanje CORSa, svi zahtevi sa http://localhost:4200 se propustaju
-//    @Bean
-//    public WebMvcConfigurer CORSConfigurer() {
-//        return new WebMvcConfigurer() {
-//            @Override
-//            public void addCorsMappings(CorsRegistry registry) {
-//                registry.addMapping("/**")
-//                        .allowedOrigins("http://localhost:4200")
-//                        .allowedHeaders("*")
-//                        .allowedMethods("GET", "POST", "PUT", "DELETE", "HEAD")
-//                        .allowCredentials(false);
-//            }
-//        };
-//    }
+    //Podesavanja CORS-a
+    //https://docs.spring.io/spring-security/reference/servlet/integrations/cors.html
+    @Bean
+    CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:4200"));
+        configuration.setAllowedMethods(Arrays.asList("POST", "PUT", "GET", "OPTIONS", "DELETE", "PATCH")); // or simply "*"
+        configuration.setAllowedHeaders(Arrays.asList("*"));
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
+    }
     // Servis koji se koristi za citanje podataka o korisnicima aplikacije
     @Bean
     public UserDetailsService userDetailsService() {
@@ -105,6 +113,8 @@ public class WebSecurityConfig {
                 .securityContextRepository(new RequestAttributeSecurityContextRepository())
         );
 
+        http.cors(Customizer.withDefaults());
+
         // zbog jednostavnosti primera ne koristimo Anti-CSRF token (https://cheatsheetseries.owasp.org/cheatsheets/Cross-Site_Request_Forgery_Prevention_Cheat_Sheet.html)
         http.csrf(csrf -> csrf.disable());
 
@@ -123,16 +133,18 @@ public class WebSecurityConfig {
 
         http.authorizeHttpRequests(requests -> {
             requests .requestMatchers("/api/users/**").permitAll()
-                    .requestMatchers("/api/accommodations/**").permitAll()
-                    .requestMatchers("/api/amenities/**").permitAll()
+//                    .requestMatchers("/api/accommodations/**").permitAll()
+//                    .requestMatchers("/api/amenities/**").permitAll()
                     .requestMatchers("/api/email/**").permitAll()
-                    .requestMatchers("/api/requests/**").permitAll()
-                    .requestMatchers("api/comments/**").permitAll()
+                    .requestMatchers(new AntPathRequestMatcher("/error")).permitAll()
+//                    .requestMatchers("/api/requests/**").permitAll()
+//                    .requestMatchers("api/comments/**").permitAll()
                     // ukoliko ne zelimo da koristimo @PreAuthorize anotacije nad metodama kontrolera, moze se iskoristiti hasRole() metoda da se ogranici
                     // koji tip korisnika moze da pristupi odgovarajucoj ruti. Npr. ukoliko zelimo da definisemo da ruti 'admin' moze da pristupi
                     // samo korisnik koji ima rolu 'ADMIN', navodimo na sledeci nacin:
                     //.requestMatchers("/api/whoami").hasRole("USER")
-                    //.requestMatchers("/api/users/all").hasAuthority("ROLE_ADMIN")
+//                    .requestMatchers("/api/accommodations").hasAuthority("ROLE_GUEST")
+//                    .requestMatchers("/api/accommodations").hasAuthority("ROLE_HOST")
                     // za svaki drugi zahtev korisnik mora biti autentifikovan
                     .anyRequest().authenticated();
         });

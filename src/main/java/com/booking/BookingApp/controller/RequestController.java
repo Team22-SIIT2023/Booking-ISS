@@ -10,6 +10,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -27,6 +28,7 @@ public class RequestController {
     private RequestService requestService;
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAuthority('ROLE_GUEST') or hasAuthority('ROLE_HOST')")
     public ResponseEntity<Collection<RequestDTO>> getRequests(@RequestParam(value = "status", required = false) RequestStatus status,
                                                               @RequestParam(value = "begin", required = false) @DateTimeFormat(pattern="yyyy-MM-dd") LocalDate begin,
                                                               @RequestParam(value = "end", required = false) @DateTimeFormat(pattern="yyyy-MM-dd") LocalDate end,
@@ -41,6 +43,7 @@ public class RequestController {
     }
 
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAuthority('ROLE_GUEST') or hasAuthority('ROLE_HOST')")
     public ResponseEntity<RequestDTO> getById(@PathVariable("id") Long id) {
         Request request = requestService.findById(id);
         return new ResponseEntity<RequestDTO>(new RequestDTO(request), HttpStatus.OK);
@@ -48,6 +51,7 @@ public class RequestController {
 
     //ako se ne prosledi status vracaju se svi zahtevi a ako se prosledi onda samo zahtevi koji su prosledjenog statusa
     @GetMapping(value = "/host/{hostId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('HOST')")
     public ResponseEntity<Collection<RequestDTO>> getByHostId(@PathVariable("hostId") Long id,
                                                               @RequestParam(value = "status", required = false) RequestStatus status) {
         Collection<Request> hostRequests = requestService.findByHostId(id, status);
@@ -60,6 +64,7 @@ public class RequestController {
     }
 
     @GetMapping(value = "/guest/{guestId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('GUEST')")
     public ResponseEntity<Collection<RequestDTO>> getByGuestId(@PathVariable("guestId") Long id,
                                                                @RequestParam(value = "status", required = false) RequestStatus status) {
         Collection<Request> guestRequests = requestService.findByGuestId(id, status);
@@ -72,6 +77,7 @@ public class RequestController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('GUEST')")
     public ResponseEntity<RequestDTO> createRequest(@RequestBody RequestDTO requestDTO) throws Exception {
         Request requestModel = RequestDTOMapper.fromDTOtoRequest(requestDTO);
         Request savedRequest = requestService.create(requestModel);
@@ -87,6 +93,7 @@ public class RequestController {
     }
 
     @DeleteMapping(value = "/{id}")
+    @PreAuthorize("hasAuthority('ROLE_GUEST') or hasAuthority('ROLE_HOST')")
     public ResponseEntity<RequestDTO> deleteRequest(@PathVariable("id") Long id) {
         requestService.delete(id);
         return new ResponseEntity<RequestDTO>(HttpStatus.NO_CONTENT);

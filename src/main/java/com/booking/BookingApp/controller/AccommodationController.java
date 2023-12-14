@@ -11,6 +11,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import java.math.BigDecimal;
@@ -27,7 +28,9 @@ import java.util.stream.Collectors;
 public class AccommodationController {
     @Autowired
     private IAccommodationService accommodationService;
+
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAuthority('ROLE_GUEST') or hasAuthority('ROLE_HOST')")
     public ResponseEntity<Collection<AccommodationDTO>> getAccommodations(
             @RequestParam(value = "begin", required = false) @DateTimeFormat(pattern="yyyy-MM-dd") LocalDate begin,
             @RequestParam(value = "end", required = false) @DateTimeFormat(pattern="yyyy-MM-dd") LocalDate end,
@@ -40,6 +43,8 @@ public class AccommodationController {
             @RequestParam(value = "city", required = false) String city,
             @RequestParam(value = "amenities", required = false) List<String> amenities
     ) {
+
+        System.out.println("USAO?");
         Collection<Accommodation>accommodations=accommodationService.findAll(begin,end,guestNumber,type,
                 startPrice,endPrice,status,country,city,amenities);
         Collection<AccommodationDTO> accommodationDTOS = accommodations.stream()
@@ -49,6 +54,7 @@ public class AccommodationController {
     }
 
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAuthority('ROLE_GUEST') or hasAuthority('ROLE_HOST')")
     public ResponseEntity<AccommodationDTO> getAccommodation(@PathVariable("id") Long id) {
         Accommodation accommodation = accommodationService.findOne(id);
 
@@ -68,6 +74,7 @@ public class AccommodationController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('HOST')")
     public ResponseEntity<AccommodationDTO> createAccommodation(@RequestBody CreateAccommodationDTO accommodation) throws Exception {
         Accommodation newAccommodation=AccommodationDTOMapper.fromCreateDTOtoAccommodation(accommodation);
         Accommodation savedAccommodation = accommodationService.create(newAccommodation);
@@ -75,6 +82,7 @@ public class AccommodationController {
     }
 
     @PostMapping("/{accommodationId}/upload-picture")
+    @PreAuthorize("hasRole('HOST')")
     public ResponseEntity<String> uploadImage(
             @PathVariable("accommodationId") Long accommodationId,
             @RequestParam("images") Collection<MultipartFile> imageFiles) throws IOException {
@@ -92,6 +100,7 @@ public class AccommodationController {
 //        return new ResponseEntity<>(accommodationService.getImages(accommodationId), HttpStatus.OK);
 //    }
 
+    @PreAuthorize("hasRole('HOST')")
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AccommodationDTO> updateAccommodation(@RequestBody EditAccommodationDTO accommodationDTO, @PathVariable Long id)
             throws Exception {
@@ -107,6 +116,7 @@ public class AccommodationController {
     }
 
     @PutMapping(value = "/editPricelist/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAuthority('ROLE_GUEST') or hasAuthority('ROLE_HOST')")
     public ResponseEntity<AccommodationDTO> editAccommodationPricelistItem(@RequestBody PricelistItemDTO pricelistDTO, @PathVariable Long id)
             throws Exception {
         Accommodation accommodationForUpdate = accommodationService.findOne(id);
@@ -118,7 +128,9 @@ public class AccommodationController {
         return new ResponseEntity<AccommodationDTO>(AccommodationDTOMapper.fromAccommodationtoDTO(updatedAccommodation), HttpStatus.OK);
     }
 
+
     @PutMapping(value = "/editTimeSlot/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('HOST')")
     public ResponseEntity<AccommodationDTO> editAccommodationFreeTimeSlots(@RequestBody TimeSlotDTO timeSlotDTO, @PathVariable Long id)
             throws Exception {
         Accommodation accommodationForUpdate = accommodationService.findOne(id);
@@ -132,6 +144,7 @@ public class AccommodationController {
     }
 
     @DeleteMapping(value = "/{id}")
+    @PreAuthorize("hasRole('HOST')")
     public ResponseEntity<AccommodationDTO> deleteAccommodation(@PathVariable("id") Long id) {
         accommodationService.delete(id);
         return new ResponseEntity<AccommodationDTO>(HttpStatus.NO_CONTENT);

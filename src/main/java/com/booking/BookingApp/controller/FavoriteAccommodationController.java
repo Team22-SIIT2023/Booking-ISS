@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
@@ -24,6 +25,7 @@ public class FavoriteAccommodationController {
     IFavoriteAccommodationService favoriteAccommodationService;
 
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('GUEST')")
     public ResponseEntity<FavoriteAccommodationDTO> getFavoriteAccommodation(@PathVariable("id") Long id) {
         FavoriteAccommodation accommodation = favoriteAccommodationService.findOne(id);
         if (accommodation == null) {
@@ -33,6 +35,7 @@ public class FavoriteAccommodationController {
     }
     //get favorite accommodations for a guest
     @GetMapping(value = "/guest/{guestId}",produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('GUEST')")
     public ResponseEntity<Collection<FavoriteAccommodationDTO>> getGuestFavoriteAccommodation(@PathVariable("guestId") Long id) {
         Collection<FavoriteAccommodation>accommodations=favoriteAccommodationService.findAllForGuest(id);
         Collection<FavoriteAccommodationDTO> accommodationDTOS = accommodations.stream()
@@ -41,11 +44,13 @@ public class FavoriteAccommodationController {
         return new ResponseEntity<>(accommodationDTOS, HttpStatus.OK);
     }
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('GUEST')")
     public ResponseEntity<FavoriteAccommodationDTO> addFavoriteAccommodation(@RequestBody FavoriteAccommodationDTO accommodation) throws Exception {
         FavoriteAccommodation savedAccommodation = favoriteAccommodationService.create(FavoriteAccommodationDTOMapper.fromDTOtoFavorite(accommodation));
         return new ResponseEntity<FavoriteAccommodationDTO>(FavoriteAccommodationDTOMapper.fromFavoritetoDTO(savedAccommodation), HttpStatus.CREATED);
     }
     @DeleteMapping(value = "/{id}")
+    @PreAuthorize("hasRole('HOST')")
     public ResponseEntity<FavoriteAccommodationDTO> removeFavoriteAccommodation(@PathVariable("id") Long id) {
         favoriteAccommodationService.delete(id);
         return new ResponseEntity<FavoriteAccommodationDTO>(HttpStatus.NO_CONTENT);

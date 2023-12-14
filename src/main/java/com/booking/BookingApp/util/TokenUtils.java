@@ -1,5 +1,6 @@
 package com.booking.BookingApp.util;
 
+import com.booking.BookingApp.domain.Role;
 import com.booking.BookingApp.domain.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -15,7 +16,7 @@ import java.util.Date;
 @Component
 public class TokenUtils {
     // Izdavac tokena
-    @Value("spring-security-example")
+    @Value("Booking-ISS")
     private String APP_NAME;
 
     // Tajna koju samo backend aplikacija treba da zna kako bi mogla da generise i proveri JWT https://jwt.io/
@@ -51,8 +52,10 @@ public class TokenUtils {
      * @param username Korisničko ime korisnika kojem se token izdaje
      * @return JWT token
      */
-    public String generateToken(String username) {
+    public String generateToken(String username, Role role, Long id) {
         return Jwts.builder()
+                .claim("role", role.getName())
+                .claim("id", id)
                 .setIssuer(APP_NAME)
                 .setSubject(username)
                 .setAudience(generateAudience())
@@ -269,6 +272,8 @@ public class TokenUtils {
      * @return Sadrzaj iz AUTH_HEADER-a.
      */
     public String getAuthHeaderFromHeader(HttpServletRequest request) {
+        System.out.println("HEADEEER");
+        System.out.println(request.getHeader(AUTH_HEADER));
         return request.getHeader(AUTH_HEADER);
     }
 }

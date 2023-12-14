@@ -36,8 +36,10 @@ public class UserService implements IUserService {
     @Override
     public User findOne(Long id) {
         Role role=new Role(1L,"guest");
+        List<Role> roles = new ArrayList<>();
+        roles.add(role);
         Address address = new Address("Srbija","Novi Sad","21000","Futoska 1");
-        Account account = new Account(1L, "isidorica","slatkica",Status.ACTIVE, role);
+        Account account = new Account(1L, "isidorica","slatkica",Status.ACTIVE, roles);
         return new User(1L,"Isidora","Aleksic",address,"0692104221",account,"../../../assets/images/userpicture.jpg");
     }
 
@@ -45,7 +47,9 @@ public class UserService implements IUserService {
     public User findLoggedUser(String username, String password) {
         Address address = new Address("Srbija","Novi Sad","21000","Futoska 1");
         Role role=new Role(1L,"guest");
-        Account account = new Account(1L, "isidorica","slatkica",Status.ACTIVE, role);
+        List<Role> roles = new ArrayList<>();
+        roles.add(role);
+        Account account = new Account(1L, "isidorica","slatkica",Status.ACTIVE, roles);
         return new User(1L,"Isidora","Aleksic",address,"0692104221",account,"../../../assets/images/userpicture.jpg");
     }
 
@@ -63,7 +67,9 @@ public class UserService implements IUserService {
     public User findOneByEmail(String email) {
         Address address = new Address("Srbija","Novi Sad","21000","Futoska 1");
         Role role=new Role(1L,"guest");
-        Account account = new Account(1L, "isidorica","slatkica",Status.ACTIVE,role);
+        List<Role> roles = new ArrayList<>();
+        roles.add(role);
+        Account account = new Account(1L, "isidorica","slatkica",Status.ACTIVE,roles);
         return new User(1L,"Isidora","Aleksic",address,"0692104221",account,"../../../assets/images/userpicture.jpg");
     }
 
@@ -75,7 +81,9 @@ public class UserService implements IUserService {
     public User create(User user) throws Exception {
         Address address = new Address("Srbija","Novi Sad","21000","Futoska 1");
         Role role=new Role(1L,"guest");
-        Account account = new Account(1L, "isidorica","slatkica",Status.ACTIVE, role);
+        List<Role> roles = new ArrayList<>();
+        roles.add(role);
+        Account account = new Account(1L, "isidorica","slatkica",Status.ACTIVE, roles);
         return new User(1L,"Isidora","Aleksic",address,"0692104221",account,"../../../assets/images/userpicture.jpg");
     }
 
@@ -83,7 +91,9 @@ public class UserService implements IUserService {
     public User update(User user) throws Exception {
         Address address = new Address("Srbija","Novi Sad","21000","Futoska 1");
         Role role=new Role(1L,"guest");
-        Account account = new Account(1L, "isidorica","slatkica",Status.ACTIVE, role);
+        List<Role> roles = new ArrayList<>();
+        roles.add(role);
+        Account account = new Account(1L, "isidorica","slatkica",Status.ACTIVE, roles);
         return new User(1L,"Isidora","Aleksic",address,"0692104221",account,"../../../assets/images/userpicture.jpg");
     }
 
@@ -112,8 +122,8 @@ public class UserService implements IUserService {
         u.setPicturePath(userRequest.getPicturePath());
 
         // u primeru se registruju samo obicni korisnici i u skladu sa tim im se i dodeljuje samo rola USER
-        List<Role> roles = roleService.findByName(userRequest.getAccount().getRole().getName());
-        u.getAccount().setRole(roles.get(0));
+        List<Role> roles = roleService.findByName(userRequest.getAccount().getRoles().get(0).getName());
+        u.getAccount().setRoles(roles);
 
         return this.userRepository.save(u);
     }
@@ -123,7 +133,9 @@ public class UserService implements IUserService {
         List<User> users = new ArrayList<>();
         Address address = new Address("Srbija","Novi Sad","21000","Futoska 1");
         Role role=new Role(1L,"guest");
-        Account account = new Account(1L, "aleksicisidora@yahoo.com","682002",Status.ACTIVE, role);
+        List<Role> roles = new ArrayList<>();
+        roles.add(role);
+        Account account = new Account(1L, "aleksicisidora@yahoo.com","682002",Status.ACTIVE, roles);
         users.add(new User(1L,"Isidora","Aleksic",address,"0692104221",account,"../../../assets/images/userpicture.jpg"));
         users.add(new User(2L,"Tamara","Aleksic",address,"0692104221",account,"../../../assets/images/userpicture.jpg"));
         users.add(new User(3L,"Kikica","Aleksic",address,"0692104221",account,"../../../assets/images/userpicture.jpg"));
