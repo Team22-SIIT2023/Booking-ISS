@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 import java.time.LocalDate;
 import java.util.Date;
@@ -13,6 +15,8 @@ import java.util.Date;
 @NoArgsConstructor
 @Entity
 @Table(name = "timeslots")
+@SQLDelete(sql = "UPDATE timeslots SET deleted = true WHERE id=?")
+@Where(clause = "deleted = false")
 public class TimeSlot {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,15 +30,19 @@ public class TimeSlot {
     @Column(name = "end_date")
     private LocalDate endDate;
 
-    public TimeSlot(Long id, LocalDate startDate, LocalDate endDate) {
+    @Column(name="deleted")
+    private  boolean deleted = Boolean.FALSE;
+    public TimeSlot(Long id, LocalDate startDate, LocalDate endDate, boolean deleted) {
         this.id = id;
         this.startDate = startDate;
         this.endDate = endDate;
+        this.deleted = deleted;
     }
 
-    public TimeSlot(LocalDate startDate, LocalDate endDate) {
+    public TimeSlot(LocalDate startDate, LocalDate endDate, boolean deleted) {
         this.startDate = startDate;
         this.endDate = endDate;
+        this.deleted = deleted;
     }
 
     @Override

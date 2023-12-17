@@ -7,6 +7,7 @@ import com.booking.BookingApp.domain.enums.AccommodationType;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org .springframework.stereotype.Repository;
@@ -74,14 +75,7 @@ Collection<Accommodation> findAccommodationsByCountryTypeGuestNumberTimeRangeAnd
             @Param("amenitiesCount") long amenitiesCount
     );
 
-
-
-
-
-
-
-
-
-
-
+    @Modifying
+    @Query(value = "update accommodations SET deleted = true WHERE id=:accommodationId",nativeQuery = true)
+    void deleteHostAccommodations(Long accommodationId);
 }

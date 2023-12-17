@@ -13,12 +13,21 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 public class AccountDTO {
+    private Long id;
     private String username;
     private String password;
     private Status status;
     private List<Role> roles;
 
-    public AccountDTO(String email, String password, Status status, List<Role> roles) {
+    public AccountDTO(Long id, String email, String password, Status status, List<Role> roles) {
+        this.id=id;
+        this.username = email;
+        this.password = password;
+        this.status = status;
+        this.roles = roles;
+    }
+
+    public AccountDTO( String email, String password, Status status, List<Role> roles) {
         this.username = email;
         this.password = password;
         this.status = status;

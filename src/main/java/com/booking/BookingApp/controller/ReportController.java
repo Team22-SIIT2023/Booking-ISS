@@ -31,7 +31,7 @@ public class ReportController {
             @RequestParam("end") @DateTimeFormat(pattern="yyyy-MM-dd") Date end) {
         TimeSlot timeSlot = new TimeSlot(begin.toInstant().atZone
                 (ZoneId.systemDefault()).toLocalDate(),
-                end.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+                end.toInstant().atZone(ZoneId.systemDefault()).toLocalDate(),false);
         Report report=reportService.findOneByHostAndTimeSlot(hostId,timeSlot);
         return new ResponseEntity<ReportDTO>(ReportDTOMapper.fromReportToDTO(report), HttpStatus.OK);
     };
