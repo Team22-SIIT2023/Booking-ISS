@@ -8,11 +8,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface HostRepository  extends JpaRepository<Host,Long> {
-    @Modifying
-    @Query(value = "DELETE FROM users u WHERE u.id = :id",nativeQuery=true)
-    void deleteUserById(Long id);
 
-    @Modifying
-    @Query(value = "DELETE FROM hosts h WHERE h.id = :id", nativeQuery=true)
-    void deleteHostById(Long id);
 }

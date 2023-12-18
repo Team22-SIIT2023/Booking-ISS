@@ -16,18 +16,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -76,14 +71,14 @@ public class AccommodationService implements IAccommodationService {
     }
 
     @Override
-    public Collection<Accommodation> findAll(LocalDate begin, LocalDate end, int guestNumber, AccommodationType accommodationType, double startPrice, double endPrice, AccommodationStatus status, String country, String city, List<String> amenities) {
+    public Collection<Accommodation> findAll(LocalDate begin, LocalDate end, int guestNumber, AccommodationType accommodationType, double startPrice, double endPrice, AccommodationStatus status, String country, String city, List<String> amenities, Integer hostId) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         Collection<Accommodation> accommodations=new ArrayList<>();
         int size=0;
         if(amenities!=null){
             size=amenities.size();
         }
-            if(begin!=null && end!=null){
+        if(begin!=null && end!=null){
                 accommodations= accommodationRepository.findAccommodationsByCountryTypeGuestNumberTimeRangeAndAmenities(
                         country,
                         city,
@@ -92,16 +87,18 @@ public class AccommodationService implements IAccommodationService {
                         formatter.format(begin),
                         formatter.format(end),
                         amenities,
-                        size
+                        size,
+                        hostId
                 );
-            }else{
+        }else{
                 accommodations= accommodationRepository.findAccommodationsByCountryTypeGuestNumberAndAmenities(
                         country,
                         city,
                         accommodationType,
                         guestNumber,
                         amenities,
-                        size
+                        size,
+                        hostId
                 );
             }
 
@@ -176,7 +173,7 @@ public class AccommodationService implements IAccommodationService {
             }
         }
         if (!check) {
-            TimeSlot newFreeTimeSlot = new TimeSlot(newTimeSlot.getStartDate(), newTimeSlot.getEndDate());
+            TimeSlot newFreeTimeSlot = new TimeSlot(newTimeSlot.getStartDate(), newTimeSlot.getEndDate(),false);
             accommodationForUpdate.getFreeTimeSlots().add(newFreeTimeSlot);
         }
         return accommodationRepository.save(accommodationForUpdate);
@@ -241,11 +238,11 @@ public class AccommodationService implements IAccommodationService {
                 pricelist.getTimeSlot().setEndDate(price.getTimeSlot().getStartDate());
                 PricelistItem pricelistItem2 = new PricelistItem();
                 pricelistItem2.setPrice(price.getPrice());
-                pricelistItem2.setTimeSlot(new TimeSlot(price.getTimeSlot().getStartDate(), price.getTimeSlot().getEndDate()));
+                pricelistItem2.setTimeSlot(new TimeSlot(price.getTimeSlot().getStartDate(), price.getTimeSlot().getEndDate(),false));
 
                 PricelistItem pricelistItem3 = new PricelistItem();
                 pricelistItem3.setPrice(pricelist.getPrice());
-                pricelistItem3.setTimeSlot(new TimeSlot(price.getTimeSlot().getEndDate(), endDate));
+                pricelistItem3.setTimeSlot(new TimeSlot(price.getTimeSlot().getEndDate(), endDate, false));
 
                 accommodationForUpdate.getPriceList().add(pricelistItem2);
                 accommodationForUpdate.getPriceList().add(pricelistItem3);
@@ -258,7 +255,7 @@ public class AccommodationService implements IAccommodationService {
                 pricelist.getTimeSlot().setEndDate(price.getTimeSlot().getStartDate());
                 PricelistItem pricelistItem2 = new PricelistItem();
                 pricelistItem2.setPrice(price.getPrice());
-                pricelistItem2.setTimeSlot(new TimeSlot(price.getTimeSlot().getStartDate(), price.getTimeSlot().getEndDate()));
+                pricelistItem2.setTimeSlot(new TimeSlot(price.getTimeSlot().getStartDate(), price.getTimeSlot().getEndDate(), false));
                 accommodationForUpdate.getPriceList().add(pricelistItem2);
                 check=true;
                 break;
@@ -269,7 +266,7 @@ public class AccommodationService implements IAccommodationService {
                 pricelist.getTimeSlot().setStartDate(price.getTimeSlot().getEndDate());
                 PricelistItem pricelistItem2 = new PricelistItem();
                 pricelistItem2.setPrice(price.getPrice());
-                pricelistItem2.setTimeSlot(new TimeSlot(price.getTimeSlot().getStartDate(), price.getTimeSlot().getEndDate()));
+                pricelistItem2.setTimeSlot(new TimeSlot(price.getTimeSlot().getStartDate(), price.getTimeSlot().getEndDate(), false));
                 accommodationForUpdate.getPriceList().add(pricelistItem2);
                 check=true;
                 break;
@@ -286,7 +283,7 @@ public class AccommodationService implements IAccommodationService {
         if (!check) {
             PricelistItem pricelistItem = new PricelistItem();
             pricelistItem.setPrice(price.getPrice());
-            pricelistItem.setTimeSlot(new TimeSlot(price.getTimeSlot().getStartDate(), price.getTimeSlot().getEndDate()));
+            pricelistItem.setTimeSlot(new TimeSlot(price.getTimeSlot().getStartDate(), price.getTimeSlot().getEndDate(), false));
             accommodationForUpdate.getPriceList().add(pricelistItem);
         }
         return accommodationRepository.save(accommodationForUpdate);
@@ -306,41 +303,50 @@ public class AccommodationService implements IAccommodationService {
         accommodationRepository.save(accommodation);
     }
 
-    @Override
-    public byte[] getImages(Long id) throws IOException {
-        return new byte[0];
-    }
+    public List<String> getImages(Long id) throws IOException {
+        Accommodation accommodation = findOne(id);
+        List<String> base64Images = new ArrayList<>();
 
-//    public byte[] getImages(Long id) throws IOException {
-//        Accommodation accommodation = findOne(id);
-//
-//        String imagePath = StringUtils.cleanPath(imagesDirPath + accommodation.getId() + "/" + accommodation.getProfilePicture());
-//        File file = new File(imagePath);
-//
-//        return Files.readAllBytes(file.toPath());
-//    }
+        String directoryPath = StringUtils.cleanPath(imagesDirPath + accommodation.getId());
+        File directory = new File(directoryPath);
+
+        if (directory.exists() && directory.isDirectory()) {
+            File[] imageFiles = directory.listFiles();
+
+            if (imageFiles != null) {
+                for (File imageFile : imageFiles) {
+                    if (imageFile.isFile()) {
+                        byte[] imageData = Files.readAllBytes(imageFile.toPath());
+                        String base64Image = Base64.getEncoder().encodeToString(imageData);
+                        base64Images.add(base64Image);
+                    }
+                }
+            }
+        }
+        return base64Images;
+    }
 
 
     public List<Accommodation> data() {
         ArrayList<Amenity> amenities=new ArrayList<>();
-        amenities.add(new Amenity(1L,"pool"));
-        amenities.add(new Amenity(1L,"pets"));
-        amenities.add(new Amenity(1L,"parking"));
+        amenities.add(new Amenity(1L,"pool", false));
+        amenities.add(new Amenity(1L,"pets",false));
+        amenities.add(new Amenity(1L,"parking",false));
         List<Accommodation> accommodationList = new ArrayList<>();
         Accommodation accommodation1 = new Accommodation(
                 1L, "Hotel ABC", "Boasting a garden and views of inner courtyard, The Gate rooms is a sustainable apartment situated in Novi Sad, 1.9 km from SPENS Sports Centre. It is located 2.8 km from Promenada Shopping Mall and features a shared kitchen.",
-                new Address("Srbija","Novi Sad","21000","Futoska 14"),
+                new Address("Srbija","Novi Sad","21000","Futoska 14", false),
                  2, 4, AccommodationType.HOTEL,
                 true, true, null, AccommodationStatus.CREATED,
-                3, new ArrayList<>(), amenities, new ArrayList<>()
+                3, new ArrayList<>(), amenities, new ArrayList<>(), false
         );
 
         Accommodation accommodation2 = new Accommodation(
                 2L, "Apartment XYZ", "Boasting a garden and views of inner courtyard, The Gate rooms is a sustainable apartment situated in Novi Sad, 1.9 km from SPENS Sports Centre. It is located 2.8 km from Promenada Shopping Mall and features a shared kitchen.",
-                new Address("Srbija","Novi Sad","21000","Futoska 14"),
+                new Address("Srbija","Novi Sad","21000","Futoska 14", false),
                 3, 6, AccommodationType.APARTMENT,
                 false, false, null, AccommodationStatus.ACCEPTED,
-                5, new ArrayList<>(), amenities, new ArrayList<>()
+                5, new ArrayList<>(), amenities, new ArrayList<>(), false
         );
         accommodationList.add(accommodation1);
         accommodationList.add(accommodation2);

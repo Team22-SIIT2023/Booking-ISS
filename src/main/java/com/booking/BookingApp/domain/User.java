@@ -9,6 +9,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -24,8 +26,9 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-
 @Table(name = "users")
+@SQLDelete(sql = "UPDATE users SET deleted = true WHERE id=?")
+@Where(clause = "deleted=false")
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -43,9 +46,8 @@ public class User implements UserDetails {
     @Column(name = "phone_number")
     private String phoneNumber;
 
-
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @OneToOne(cascade = {CascadeType.ALL})
+    @OneToOne(cascade = {CascadeType.REMOVE})
     private Account account;
 
     @Column(name = "picture_path")
@@ -60,8 +62,9 @@ public class User implements UserDetails {
     @Column(name="activation_link_date")
     private LocalDate activationLinkDate;
 
-
-    public User(Long id, String firstName, String lastName, Address address, String phoneNumber, Account account, String picturePath) {
+    @Column(name="deleted")
+    private boolean deleted = Boolean.FALSE;
+    public User(Long id, String firstName, String lastName, Address address, String phoneNumber, Account account, String picturePath, Boolean deleted) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -69,6 +72,7 @@ public class User implements UserDetails {
         this.phoneNumber = phoneNumber;
         this.account = account;
         this.picturePath = picturePath;
+        this.deleted = deleted;
     }
 
     @Override
@@ -81,6 +85,7 @@ public class User implements UserDetails {
                 ", phoneNumber='" + phoneNumber + '\'' +
                 ", account=" + account +
                 ",picturePath" + picturePath +
+                ",deleted" + deleted +
                 '}';
     }
 
@@ -148,5 +153,9 @@ public class User implements UserDetails {
 
     public void setLastPasswordResetDate(Timestamp lastPasswordResetDate) {
         this.lastPasswordResetDate = lastPasswordResetDate;
+    }
+
+    public boolean getDeleted() {
+        return deleted;
     }
 }
