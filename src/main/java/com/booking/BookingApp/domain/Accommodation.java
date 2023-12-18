@@ -80,10 +80,8 @@ public class Accommodation {
     @ElementCollection
     private List<String> images;
 
-
     @Column(name="deleted")
     private boolean deleted = Boolean.FALSE;
-
 
     public Accommodation(Long id, String name, String description, Address address, int minGuests, int maxGuests,
                          AccommodationType type, boolean pricePerGuest, boolean automaticConfirmation, Host host,
