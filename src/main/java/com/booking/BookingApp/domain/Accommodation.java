@@ -49,7 +49,7 @@ public class Accommodation {
     private boolean automaticConfirmation;
 
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
+    @ManyToOne
     private Host host;
 
     @Enumerated(EnumType.STRING)
@@ -76,6 +76,7 @@ public class Accommodation {
 
     @ElementCollection
     private List<String> images;
+
 
     public Accommodation(Long id, String name, String description, Address address, int minGuests, int maxGuests,
                          AccommodationType type, boolean pricePerGuest, boolean automaticConfirmation, Host host,

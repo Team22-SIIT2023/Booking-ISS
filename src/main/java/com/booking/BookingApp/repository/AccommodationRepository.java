@@ -22,11 +22,12 @@ public interface AccommodationRepository extends JpaRepository<Accommodation, Lo
 
     Collection<Accommodation> findAllByHost(Host host);
 @Query(
-        "SELECT DISTINCT a FROM Accommodation a " +
-                "JOIN a.freeTimeSlots fts " +
+        "SELECT  a FROM Accommodation a " +
+                "LEFT JOIN a.freeTimeSlots fts " +
                 "LEFT JOIN a.amenities amen " +
                 "WHERE (:country IS NULL OR a.address.country = :country) AND " +
                 "(:city IS NULL OR a.address.city = :city) AND " +
+                "(:hostId is NULL OR a.host.id = :hostId) AND " +
                 "(:accommodationType IS NULL OR a.type = :accommodationType) AND " +
                 "(:guestNumber IS NULL OR :guestNumber = 0 OR (a.maxGuests >= :guestNumber AND a.minGuests <= :guestNumber)) AND " +
                 "(:amenities IS NULL OR " +
@@ -49,15 +50,17 @@ Collection<Accommodation> findAccommodationsByCountryTypeGuestNumberTimeRangeAnd
         @Param("startDate") String startDate,
         @Param("endDate") String endDate,
         @Param("amenities") List<String> amenities,
-        @Param("amenitiesCount") long amenitiesCount
+        @Param("amenitiesCount") long amenitiesCount,
+        @Param("hostId") Integer hostId
 );
 
     @Query(
-            "SELECT DISTINCT a FROM Accommodation a " +
-                    "JOIN a.freeTimeSlots fts " +
+            "SELECT a FROM Accommodation a " +
+                    "LEFT JOIN a.freeTimeSlots fts " +
                     "LEFT JOIN a.amenities amen " +
                     "WHERE (:country IS NULL OR a.address.country = :country) AND " +
                     "(:city IS NULL OR a.address.city = :city) AND " +
+                    "(:hostId IS NULL OR a.host.id = :hostId) AND " +
                     "(:accommodationType IS NULL OR a.type = :accommodationType) AND " +
                     "(:guestNumber IS NULL OR :guestNumber = 0 OR (a.maxGuests >= :guestNumber AND a.minGuests <= :guestNumber)) AND " +
                     "(:amenities IS NULL OR " +
@@ -71,8 +74,11 @@ Collection<Accommodation> findAccommodationsByCountryTypeGuestNumberTimeRangeAnd
             @Param("accommodationType") AccommodationType accommodationType,
             @Param("guestNumber") Integer guestNumber,
             @Param("amenities") List<String> amenities,
-            @Param("amenitiesCount") long amenitiesCount
+            @Param("amenitiesCount") long amenitiesCount,
+            @Param("hostId") Integer hostId
     );
+
+
 
 
 

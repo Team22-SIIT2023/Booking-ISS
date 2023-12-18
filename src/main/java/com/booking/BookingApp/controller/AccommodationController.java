@@ -8,6 +8,7 @@ import com.booking.BookingApp.mapper.AccommodationDTOMapper;
 import com.booking.BookingApp.service.interfaces.IAccommodationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -41,12 +42,13 @@ public class AccommodationController {
             @RequestParam(value = "status", required = false) AccommodationStatus status,
             @RequestParam(value = "country", required = false) String country,
             @RequestParam(value = "city", required = false) String city,
-            @RequestParam(value = "amenities", required = false) List<String> amenities
+            @RequestParam(value = "amenities", required = false) List<String> amenities,
+            @RequestParam(value = "hostId", required = false)Integer hostId
     ) {
 
         System.out.println("USAO?");
         Collection<Accommodation>accommodations=accommodationService.findAll(begin,end,guestNumber,type,
-                startPrice,endPrice,status,country,city,amenities);
+                startPrice,endPrice,status,country,city,amenities,hostId);
         Collection<AccommodationDTO> accommodationDTOS = accommodations.stream()
                 .map(AccommodationDTOMapper::fromAccommodationtoDTO)
                 .collect(Collectors.toList());
@@ -95,10 +97,12 @@ public class AccommodationController {
         return new ResponseEntity<>("Pictures uploaded successfully", HttpStatus.OK);
     }
 
-//    @GetMapping(value="/{accommodationId}/images", produces = MediaType.IMAGE_JPEG_VALUE)
-//    public ResponseEntity<byte[]>  getImageWithMediaType(@PathVariable("accommodationId") Long accommodationId) throws IOException {
-//        return new ResponseEntity<>(accommodationService.getImages(accommodationId), HttpStatus.OK);
-//    }
+    @PreAuthorize("hasRole('HOST') or hasRole('GUEST')")
+    @GetMapping(value = "/{accommodationId}/images", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<String>> getImages(@PathVariable("accommodationId") Long accommodationId) throws IOException {
+        List<String> images = accommodationService.getImages(accommodationId);
+        return ResponseEntity.ok().body(images);
+    }
 
     @PreAuthorize("hasRole('HOST')")
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
