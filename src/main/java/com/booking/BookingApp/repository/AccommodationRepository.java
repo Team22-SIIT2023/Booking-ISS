@@ -7,6 +7,7 @@ import com.booking.BookingApp.domain.enums.AccommodationType;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org .springframework.stereotype.Repository;
@@ -21,6 +22,8 @@ import java.util.List;
 public interface AccommodationRepository extends JpaRepository<Accommodation, Long> {
 
     Collection<Accommodation> findAllByHost(Host host);
+  
+  
 @Query(
         "SELECT  a FROM Accommodation a " +
                 "LEFT JOIN a.freeTimeSlots fts " +
@@ -79,15 +82,8 @@ Collection<Accommodation> findAccommodationsByCountryTypeGuestNumberTimeRangeAnd
     );
 
 
-
-
-
-
-
-
-
-
-
-
+    @Modifying
+    @Query(value = "update accommodations SET deleted = true WHERE id=:accommodationId",nativeQuery = true)
+    void deleteHostAccommodations(Long accommodationId);
 
 }

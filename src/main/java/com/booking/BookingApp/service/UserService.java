@@ -2,16 +2,14 @@ package com.booking.BookingApp.service;
 
 import com.booking.BookingApp.domain.*;
 import com.booking.BookingApp.domain.enums.Status;
-import com.booking.BookingApp.repository.AccommodationRepository;
-import com.booking.BookingApp.repository.HostRepository;
-import com.booking.BookingApp.repository.RequestRepository;
-import com.booking.BookingApp.repository.UserRepository;
+import com.booking.BookingApp.repository.*;
 import com.booking.BookingApp.service.interfaces.IUserService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.xml.stream.events.Comment;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -37,6 +35,8 @@ public class UserService implements IUserService {
     @Autowired
     private RoleService roleService;
 
+    @Autowired
+    CommentsRepository commentsRepository;
     @Override
     public Collection<User> findAll() {
         return data();
@@ -103,38 +103,32 @@ public class UserService implements IUserService {
     @Override
     public void deleteGuest(User user) {
         Guest guest = new Guest(user.getId(), user.getFirstName(), user.getLastName(), user.getAddress(),
-                user.getPhoneNumber(), user.getAccount(), user.getPicturePath(),
+                user.getPhoneNumber(), user.getAccount(), user.getPicturePath(), user.getDeleted(),
                 userRepository.findFavoriteAccommodationsByGuestId(user.getId()));
-        Collection<Request> reservations = requestRepository.findActiveReservationsForGuest(LocalDateTime.now(), guest);
+        Collection<Request> reservations = requestRepository.findActiveReservationsForGuest(LocalDate.now(), guest);
         if(reservations.isEmpty()) {
-            Collection<Request> requests = requestRepository.findByGuest_Id(guest.getId());
-            if(!requests.isEmpty()){
-                requestRepository.deleteAll(requests);
+            Collection<Comments> comments = commentsRepository.findByGuest_Id(user.getId());
+            if(!comments.isEmpty()){
+                for(Comments c: comments){
+                    commentsRepository.deleteById(c.getId());
+                }
             }
             userRepository.deleteById(user.getId());
-            System.out.println(userRepository.findAll());
         }
     }
 
     @Override
     public void deleteHost(User user) {
         Host host = new Host(user.getId(), user.getFirstName(), user.getLastName(),
-                user.getAddress(), user.getPhoneNumber(), user.getAccount(), user.getPicturePath());
+                user.getAddress(), user.getPhoneNumber(), user.getAccount(), user.getPicturePath(), user.getDeleted());
         Collection<Request> reservations = requestRepository.findActiveReservationsForHost(LocalDate.now(), host);
-        if (!reservations.isEmpty()) {
+        if (reservations.isEmpty()) {
             Collection<Accommodation> accommodations = accommodationRepository.findAllByHost(host);
             if(!accommodations.isEmpty()){
                 for(Accommodation a: accommodations){
-                    userRepository.deleteFavoriteAccommodationsByAccommodationId(a.getId());
+                    accommodationRepository.deleteById(a.getId());
                 }
-                accommodationRepository.deleteAll(accommodations);
             }
-            Collection<Request> requests = requestRepository.findByAccommodation_Host(host);
-            if (!reservations.isEmpty()) {
-                requestRepository.deleteAll(requests);
-            }
-            hostRepository.deleteHostById(user.getId());
-            hostRepository.deleteUserById(user.getId());
         }
     }
 
@@ -171,26 +165,26 @@ public class UserService implements IUserService {
         Role role=new Role(1L,"guest");
         List<Role> roles = new ArrayList<>();
         roles.add(role);
-        Address address = new Address("Srbija","Novi Sad","21000","Futoska 1");
-        Account account = new Account(1L, "isidorica","slatkica",Status.ACTIVE, roles);
-        return new User(1L,"Isidora","Aleksic",address,"0692104221",account,"../../../assets/images/userpicture.jpg");
+        Address address = new Address("Srbija","Novi Sad","21000","Futoska 1",false);
+        Account account = new Account(1L, "isidorica","slatkica",Status.ACTIVE, roles,false);
+        return new User(1L,"Isidora","Aleksic",address,"0692104221",account,"../../../assets/images/userpicture.jpg",false);
     }
     public List<User> data() {
         List<User> users = new ArrayList<>();
-        Address address = new Address("Srbija","Novi Sad","21000","Futoska 1");
+        Address address = new Address("Srbija","Novi Sad","21000","Futoska 1",false);
         Role role=new Role(1L,"guest");
         List<Role> roles = new ArrayList<>();
         roles.add(role);
-        Account account = new Account(1L, "aleksicisidora@yahoo.com","682002",Status.ACTIVE, roles);
-        users.add(new User(1L,"Isidora","Aleksic",address,"0692104221",account,"../../../assets/images/userpicture.jpg"));
-        users.add(new User(2L,"Tamara","Aleksic",address,"0692104221",account,"../../../assets/images/userpicture.jpg"));
-        users.add(new User(3L,"Kikica","Aleksic",address,"0692104221",account,"../../../assets/images/userpicture.jpg"));
-        users.add(new User(4L,"Kile","Aleksic",address,"0692104221",account,"../../../assets/images/userpicture.jpg"));
-        users.add(new User(5L,"Isidorica","Aleksic",address,"0692104221",account,"../../../assets/images/userpicture.jpg"));
-        users.add(new User(6L,"Isi","Aleksic",address,"0692104221",account,"../../../assets/images/userpicture.jpg"));
-        users.add(new User(7L,"Kika","Aleksic",address,"0692104221",account,"../../../assets/images/userpicture.jpg"));
-        users.add(new User(8L,"Tamarica","Aleksic",address,"0692104221",account,"../../../assets/images/userpicture.jpg"));
-        users.add(new User(9L,"Taki","Aleksic",address,"0692104221",account,"../../../assets/images/userpicture.jpg"));
+        Account account = new Account(1L, "aleksicisidora@yahoo.com","682002",Status.ACTIVE, roles,false);
+        users.add(new User(1L,"Isidora","Aleksic",address,"0692104221",account,"../../../assets/images/userpicture.jpg",false));
+        users.add(new User(2L,"Tamara","Aleksic",address,"0692104221",account,"../../../assets/images/userpicture.jpg",false));
+        users.add(new User(3L,"Kikica","Aleksic",address,"0692104221",account,"../../../assets/images/userpicture.jpg",false));
+        users.add(new User(4L,"Kile","Aleksic",address,"0692104221",account,"../../../assets/images/userpicture.jpg",false));
+        users.add(new User(5L,"Isidorica","Aleksic",address,"0692104221",account,"../../../assets/images/userpicture.jpg",false));
+        users.add(new User(6L,"Isi","Aleksic",address,"0692104221",account,"../../../assets/images/userpicture.jpg",false));
+        users.add(new User(7L,"Kika","Aleksic",address,"0692104221",account,"../../../assets/images/userpicture.jpg",false));
+        users.add(new User(8L,"Tamarica","Aleksic",address,"0692104221",account,"../../../assets/images/userpicture.jpg",false));
+        users.add(new User(9L,"Taki","Aleksic",address,"0692104221",account,"../../../assets/images/userpicture.jpg",false));
         return users;
     }
 }

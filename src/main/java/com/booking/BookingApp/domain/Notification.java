@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 import java.time.LocalDate;
 
@@ -15,6 +17,8 @@ import java.time.LocalDate;
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "notifications")
+@SQLDelete(sql = "UPDATE notifications SET deleted = true WHERE id=?")
+@Where(clause = "deleted = false")
 //@MappedSuperclass
 public class Notification {
     @Id
@@ -34,12 +38,16 @@ public class Notification {
     @Enumerated(EnumType.STRING)
     private NotificationType type;
 
-    public Notification(Long id, String text, LocalDate date, boolean turnedOn, NotificationType type) {
+    @Column(name="deleted")
+    private boolean deleted = Boolean.FALSE;
+
+    public Notification(Long id, String text, LocalDate date, boolean turnedOn, NotificationType type, boolean deleted) {
         this.id = id;
         this.text = text;
         this.date = date;
         this.turnedOn = turnedOn;
         this.type = type;
+        this.deleted=deleted;
     }
 
     @Override
@@ -50,6 +58,7 @@ public class Notification {
                 ", date=" + date +
                 ", turnedOn=" + turnedOn +
                 ", type=" + type +
+                ",deleted=" + deleted +
                 '}';
     }
 }

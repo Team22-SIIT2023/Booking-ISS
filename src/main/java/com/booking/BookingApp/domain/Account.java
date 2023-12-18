@@ -6,6 +6,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 import java.util.Collection;
 import java.util.List;
@@ -15,6 +17,8 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Table(name = "accounts")
+@SQLDelete(sql = "UPDATE accounts SET deleted = true WHERE id=?")
+@Where(clause = "deleted = false")
 public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,28 +40,35 @@ public class Account {
             inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
     private List<Role> roles;
 
+    @Column(name="deleted")
+    private boolean deleted = Boolean.FALSE;
 
-    public Account(Long id, String username, String password, Status status, List<Role> roles) {
+    public Account(Long id, String username, String password, Status status, List<Role> roles, boolean deleted) {
         this.id = id;
         this.username =username;
         this.password = password;
         this.status = status;
         this.roles = roles;
+        this.deleted = deleted;
     }
 
-    public Account(String username, String password, Status status, List<Role> roles) {
+    public Account(String username, String password, Status status, List<Role> roles, boolean deleted) {
         this.username =username;
         this.password = password;
         this.status = status;
         this.roles = roles;
+        this.deleted = deleted;
     }
 
     @Override
     public String toString() {
         return "Account{" +
+                "id=" + id  +
+                ",username" + username +
                 ", password='" + password + '\'' +
                 ", status=" + status +
                 ", role=" + roles +
+                ", deleted=" + deleted +
                 '}';
     }
 }

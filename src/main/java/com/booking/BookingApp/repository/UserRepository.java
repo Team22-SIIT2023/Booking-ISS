@@ -22,8 +22,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
     User findByAccount_Username(String username);
 
     Collection<User> findByAccount_Status(Status userStatus);
-
-    @Modifying
-    @Query(value = "DELETE FROM favorite_accommodation WHERE accommodation_id = :accommodationId", nativeQuery = true)
-    void deleteFavoriteAccommodationsByAccommodationId(@Param("accommodationId") Long accommodationId);
+//
+//    @Modifying
+//    @Query(value = "UPDATE favorite_accommodation SET deleted = true WHERE accommodation_id=:accommodationId", nativeQuery = true)
+//    void deleteFavoriteAccommodationsByAccommodationId(@Param("accommodationId") Long accommodationId);
 }

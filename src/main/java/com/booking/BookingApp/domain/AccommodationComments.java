@@ -1,12 +1,13 @@
 package com.booking.BookingApp.domain;
 
 import com.booking.BookingApp.domain.enums.Status;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
+import jakarta.persistence.*;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.*;
 
 import java.time.LocalDate;
 
@@ -20,8 +21,8 @@ public class AccommodationComments extends Comments{
     @Column(name = "accommodation_id")
     private Long accommodationId;
 
-    public AccommodationComments(Long id, String text, LocalDate date, double rating, Status status, Guest guest, Long accommodationId) {
-        super(id, text, date, rating, status, guest);
+    public AccommodationComments(Long id, String text, LocalDate date, double rating, Status status, Guest guest, Long accommodationId,boolean deleted) {
+        super(id, text, date, rating, status, guest,deleted);
         this.accommodationId = accommodationId;
     }
 }

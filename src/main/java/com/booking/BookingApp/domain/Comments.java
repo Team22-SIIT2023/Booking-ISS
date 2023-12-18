@@ -5,6 +5,10 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 import java.time.LocalDate;
 
@@ -14,6 +18,8 @@ import java.time.LocalDate;
 @Inheritance(strategy = InheritanceType.JOINED)
 @Entity
 @Table(name = "comments")
+@SQLDelete(sql = "UPDATE comments SET deleted = true WHERE id=?")
+@Where(clause = "deleted = false")
 //@MappedSuperclass
 public class Comments {
     @Id
@@ -34,16 +40,21 @@ public class Comments {
     @Column(name = "commentStatus")
     private Status status;
 
-    @ManyToOne(cascade = {CascadeType.ALL})
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @ManyToOne(cascade=CascadeType.REMOVE)
     private Guest guest;
 
-    public Comments(Long id, String text, LocalDate date, double rating, Status status, Guest guest) {
+    @Column(name="deleted")
+    private boolean deleted = Boolean.FALSE;
+
+    public Comments(Long id, String text, LocalDate date, double rating, Status status, Guest guest, boolean deleted) {
         this.id = id;
         this.text = text;
         this.date = date;
         this.rating = rating;
         this.status = status;
         this.guest = guest;
+        this.deleted = deleted;
     }
     @Override
     public String toString() {
@@ -54,6 +65,7 @@ public class Comments {
                 ", rating=" + rating +
                 ", status=" + status +
                 ", guest=" + guest +
+                ", deleted=" + deleted +
                 '}';
     }
 }

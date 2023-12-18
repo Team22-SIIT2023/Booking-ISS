@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -18,6 +20,8 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Table(name = "accommodations")
+@SQLDelete(sql = "UPDATE accommodations SET deleted = true WHERE id=?")
+@Where(clause = "deleted = false")
 public class Accommodation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -49,7 +53,7 @@ public class Accommodation {
     private boolean automaticConfirmation;
 
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.REMOVE})
     private Host host;
 
     @Enumerated(EnumType.STRING)
@@ -62,7 +66,6 @@ public class Accommodation {
 
     @OneToMany(cascade = {CascadeType.ALL},orphanRemoval = true)
     private Collection<TimeSlot> freeTimeSlots;
-
 
     @ManyToMany
     @JoinTable(name = "amenities_accommodation",
@@ -77,11 +80,13 @@ public class Accommodation {
     @ElementCollection
     private List<String> images;
 
+    @Column(name="deleted")
+    private boolean deleted = Boolean.FALSE;
 
     public Accommodation(Long id, String name, String description, Address address, int minGuests, int maxGuests,
                          AccommodationType type, boolean pricePerGuest, boolean automaticConfirmation, Host host,
                          AccommodationStatus status, int reservationDeadline, Collection<TimeSlot> freeTimeSlots,
-                         Collection<Amenity> amenities, Collection<PricelistItem> priceList) {
+                         Collection<Amenity> amenities, Collection<PricelistItem> priceList, boolean deleted) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -97,13 +102,14 @@ public class Accommodation {
         this.freeTimeSlots = freeTimeSlots;
         this.amenities = amenities;
         this.priceList = priceList;
+        this.deleted = deleted;
     }
 
 
     public Accommodation(Long id, String name, String description, Address address, int minGuests, int maxGuests,
                          AccommodationType type, boolean pricePerGuest, boolean automaticConfirmation, Host host,
                          AccommodationStatus status, int reservationDeadline, Collection<TimeSlot> freeTimeSlots,
-                         Collection<Amenity> amenities, Collection<PricelistItem> priceList, List<String> images) {
+                         Collection<Amenity> amenities, Collection<PricelistItem> priceList, List<String> images, boolean deleted) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -120,6 +126,7 @@ public class Accommodation {
         this.amenities = amenities;
         this.priceList = priceList;
         this.images = images;
+        this.deleted = deleted;
     }
 
     @Override
@@ -140,6 +147,7 @@ public class Accommodation {
                 ", freeTimeSlots=" + freeTimeSlots +
                 ", amenities=" + amenities +
                 ", priceList=" + priceList +
+                ", deleted=" + deleted +
                 '}';
     }
 

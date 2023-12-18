@@ -173,7 +173,7 @@ public class AccommodationService implements IAccommodationService {
             }
         }
         if (!check) {
-            TimeSlot newFreeTimeSlot = new TimeSlot(newTimeSlot.getStartDate(), newTimeSlot.getEndDate());
+            TimeSlot newFreeTimeSlot = new TimeSlot(newTimeSlot.getStartDate(), newTimeSlot.getEndDate(),false);
             accommodationForUpdate.getFreeTimeSlots().add(newFreeTimeSlot);
         }
         return accommodationRepository.save(accommodationForUpdate);
@@ -238,11 +238,11 @@ public class AccommodationService implements IAccommodationService {
                 pricelist.getTimeSlot().setEndDate(price.getTimeSlot().getStartDate());
                 PricelistItem pricelistItem2 = new PricelistItem();
                 pricelistItem2.setPrice(price.getPrice());
-                pricelistItem2.setTimeSlot(new TimeSlot(price.getTimeSlot().getStartDate(), price.getTimeSlot().getEndDate()));
+                pricelistItem2.setTimeSlot(new TimeSlot(price.getTimeSlot().getStartDate(), price.getTimeSlot().getEndDate(),false));
 
                 PricelistItem pricelistItem3 = new PricelistItem();
                 pricelistItem3.setPrice(pricelist.getPrice());
-                pricelistItem3.setTimeSlot(new TimeSlot(price.getTimeSlot().getEndDate(), endDate));
+                pricelistItem3.setTimeSlot(new TimeSlot(price.getTimeSlot().getEndDate(), endDate, false));
 
                 accommodationForUpdate.getPriceList().add(pricelistItem2);
                 accommodationForUpdate.getPriceList().add(pricelistItem3);
@@ -255,7 +255,7 @@ public class AccommodationService implements IAccommodationService {
                 pricelist.getTimeSlot().setEndDate(price.getTimeSlot().getStartDate());
                 PricelistItem pricelistItem2 = new PricelistItem();
                 pricelistItem2.setPrice(price.getPrice());
-                pricelistItem2.setTimeSlot(new TimeSlot(price.getTimeSlot().getStartDate(), price.getTimeSlot().getEndDate()));
+                pricelistItem2.setTimeSlot(new TimeSlot(price.getTimeSlot().getStartDate(), price.getTimeSlot().getEndDate(), false));
                 accommodationForUpdate.getPriceList().add(pricelistItem2);
                 check=true;
                 break;
@@ -266,7 +266,7 @@ public class AccommodationService implements IAccommodationService {
                 pricelist.getTimeSlot().setStartDate(price.getTimeSlot().getEndDate());
                 PricelistItem pricelistItem2 = new PricelistItem();
                 pricelistItem2.setPrice(price.getPrice());
-                pricelistItem2.setTimeSlot(new TimeSlot(price.getTimeSlot().getStartDate(), price.getTimeSlot().getEndDate()));
+                pricelistItem2.setTimeSlot(new TimeSlot(price.getTimeSlot().getStartDate(), price.getTimeSlot().getEndDate(), false));
                 accommodationForUpdate.getPriceList().add(pricelistItem2);
                 check=true;
                 break;
@@ -283,7 +283,7 @@ public class AccommodationService implements IAccommodationService {
         if (!check) {
             PricelistItem pricelistItem = new PricelistItem();
             pricelistItem.setPrice(price.getPrice());
-            pricelistItem.setTimeSlot(new TimeSlot(price.getTimeSlot().getStartDate(), price.getTimeSlot().getEndDate()));
+            pricelistItem.setTimeSlot(new TimeSlot(price.getTimeSlot().getStartDate(), price.getTimeSlot().getEndDate(), false));
             accommodationForUpdate.getPriceList().add(pricelistItem);
         }
         return accommodationRepository.save(accommodationForUpdate);
@@ -329,24 +329,24 @@ public class AccommodationService implements IAccommodationService {
 
     public List<Accommodation> data() {
         ArrayList<Amenity> amenities=new ArrayList<>();
-        amenities.add(new Amenity(1L,"pool"));
-        amenities.add(new Amenity(1L,"pets"));
-        amenities.add(new Amenity(1L,"parking"));
+        amenities.add(new Amenity(1L,"pool", false));
+        amenities.add(new Amenity(1L,"pets",false));
+        amenities.add(new Amenity(1L,"parking",false));
         List<Accommodation> accommodationList = new ArrayList<>();
         Accommodation accommodation1 = new Accommodation(
                 1L, "Hotel ABC", "Boasting a garden and views of inner courtyard, The Gate rooms is a sustainable apartment situated in Novi Sad, 1.9 km from SPENS Sports Centre. It is located 2.8 km from Promenada Shopping Mall and features a shared kitchen.",
-                new Address("Srbija","Novi Sad","21000","Futoska 14"),
+                new Address("Srbija","Novi Sad","21000","Futoska 14", false),
                  2, 4, AccommodationType.HOTEL,
                 true, true, null, AccommodationStatus.CREATED,
-                3, new ArrayList<>(), amenities, new ArrayList<>()
+                3, new ArrayList<>(), amenities, new ArrayList<>(), false
         );
 
         Accommodation accommodation2 = new Accommodation(
                 2L, "Apartment XYZ", "Boasting a garden and views of inner courtyard, The Gate rooms is a sustainable apartment situated in Novi Sad, 1.9 km from SPENS Sports Centre. It is located 2.8 km from Promenada Shopping Mall and features a shared kitchen.",
-                new Address("Srbija","Novi Sad","21000","Futoska 14"),
+                new Address("Srbija","Novi Sad","21000","Futoska 14", false),
                 3, 6, AccommodationType.APARTMENT,
                 false, false, null, AccommodationStatus.ACCEPTED,
-                5, new ArrayList<>(), amenities, new ArrayList<>()
+                5, new ArrayList<>(), amenities, new ArrayList<>(), false
         );
         accommodationList.add(accommodation1);
         accommodationList.add(accommodation2);
