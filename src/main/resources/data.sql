@@ -108,7 +108,6 @@ VALUES (
 
 INSERT INTO pricelist_items (time_slot_id, price, deleted) VALUES (1,100.00, false);
 
-       
 INSERT INTO accommodations_price_list VALUES (1,1);
 INSERT INTO amenities_accommodation VALUES (1,1);
 INSERT INTO amenities_accommodation VALUES (1,2);

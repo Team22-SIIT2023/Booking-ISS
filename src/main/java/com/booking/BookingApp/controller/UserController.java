@@ -10,6 +10,7 @@ import com.booking.BookingApp.exception.ResourceConflictException;
 import com.booking.BookingApp.mapper.AccommodationDTOMapper;
 import com.booking.BookingApp.mapper.ReportDTOMapper;
 import com.booking.BookingApp.mapper.UserDTOMapper;
+import com.booking.BookingApp.service.EmailService;
 import com.booking.BookingApp.service.interfaces.IUserService;
 import com.booking.BookingApp.util.TokenUtils;
 import jakarta.servlet.http.HttpServletResponse;
@@ -43,6 +44,9 @@ public class UserController {
 
     @Autowired
     private IUserService userService;
+
+    @Autowired
+    private EmailService emailService;
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Collection<UserDTO>> getUsers() {
@@ -88,6 +92,11 @@ public class UserController {
 
         // Kreiraj token za tog korisnika
         User user = (User) authentication.getPrincipal();
+
+        if (!(user.getAccount().getStatus() == Status.ACTIVE)) {
+            return new ResponseEntity<UserTokenState>(HttpStatus.BAD_REQUEST);
+        }
+
         String jwt = tokenUtils.generateToken(user.getUsername(), user.getAccount().getRoles().get(0), user.getId());
         int expiresIn = tokenUtils.getExpiredIn();
 
@@ -104,9 +113,17 @@ public class UserController {
             throw new ResourceConflictException(user.getId(), "Username already exists");
         }
 
-        User newUser = this.userService.save(user);
+        User savedUser;
+//        User newUser = this.userService.save(user);
+        if (user.getAccount().getRoles().get(0).getName().equals("ROLE_GUEST")) {
+            System.out.println("GOST");
+            savedUser = userService.saveGuest(user);
+        }
+        else { savedUser = userService.saveHost(user);}
 
-        return new ResponseEntity<>(newUser, HttpStatus.CREATED);
+        emailService.sendEmail("jevtic.valentina02@gmail.com", "Account activation", savedUser.getUsername());
+
+        return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
     }
 
 //    @GetMapping(value ="/log-in", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -138,18 +155,26 @@ public class UserController {
         return new ResponseEntity<UserDTO>(UserDTOMapper.fromUsertoDTO(user), HttpStatus.OK);
     }
 
-    @PostMapping("/user-account-activation/{id}")
-    public ResponseEntity<String> activateUser(@PathVariable Long id){
-        boolean isActivated = userService.activateUser(id);
+    @GetMapping("/user-account-activation/{activation-link}/{username}")
+    public ResponseEntity<String> activateUser(@PathVariable("activation-link") String activationLink, @PathVariable("username") String username){
+        boolean isActivated = userService.activateUser(activationLink, username);
         if(isActivated){
             return new ResponseEntity<String>("User account is successfully activated.",HttpStatus.OK);
         }
         return new ResponseEntity<String>("Failed to activate user account.",HttpStatus.BAD_REQUEST);
     }
+
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserDTO> createUser(@RequestBody UserDTO userDTO) throws Exception {
         User newUser = UserDTOMapper.fromDTOtoUser(userDTO);
-        User savedUser = userService.save(newUser);
+//        User savedUser = userService.save(newUser);
+        User savedUser;
+        if (userDTO.getAccount().getRoles().get(0).getName().equals("ROLE_GUEST")) {
+            savedUser = userService.saveGuest(newUser);
+        }
+        else{
+            savedUser = userService.saveHost(newUser);
+        }
         return new ResponseEntity<UserDTO>(UserDTOMapper.fromUsertoDTO(savedUser), HttpStatus.CREATED);
     }
 

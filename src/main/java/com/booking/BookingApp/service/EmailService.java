@@ -7,6 +7,8 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.Collection;
+import java.util.UUID;
 
 @Service
 public class EmailService {
@@ -17,16 +19,15 @@ public class EmailService {
     @Autowired
     private UserService userService;
 
+    public void sendEmail(String to, String subject, String username) {
+        System.out.println("IDDDDDDDDDDDD" + username);
 
-    public void sendEmail(
-            String to, String subject, Long userId) {
-        User user = userService.findOne(userId);
-        String activationLink = "vanjahash";
-        user.setActivationLink(activationLink);
-        LocalDate activationTime = LocalDate.now();
-        user.setActivationLinkDate(activationTime);
+        String activationLink = UUID.randomUUID().toString();
 
-        String emailText = "http://localhost:4200/logIn";
+        userService.updateActivationLink(activationLink, username);
+
+        String emailText = "Visit  " + "http://localhost:4200/account-activation/" + activationLink + "/" + username
+                + "  to activate your account!";
 
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom("travelbee.team22@gmail.com");

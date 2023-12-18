@@ -137,6 +137,7 @@ public class WebSecurityConfig {
 //                    .requestMatchers("/api/accommodations/**").permitAll()
 //                    .requestMatchers("/api/amenities/**").permitAll()
                     .requestMatchers("/api/email/**").permitAll()
+//                    .requestMatchers("/api/accommodations").permitAll()
                     .requestMatchers(new AntPathRequestMatcher("/error")).permitAll()
 //                    .requestMatchers("/api/requests/**").permitAll()
 //                    .requestMatchers("api/comments/**").permitAll()
