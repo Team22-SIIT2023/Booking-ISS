@@ -16,8 +16,8 @@ public class EmailController {
 
     @GetMapping("/send")
 //    @PreAuthorize("hasRole('GUEST') && hasRole('HOST')")
-    public String sendEmail(@RequestParam("userId") Long id) {
-        emailService.sendEmail("jevtic.valentina02@gmail.com", "Account activation", id);
+    public String sendEmail(@RequestParam("username") String username) {
+        emailService.sendEmail("jevtic.valentina02@gmail.com", "Account activation", username);
         return  "Email sent successfully!";
     }
 }

@@ -48,8 +48,9 @@ public class Accommodation {
     @Column(name = "automatic_conf")
     private boolean automaticConfirmation;
 
+    //(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
+    @ManyToOne
     private Host host;
 
     @Enumerated(EnumType.STRING)

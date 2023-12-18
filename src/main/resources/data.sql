@@ -59,7 +59,7 @@ VALUES (
            7,1
        );
 INSERT INTO pricelist_items (time_slot_id, price) VALUES (1,100.00);
-       
+
 INSERT INTO accommodations_price_list VALUES (1,1);
 INSERT INTO amenities_accommodation VALUES (1,1);
 INSERT INTO amenities_accommodation VALUES (1,2);
@@ -96,7 +96,7 @@ insert into accommodation_comments values(1,4);
 --     ('Mountain Cabin', 'Escape to nature in our rustic cabin', 1, 2, 4, 'CABIN', true, true, 1, 'INACTIVE', 10);
 
 
-insert into favorite_accommodation values(1,2);
+-- insert into favorite_accommodation values(1,2);
 
 
 -- INSERT INTO requests (time_slot_id,price,accommodation_id,guest_number,request_status)

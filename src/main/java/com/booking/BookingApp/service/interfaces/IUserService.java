@@ -4,6 +4,7 @@ import com.booking.BookingApp.domain.Accommodation;
 import com.booking.BookingApp.domain.User;
 import com.booking.BookingApp.domain.enums.Status;
 
+import java.time.LocalDate;
 import java.util.Collection;
 import java.util.Optional;
 
@@ -16,7 +17,7 @@ public interface IUserService {
 
     Collection<User> findByStatus(Status userStatus);
 
-    boolean activateUser(Long id);
+    boolean activateUser(String activationLink, String username);
 
     User update(User user) throws Exception;
 
@@ -28,5 +29,9 @@ public interface IUserService {
 
     Collection<Accommodation> findFavorites(Long id);
 
-    User save(User user);
+//    User save(User user);
+    User saveGuest(User user);
+    User saveHost(User user);
+
+    User updateActivationLink(String activationLink, String username);
 }

@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -58,10 +59,22 @@ public class UserService implements IUserService {
     }
   
     @Override
-    public boolean activateUser(Long id){
-        User user = userRepository.findById(id).orElse(null);
+    public boolean activateUser(String activationLink, String username){
+        User user = userRepository.findByAccount_Username(username);
+        System.out.println(username);
+        if (!user.getActivationLink().equals(activationLink)) {
+            return false;
+        }
+//        if (user.getActivationLinkDate())
+//        Duration duration = Duration.between(user.getActivationLinkDate(), LocalDateTime.now());
+//
+//        if (duration.toHours()>24) {
+//            return false;
+//        }
+
         if(user != null) {
             user.getAccount().setStatus(Status.ACTIVE);
+            userRepository.save(user);
             return true;
         }
         return false;
@@ -143,9 +156,60 @@ public class UserService implements IUserService {
         return userRepository.findFavoriteAccommodationsByGuestId(id);
     }
 
+//    @Override
+//    public User save(User userRequest) {
+//        User u = new User();
+//        u.setUsername(userRequest.getUsername());
+//
+//        // pre nego sto postavimo lozinku u atribut hesiramo je kako bi se u bazi nalazila hesirana lozinka
+//        // treba voditi racuna da se koristi isi password encoder bean koji je postavljen u AUthenticationManager-u kako bi koristili isti algoritam
+//        u.setPassword(passwordEncoder.encode(userRequest.getPassword()));
+//
+//        u.setFirstName(userRequest.getFirstName());
+//        u.setLastName(userRequest.getLastName());
+//        u.setPhoneNumber(userRequest.getPhoneNumber());
+//        u.setAddress(userRequest.getAddress());
+//        u.setAccount(userRequest.getAccount());
+//        u.setPicturePath(userRequest.getPicturePath());
+//
+//        // u primeru se registruju samo obicni korisnici i u skladu sa tim im se i dodeljuje samo rola USER
+//        List<Role> roles = roleService.findByName(userRequest.getAccount().getRoles().get(0).getName());
+//        u.getAccount().setRoles(roles);
+//
+//        this.userRepository.save(u);
+//        userRepository.flush();
+//        return u;
+//    }
+
+
+
     @Override
-    public User save(User userRequest) {
-        User u = new User();
+    public User saveGuest(User userRequest) {
+        Guest u = new Guest();
+        u.setUsername(userRequest.getUsername());
+
+        // pre nego sto postavimo lozinku u atribut hesiramo je kako bi se u bazi nalazila hesirana lozinka
+        // treba voditi racuna da se koristi isi password encoder bean koji je postavljen u AUthenticationManager-u kako bi koristili isti algoritam
+        u.setPassword(passwordEncoder.encode(userRequest.getPassword()));
+
+        u.setFirstName(userRequest.getFirstName());
+        u.setLastName(userRequest.getLastName());
+        u.setPhoneNumber(userRequest.getPhoneNumber());
+        u.setAddress(userRequest.getAddress());
+        u.setAccount(userRequest.getAccount());
+        u.setPicturePath(userRequest.getPicturePath());
+
+        // u primeru se registruju samo obicni korisnici i u skladu sa tim im se i dodeljuje samo rola USER
+        List<Role> roles = roleService.findByName(userRequest.getAccount().getRoles().get(0).getName());
+        u.getAccount().setRoles(roles);
+        this.userRepository.save(u);
+//        userRepository.flush();
+        return u;
+    }
+
+    @Override
+    public User saveHost(User userRequest) {
+        Host u = new Host();
         u.setUsername(userRequest.getUsername());
 
         // pre nego sto postavimo lozinku u atribut hesiramo je kako bi se u bazi nalazila hesirana lozinka
@@ -163,7 +227,23 @@ public class UserService implements IUserService {
         List<Role> roles = roleService.findByName(userRequest.getAccount().getRoles().get(0).getName());
         u.getAccount().setRoles(roles);
 
-        return this.userRepository.save(u);
+        this.userRepository.save(u);
+        userRepository.flush();
+        return u;
+    }
+
+    @Override
+    public User updateActivationLink(String activationLink, String username) {
+        System.out.println("IDDDDDDDDDDDD" + username);
+        User user1 = userRepository.findByAccount_Username(username);
+        System.out.println(user1);
+
+        user1.setActivationLink(activationLink);
+
+        LocalDate activationTime = LocalDate.now();
+        user1.setActivationLinkDate(activationTime);
+
+        return userRepository.save(user1);
     }
 
 
