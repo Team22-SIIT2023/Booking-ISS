@@ -47,7 +47,7 @@ public class User implements UserDetails {
     private String phoneNumber;
 
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @OneToOne(cascade = {CascadeType.REMOVE})
+    @OneToOne(cascade = {CascadeType.ALL})
     private Account account;
 
     @Column(name = "picture_path")

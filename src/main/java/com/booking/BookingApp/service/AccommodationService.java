@@ -127,11 +127,35 @@ public class AccommodationService implements IAccommodationService {
     }
 
     @Override
-    public Accommodation update(Accommodation accommodation, Accommodation accommodationForUpdate) throws Exception {
-        accommodationForUpdate.setStatus(AccommodationStatus.UPDATED);
-        accommodationForUpdate.setFreeTimeSlots(accommodation.getFreeTimeSlots());
-        accommodationForUpdate.setPriceList(accommodation.getPriceList());
-        return accommodationRepository.save(accommodationForUpdate);
+    public Accommodation update(Accommodation updatedAccommodation) throws Exception {
+        System.out.println(updatedAccommodation);
+        Long accommodationId = updatedAccommodation.getId();
+        Accommodation existingAccommodation = accommodationRepository.findById(accommodationId).orElse(null);
+
+        if (existingAccommodation == null) {
+            throw new Exception("Accommodation not found with ID: " + accommodationId);
+        }
+
+        existingAccommodation.setName(updatedAccommodation.getName());
+        existingAccommodation.setDescription(updatedAccommodation.getDescription());
+        existingAccommodation.setAddress(updatedAccommodation.getAddress());
+        existingAccommodation.setAutomaticConfirmation(updatedAccommodation.isAutomaticConfirmation());
+        existingAccommodation.setMaxGuests(updatedAccommodation.getMaxGuests());
+        existingAccommodation.setMinGuests(updatedAccommodation.getMinGuests());
+        existingAccommodation.setPricePerGuest(updatedAccommodation.isPricePerGuest());
+        existingAccommodation.setReservationDeadline(updatedAccommodation.getReservationDeadline());
+        existingAccommodation.setAmenities(updatedAccommodation.getAmenities());
+        existingAccommodation.setType(updatedAccommodation.getType());
+        existingAccommodation.setStatus(AccommodationStatus.UPDATED);
+
+        System.out.println(existingAccommodation);
+
+        return accommodationRepository.save(existingAccommodation);
+//        accommodationForUpdate.setStatus(AccommodationStatus.UPDATED);
+//        accommodationForUpdate.setFreeTimeSlots(accommodation.getFreeTimeSlots());
+//        accommodationForUpdate.setPriceList(accommodation.getPriceList());
+//        return accommodationRepository.save(accommodationForUpdate);
+
     }
 
     @Override

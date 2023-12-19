@@ -1,10 +1,12 @@
 package com.booking.BookingApp.controller;
 
 import com.booking.BookingApp.domain.Accommodation;
+import com.booking.BookingApp.domain.User;
 import com.booking.BookingApp.domain.enums.AccommodationStatus;
 import com.booking.BookingApp.domain.enums.AccommodationType;
 import com.booking.BookingApp.dto.*;
 import com.booking.BookingApp.mapper.AccommodationDTOMapper;
+import com.booking.BookingApp.mapper.UserDTOMapper;
 import com.booking.BookingApp.service.interfaces.IAccommodationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -106,16 +108,13 @@ public class AccommodationController {
 
     @PreAuthorize("hasRole('HOST')")
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<AccommodationDTO> updateAccommodation(@RequestBody EditAccommodationDTO accommodationDTO, @PathVariable Long id)
+    public ResponseEntity<AccommodationDTO> updateAccommodation(@RequestBody AccommodationDTO accommodationDTO, @PathVariable Long id)
             throws Exception {
-        Accommodation accommodationForUpdate = accommodationService.findOne(id);
-        Accommodation accommodation=AccommodationDTOMapper.fromEditDTOtoAccommodation(accommodationDTO);
-        Accommodation updatedAccommodation = accommodationService.update(accommodation,accommodationForUpdate);
-
+        Accommodation accommodation = AccommodationDTOMapper.fromDTOtoAccommodation(accommodationDTO);
+        Accommodation updatedAccommodation = accommodationService.update(accommodation);
         if (updatedAccommodation == null) {
             return new ResponseEntity<AccommodationDTO>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
         return new ResponseEntity<AccommodationDTO>(AccommodationDTOMapper.fromAccommodationtoDTO(updatedAccommodation), HttpStatus.OK);
     }
 
