@@ -32,4 +32,8 @@ public interface IAccommodationService {
     void delete(Long id);
 
     double calculatePriceForAccommodation(Long id, int guestNumber, Date begin, Date end);
+
+    Accommodation accept(Accommodation accommodation);
+
+    Accommodation decline(Accommodation accommodation);
 }

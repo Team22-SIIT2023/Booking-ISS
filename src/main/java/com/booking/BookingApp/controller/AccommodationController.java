@@ -33,7 +33,7 @@ public class AccommodationController {
     private IAccommodationService accommodationService;
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasAuthority('ROLE_GUEST') or hasAuthority('ROLE_HOST')")
+    @PreAuthorize("hasAuthority('ROLE_GUEST') or hasAuthority('ROLE_HOST') or hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<Collection<AccommodationDTO>> getAccommodations(
             @RequestParam(value = "begin", required = false) @DateTimeFormat(pattern="yyyy-MM-dd") LocalDate begin,
             @RequestParam(value = "end", required = false) @DateTimeFormat(pattern="yyyy-MM-dd") LocalDate end,
@@ -99,11 +99,35 @@ public class AccommodationController {
         return new ResponseEntity<>("Pictures uploaded successfully", HttpStatus.OK);
     }
 
-    @PreAuthorize("hasRole('HOST') or hasRole('GUEST')")
+    @PreAuthorize("hasRole('HOST') or hasRole('GUEST') or hasRole('ADMIN')")
     @GetMapping(value = "/{accommodationId}/images", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<String>> getImages(@PathVariable("accommodationId") Long accommodationId) throws IOException {
         List<String> images = accommodationService.getImages(accommodationId);
         return ResponseEntity.ok().body(images);
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @PutMapping(value = "accept/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<AccommodationDTO> accept(@RequestBody AccommodationDTO accommodationDTO, @PathVariable Long id)
+            throws Exception {
+        Accommodation accommodation = AccommodationDTOMapper.fromDTOtoAccommodation(accommodationDTO);
+        Accommodation updatedAccommodation = accommodationService.accept(accommodation);
+        if (updatedAccommodation == null) {
+            return new ResponseEntity<AccommodationDTO>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return new ResponseEntity<AccommodationDTO>(AccommodationDTOMapper.fromAccommodationtoDTO(updatedAccommodation), HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @PutMapping(value = "decline/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<AccommodationDTO> decline(@RequestBody AccommodationDTO accommodationDTO, @PathVariable Long id)
+            throws Exception {
+        Accommodation accommodation = AccommodationDTOMapper.fromDTOtoAccommodation(accommodationDTO);
+        Accommodation updatedAccommodation = accommodationService.decline(accommodation);
+        if (updatedAccommodation == null) {
+            return new ResponseEntity<AccommodationDTO>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return new ResponseEntity<AccommodationDTO>(AccommodationDTOMapper.fromAccommodationtoDTO(updatedAccommodation), HttpStatus.OK);
     }
 
     @PreAuthorize("hasRole('HOST')")
