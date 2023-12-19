@@ -31,8 +31,8 @@ public interface AccommodationRepository extends JpaRepository<Accommodation, Lo
         "LEFT JOIN a.amenities amen " +
         "WHERE (:country IS NULL OR a.address.country = :country) AND " +
         "(:city IS NULL OR a.address.city = :city) AND " +
-        "(:hostId is NULL OR a.host.id = :hostId) AND " +
-        "(a.status = 'ACCEPTED') AND " +
+        "((:hostId is NULL AND a.status = 'ACCEPTED') OR " +
+        "(:hostId is NOT NULL AND a.host.id = :hostId)) AND " +
         "(:accommodationType IS NULL OR a.type = :accommodationType) AND " +
         "(:guestNumber IS NULL OR :guestNumber = 0 OR (a.maxGuests >= :guestNumber AND a.minGuests <= :guestNumber)) AND " +
         "(:amenities IS NULL OR " +
@@ -65,8 +65,8 @@ Collection<Accommodation> findAccommodationsByCountryTypeGuestNumberTimeRangeAnd
                     "LEFT JOIN a.amenities amen " +
                     "WHERE (:country IS NULL OR a.address.country = :country) AND " +
                     "(:city IS NULL OR a.address.city = :city) AND " +
-                    "(:hostId IS NULL OR a.host.id = :hostId) AND " +
-                    "(a.status = 'ACCEPTED') AND " +
+                    "((:hostId is NULL AND a.status = 'ACCEPTED') OR " +
+                    "(:hostId is NOT NULL AND a.host.id = :hostId)) AND " +
                     "(:accommodationType IS NULL OR a.type = :accommodationType) AND " +
                     "(:guestNumber IS NULL OR :guestNumber = 0 OR (a.maxGuests >= :guestNumber AND a.minGuests <= :guestNumber)) AND " +
                     "(:amenities IS NULL OR " +
