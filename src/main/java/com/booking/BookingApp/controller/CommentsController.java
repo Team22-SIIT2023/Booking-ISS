@@ -32,7 +32,7 @@ public class CommentsController {
 
     // ako se ne prosledi status onda se svi prikazuju
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasAuthority('ROLE_GUEST') or hasAuthority('ROLE_HOST')")
+    @PreAuthorize("hasAuthority('ROLE_GUEST') or hasAuthority('ROLE_HOST') or hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<Collection<CommentsDTO>> getComments(@RequestParam(value="status", required = false) Status status) {
         Collection<Comments> comments = commentService.findAll(status);
 
@@ -64,7 +64,7 @@ public class CommentsController {
     }
 
     @GetMapping(value = "/accommodation/{accommodationId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasAuthority('ROLE_GUEST') or hasAuthority('ROLE_HOST')")
+    @PreAuthorize("hasAuthority('ROLE_GUEST') or hasAuthority('ROLE_HOST') or hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<Collection<CommentsDTO>> getAccommodationComments(@PathVariable("accommodationId") Long id,
                                                                             @RequestParam(value = "status", required = false) Status status) {
         Collection<Comments> comments = commentService.findByAccommodationId(id, status);
@@ -84,7 +84,7 @@ public class CommentsController {
     }
 
     @GetMapping(value = "/accommodation/{accommodationId}/averageRate", produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasAuthority('ROLE_GUEST') or hasAuthority('ROLE_HOST')")
+    @PreAuthorize("hasAuthority('ROLE_GUEST') or hasAuthority('ROLE_HOST') or hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<Double> getAccommodationRating(@PathVariable("accommodationId") Long id) {
         double rating = commentService.findAccommodationRating(id);
         return new ResponseEntity<Double>(rating,HttpStatus.OK);

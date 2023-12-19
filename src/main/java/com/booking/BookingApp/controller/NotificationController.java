@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
@@ -24,6 +25,7 @@ public class NotificationController {
     INotificationService notificationService;
 
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAuthority('ROLE_GUEST') or hasAuthority('ROLE_HOST')")
     public ResponseEntity<NotificationDTO> getNotification(@PathVariable("id") Long id) {
         Notification notification = notificationService.findOne(id);
 
@@ -35,6 +37,7 @@ public class NotificationController {
     }
 
     @GetMapping(value = "/guest/{guestId}",produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAuthority('ROLE_GUEST')")
     public ResponseEntity<Collection<NotificationDTO>> getGuestNotifications(@PathVariable("guestId") Long id) {
         Collection<Notification> notifications=notificationService.findAllForGuest(id);
         Collection<NotificationDTO> notificationDTOS = notifications.stream()
@@ -44,6 +47,7 @@ public class NotificationController {
     }
 
     @GetMapping(value = "/host/{hostId}",produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAuthority('ROLE_HOST')")
     public ResponseEntity<Collection<NotificationDTO>> getHostNotifications(@PathVariable("hostId") Long id) {
         Collection<Notification> notifications=notificationService.findAllForHost(id);
         Collection<NotificationDTO> notificationDTOS = notifications.stream()

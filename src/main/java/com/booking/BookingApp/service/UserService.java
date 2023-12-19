@@ -12,6 +12,8 @@ import java.time.Duration;
 import javax.xml.stream.events.Comment;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 
 @Service
@@ -64,12 +66,12 @@ public class UserService implements IUserService {
         if (!user.getActivationLink().equals(activationLink)) {
             return false;
         }
-//        if (user.getActivationLinkDate())
-//        Duration duration = Duration.between(user.getActivationLinkDate(), LocalDateTime.now());
+//        LocalDate now = LocalDate.now();
 //
-//        if (duration.toHours()>24) {
+//        if (user.getActivationLinkDate().plusDays(1).isAfter(now)) {
 //            return false;
 //        }
+
 
         if(user != null) {
             user.getAccount().setStatus(Status.ACTIVE);
