@@ -6,17 +6,20 @@ INSERT INTO addresses (country, city, postal_code, address,deleted) VALUES ('Ser
 
 INSERT INTO role (name) VALUES ('ROLE_HOST');
 INSERT INTO role (name) VALUES ('ROLE_GUEST');
+INSERT INTO role (name) VALUES ('ROLE_ADMIN');
 
 
 INSERT INTO accounts(username, password, status,deleted) VALUES ('pera@example.com', '123', 'ACTIVE',false);
 INSERT INTO accounts(username, password, status,deleted) VALUES ('mika@example.com', '123', 'ACTIVE',false);
 INSERT INTO accounts(username, password, status,deleted) VALUES ('zika@example.com', '123', 'ACTIVE',false);
+INSERT INTO accounts(username, password, status,deleted) VALUES ('kika@example.com', '123', 'ACTIVE',false);
 
 
 
 INSERT INTO account_role VALUES (1,1);
 INSERT INTO account_role VALUES (2,2);
 INSERT INTO account_role VALUES (3,1);
+INSERT INTO account_role VALUES (4,3);
 
 
 INSERT INTO users (first_name, last_name, address_id, phone_number, account_id, picture_path, last_password_reset_date,deleted)
@@ -25,6 +28,8 @@ insert into users(first_name,last_name,address_id,phone_number,account_id,pictur
 values ('mika','peric',1,'1234',2,'','2023-01-01 12:00:00',false);
 insert into users(first_name,last_name,address_id,phone_number,account_id,picture_path,last_password_reset_date,deleted)
 values ('zika','peric',1,'1234',3,'','2023-01-01 12:00:00',false);
+insert into users(first_name,last_name,address_id,phone_number,account_id,picture_path,last_password_reset_date,deleted)
+values ('kika','peric',1,'1234',4,'','2023-01-01 12:00:00',false);
 
 
 

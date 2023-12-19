@@ -71,9 +71,25 @@ public class AccommodationService implements IAccommodationService {
     }
 
     @Override
+    public Accommodation accept(Accommodation accommodation) {
+        accommodation.setStatus(AccommodationStatus.ACCEPTED);
+        return accommodationRepository.save(accommodation);
+    }
+
+    @Override
+    public Accommodation decline(Accommodation accommodation) {
+        accommodation.setStatus(AccommodationStatus.DECLINED);
+        return accommodationRepository.save(accommodation);
+    }
+
+    @Override
     public Collection<Accommodation> findAll(LocalDate begin, LocalDate end, int guestNumber, AccommodationType accommodationType, double startPrice, double endPrice, AccommodationStatus status, String country, String city, List<String> amenities, Integer hostId) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         Collection<Accommodation> accommodations=new ArrayList<>();
+        if(status!=null){
+            accommodations = accommodationRepository.findByStatus(status);
+        }
+        else{
         int size=0;
         if(amenities!=null){
             size=amenities.size();
@@ -112,6 +128,7 @@ public class AccommodationService implements IAccommodationService {
                                         calculatePriceForAccommodation(accommodation.getId(),guestNumber,beginDate,endDate)<= endPrice)
                         .collect(Collectors.toList());
             }
+        }
             return accommodations;
     }
 
