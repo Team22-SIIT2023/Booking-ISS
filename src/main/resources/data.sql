@@ -1,23 +1,34 @@
-INSERT INTO addresses (country, city, postal_code, address, deleted) VALUES ('Serbia', 'Novi Sad', '21000', 'Alekse Santica 54', false);
-INSERT INTO addresses (country, city, postal_code, address, deleted) VALUES ('Serbia', 'Pirot', '21000', 'Alekse Santica 54', false);
+INSERT INTO addresses (country, city, postal_code, address,deleted) VALUES ('Serbia', 'Novi Sad', '21000', 'Alekse Santica 54',false);
+INSERT INTO addresses (country, city, postal_code, address,deleted) VALUES ('Serbia', 'Novi Sad', '21000', 'Futoska 54',false);
+INSERT INTO addresses (country, city, postal_code, address,deleted) VALUES ('Serbia', 'Novi Sad', '21000', 'Puskinova 3',false);
+
 
 INSERT INTO role (name) VALUES ('ROLE_HOST');
 INSERT INTO role (name) VALUES ('ROLE_GUEST');
 
-INSERT INTO accounts(username, password, status, deleted) VALUES ('pera@example.com', '123', 'ACTIVE', false);
-INSERT INTO accounts(username, password, status, deleted) VALUES ('mika@example.com', '123', 'ACTIVE', false);
+
+INSERT INTO accounts(username, password, status,deleted) VALUES ('pera@example.com', '123', 'ACTIVE',false);
+INSERT INTO accounts(username, password, status,deleted) VALUES ('mika@example.com', '123', 'ACTIVE',false);
+INSERT INTO accounts(username, password, status,deleted) VALUES ('zika@example.com', '123', 'ACTIVE',false);
+
 
 INSERT INTO account_role VALUES (1,1);
 INSERT INTO account_role VALUES (2,2);
+INSERT INTO account_role VALUES (3,1);
 
-INSERT INTO users (first_name, last_name, address_id, phone_number, account_id, picture_path, last_password_reset_date, deleted)
-VALUES ('pera', 'peric', 1, '1234', 1, '', '2023-01-01 12:00:00', false);
-insert into users(first_name,last_name,address_id,phone_number,account_id,picture_path,last_password_reset_date, deleted)
-values ('mika','peric',1,'1234',2,'','2023-01-01 12:00:00', false);
+
+INSERT INTO users (first_name, last_name, address_id, phone_number, account_id, picture_path, last_password_reset_date,deleted)
+VALUES ('pera', 'peric', 1, '1234', 1, '', '2023-01-01 12:00:00',false);
+insert into users(first_name,last_name,address_id,phone_number,account_id,picture_path,last_password_reset_date,deleted)
+values ('mika','peric',1,'1234',2,'','2023-01-01 12:00:00',false);
+insert into users(first_name,last_name,address_id,phone_number,account_id,picture_path,last_password_reset_date,deleted)
+values ('zika','peric',1,'1234',3,'','2023-01-01 12:00:00',false);
+
 
 
 insert into guests values (2);
 insert into hosts values (1);
+insert into hosts values (3);
 
 INSERT INTO timeslots (start_date, end_date, deleted)
 VALUES ('2024-01-01 10:00:00','2024-01-10 12:00:00', false);
@@ -27,6 +38,13 @@ INSERT INTO timeslots (start_date, end_date, deleted)
 VALUES ('2024-03-21 10:00:00','2024-03-30 12:00:00', false);
 INSERT INTO timeslots (start_date, end_date, deleted)
 VALUES ('2024-01-21 10:00:00','2024-01-24 12:00:00', false);
+INSERT INTO timeslots (start_date, end_date, deleted)
+VALUES ('2024-04-01 10:00:00','2024-04-11 12:00:00', false);
+INSERT INTO timeslots (start_date, end_date, deleted)
+VALUES ('2024-04-01 10:00:00','2024-04-11 12:00:00', false);
+
+INSERT INTO timeslots (start_date, end_date, deleted)
+VALUES ('2024-04-01 10:00:00','2024-04-11 12:00:00', false);
 INSERT INTO timeslots (start_date, end_date, deleted)
 VALUES ('2024-04-01 10:00:00','2024-04-11 12:00:00', false);
 INSERT INTO timeslots (start_date, end_date, deleted)
@@ -50,9 +68,25 @@ INSERT INTO accommodations (
     acc_type, price_per_guest, automatic_conf, acc_status,
     reservation_deadline,host_id, deleted)
 VALUES (
-           'Accommodation Name',
+           'Accommodation Name 1',
            'Accommodation Description',
            1,
+           1,
+           5,
+           'HOTEL',
+           true,
+           true,
+           'ACCEPTED',
+           7,3,false
+       );
+INSERT INTO accommodations (
+    name, description, address_id, min_guest, max_guest,
+    acc_type, price_per_guest, automatic_conf, acc_status,
+    reservation_deadline,host_id,deleted)
+VALUES (
+           'Accommodation Name 2',
+           'Accommodation Description',
+           2,
            1,
            5,
            'HOTEL',
@@ -64,21 +98,22 @@ VALUES (
 INSERT INTO accommodations (
     name, description, address_id, min_guest, max_guest,
     acc_type, price_per_guest, automatic_conf, acc_status,
-    reservation_deadline,host_id, deleted)
+    reservation_deadline,host_id,deleted)
 VALUES (
-           'Accommodation Name',
+           'Accommodation Name 3',
            'Accommodation Description',
-           2,
+           3,
            1,
            5,
            'HOTEL',
            true,
            true,
            'ACCEPTED',
-           7,1, false
+           7,3,false
        );
+
 INSERT INTO pricelist_items (time_slot_id, price, deleted) VALUES (1,100.00, false);
-       
+
 INSERT INTO accommodations_price_list VALUES (1,1);
 INSERT INTO amenities_accommodation VALUES (1,1);
 INSERT INTO amenities_accommodation VALUES (1,2);
@@ -132,13 +167,11 @@ insert into accommodation_comments values(1,4);
 -- VALUES (21,150.00,10, 2,'ACCEPTED');
 
 INSERT INTO requests (time_slot_id,price,accommodation_id,guest_number,request_status,deleted)
-VALUES (2,3450.00,1, 5,'ACCEPTED' ,false);
+VALUES (7,3450.00,1, 5,'ACCEPTED' ,false);
 
 INSERT INTO requests (time_slot_id,price,accommodation_id,guest_number,request_status,deleted)
-VALUES (3,350.00,1, 2,'ACCEPTED' ,false);
+VALUES (8,350.00,1, 2,'WAITING' ,false);
 
 INSERT INTO requests (time_slot_id,price,accommodation_id,guest_number,request_status,deleted)
-VALUES (4,350.00,1, 2,'WAITING' ,false);
-
-
+VALUES (9,350.00,2, 2,'WAITING' ,false);
 

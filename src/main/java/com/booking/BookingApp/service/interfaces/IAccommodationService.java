@@ -20,7 +20,7 @@ public interface IAccommodationService {
     Accommodation findOne(Long id);
     Accommodation create(Accommodation accommodation) throws Exception;
 
-    Accommodation update(Accommodation accommodation, Accommodation accommodationForUpdate) throws Exception;
+    Accommodation update(Accommodation accommodation) throws Exception;
 
     Accommodation editAccommodationPricelistItem(PricelistItemDTO price, Accommodation accommodationForUpdate);
 
