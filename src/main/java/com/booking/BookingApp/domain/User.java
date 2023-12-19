@@ -139,11 +139,13 @@ public class User implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        if(this.account.getStatus().equals(Status.ACTIVE)){
-            return true;
-        }
-        return false;
+//        if (this.account.getStatus().equals(Status.ACTIVE)){
+//            return true;
+//        }
+//        return false;
+        return true;
     }
+
 
     public Timestamp getLastPasswordResetDate() {
         return lastPasswordResetDate;

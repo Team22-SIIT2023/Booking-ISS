@@ -10,6 +10,7 @@ import lombok.Setter;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -31,6 +32,7 @@ public class AccommodationDTO {
     private ArrayList<AmenityDTO> amenities;
     private ArrayList<PricelistItem> priceList;
     private ArrayList<TimeSlot> freeTimeSlots;
+
 
     public AccommodationDTO(Long id, String name, String description, AddressDTO address, int minGuests, int maxGuests, AccommodationType type, boolean pricePerGuest, boolean automaticConfirmation, Host host,
                             AccommodationStatus status, int reservationDeadline, ArrayList<AmenityDTO> amenities,

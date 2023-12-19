@@ -1,3 +1,4 @@
+
 INSERT INTO addresses (country, city, postal_code, address,deleted) VALUES ('Serbia', 'Novi Sad', '21000', 'Alekse Santica 54',false);
 INSERT INTO addresses (country, city, postal_code, address,deleted) VALUES ('Serbia', 'Novi Sad', '21000', 'Futoska 54',false);
 INSERT INTO addresses (country, city, postal_code, address,deleted) VALUES ('Serbia', 'Novi Sad', '21000', 'Puskinova 3',false);
@@ -10,6 +11,7 @@ INSERT INTO role (name) VALUES ('ROLE_GUEST');
 INSERT INTO accounts(username, password, status,deleted) VALUES ('pera@example.com', '123', 'ACTIVE',false);
 INSERT INTO accounts(username, password, status,deleted) VALUES ('mika@example.com', '123', 'ACTIVE',false);
 INSERT INTO accounts(username, password, status,deleted) VALUES ('zika@example.com', '123', 'ACTIVE',false);
+
 
 
 INSERT INTO account_role VALUES (1,1);

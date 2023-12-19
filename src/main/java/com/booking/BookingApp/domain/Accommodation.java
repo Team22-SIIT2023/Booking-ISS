@@ -52,6 +52,7 @@ public class Accommodation {
     @Column(name = "automatic_conf")
     private boolean automaticConfirmation;
 
+    //(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
     @OnDelete(action = OnDeleteAction.CASCADE)
     @ManyToOne(cascade = {CascadeType.REMOVE})
     private Host host;
@@ -80,10 +81,8 @@ public class Accommodation {
     @ElementCollection
     private List<String> images;
 
-
     @Column(name="deleted")
     private boolean deleted = Boolean.FALSE;
-
 
     public Accommodation(Long id, String name, String description, Address address, int minGuests, int maxGuests,
                          AccommodationType type, boolean pricePerGuest, boolean automaticConfirmation, Host host,
