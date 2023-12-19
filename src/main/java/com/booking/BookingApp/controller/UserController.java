@@ -121,7 +121,7 @@ public class UserController {
         }
         else { savedUser = userService.saveHost(user);}
 
-        emailService.sendEmail("jevtic.valentina02@gmail.com", "Account activation", savedUser.getUsername());
+        emailService.sendEmail("sonjabaljicki2002@gmail.com", "Account activation", savedUser.getUsername());
 
         return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
     }
