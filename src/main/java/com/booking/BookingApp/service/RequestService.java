@@ -24,8 +24,8 @@ public class RequestService implements IRequestService {
 
         if (status != null && accommodationName!=null && begin!=null && end!=null) {
             return requestRepository.findByStatusAndAccommodation_NameAndTimeSlot_StartDateLessThanEqualAndTimeSlot_EndDateGreaterThanEqual(
-                    status,accommodationName,end,begin);
-        } else if (status!=null && accommodationName!=null) {
+                    status, accommodationName, end, begin);
+        }else if (status!=null && accommodationName!=null) {
             return requestRepository.findByStatusAndAccommodation_Name(status,accommodationName);
         }else if(status!=null){
             return requestRepository.findByStatus(status);
