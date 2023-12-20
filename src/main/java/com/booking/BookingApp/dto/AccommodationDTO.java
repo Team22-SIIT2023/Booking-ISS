@@ -32,11 +32,31 @@ public class AccommodationDTO {
     private ArrayList<AmenityDTO> amenities;
     private ArrayList<PricelistItem> priceList;
     private ArrayList<TimeSlot> freeTimeSlots;
+    private double price;
+    private double unitPrice;
 
 
-    public AccommodationDTO(Long id, String name, String description, AddressDTO address, int minGuests, int maxGuests, AccommodationType type, boolean pricePerGuest, boolean automaticConfirmation, Host host,
-                            AccommodationStatus status, int reservationDeadline, ArrayList<AmenityDTO> amenities,
-                            ArrayList<PricelistItem> priceList,ArrayList<TimeSlot> freeTimeSlots) {
+//    public AccommodationDTO(Long id, String name, String description, AddressDTO address, int minGuests, int maxGuests, AccommodationType type, boolean pricePerGuest, boolean automaticConfirmation, Host host,
+//                            AccommodationStatus status, int reservationDeadline, ArrayList<AmenityDTO> amenities,
+//                            ArrayList<PricelistItem> priceList,ArrayList<TimeSlot> freeTimeSlots) {
+//        this.id = id;
+//        this.name = name;
+//        this.description = description;
+//        this.address = address;
+//        this.minGuests = minGuests;
+//        this.maxGuests = maxGuests;
+//        this.type = type;
+//        this.pricePerGuest = pricePerGuest;
+//        this.automaticConfirmation = automaticConfirmation;
+//        this.host = host;
+//        this.status = status;
+//        this.reservationDeadline = reservationDeadline;
+//        this.amenities = amenities;
+//        this.priceList=priceList;
+//        this.freeTimeSlots=freeTimeSlots;
+//    }
+
+    public AccommodationDTO(Long id, String name, String description, AddressDTO address, int minGuests, int maxGuests, AccommodationType type, boolean pricePerGuest, boolean automaticConfirmation, Host host, AccommodationStatus status, int reservationDeadline, ArrayList<AmenityDTO> amenities, ArrayList<PricelistItem> priceList, ArrayList<TimeSlot> freeTimeSlots, double price, double unitPrice) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -50,8 +70,10 @@ public class AccommodationDTO {
         this.status = status;
         this.reservationDeadline = reservationDeadline;
         this.amenities = amenities;
-        this.priceList=priceList;
-        this.freeTimeSlots=freeTimeSlots;
+        this.priceList = priceList;
+        this.freeTimeSlots = freeTimeSlots;
+        this.price = price;
+        this.unitPrice = unitPrice;
     }
 
     @Override
