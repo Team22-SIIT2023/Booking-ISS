@@ -40,6 +40,10 @@ public class RequestService implements IRequestService {
     }
 
     @Override
+    public Collection<Request> findByHost(Long id) {
+        return requestRepository.findByAccommodation_Host_Id(id);
+    }
+
     public Collection<Request> findByGuestId(Long id, RequestStatus status, LocalDate begin, LocalDate end, String accommodationName) {
         return requestRepository.findByGuest_IdAndStatusAndTimeSlot_StartDateGreaterThanEqualAndTimeSlot_EndDateLessThanEqualAndAccommodation_NameContaining(
                 id, status,  begin, end, accommodationName);

@@ -133,20 +133,19 @@ INSERT INTO accommodations_free_time_slots VALUES (2,5);
 INSERT INTO accommodations_free_time_slots VALUES (2,6);
 
 
-INSERT INTO comments (comment_text, date, rating, comment_status, guest_id,id, deleted)
-VALUES ('For this price great!', '2023-12-11', 4.5, 'ACTIVE', 2,1,false);
-INSERT INTO comments (comment_text, date, rating, comment_status, guest_id,id, deleted)
-VALUES ('Okay, can be better.', '2023-12-11', 3.0, 'ACTIVE', 2,2,false);
-INSERT INTO comments (comment_text, date, rating, comment_status, guest_id,id,deleted)
-VALUES ('Loved it!', '2023-12-11', 5.0, 'ACTIVE', 2,3,false);
-INSERT INTO comments (comment_text, date, rating, comment_status, guest_id,id, deleted)
-VALUES ('Very poor', '2023-12-11', 2.0, 'ACTIVE', 2,4,false);
-
-insert into accommodation_comments values(1,1);
-insert into accommodation_comments values(1,2);
-insert into accommodation_comments values(1,3);
-insert into accommodation_comments values(1,4);
-
+-- INSERT INTO comments (comment_text, date, rating, comment_status, guest_id,id, deleted)
+-- VALUES ('For this price great!', '2023-12-11', 4.5, 'ACTIVE', 2,1,false);
+-- INSERT INTO comments (comment_text, date, rating, comment_status, guest_id,id, deleted)
+-- VALUES ('Okay, can be better.', '2023-12-11', 3.0, 'ACTIVE', 2,2,false);
+-- INSERT INTO comments (comment_text, date, rating, comment_status, guest_id,id,deleted)
+-- VALUES ('Loved it!', '2023-12-11', 5.0, 'ACTIVE', 2,3,false);
+-- INSERT INTO comments (comment_text, date, rating, comment_status, guest_id,id, deleted)
+-- VALUES ('Very poor', '2023-12-11', 2.0, 'ACTIVE', 2,4,false);
+--
+-- insert into accommodation_comments values(1,1);
+-- insert into accommodation_comments values(1,2);
+-- insert into accommodation_comments values(1,3);
+-- insert into accommodation_comments values(1,4);
 
 
 

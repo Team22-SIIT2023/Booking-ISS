@@ -1,8 +1,10 @@
 package com.booking.BookingApp.service;
 
 import com.booking.BookingApp.domain.*;
+import com.booking.BookingApp.domain.enums.RequestStatus;
 import com.booking.BookingApp.domain.enums.Status;
 import com.booking.BookingApp.repository.AccommodationCommentRepository;
+import com.booking.BookingApp.repository.CommentsRepository;
 import com.booking.BookingApp.service.interfaces.ICommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,6 +18,15 @@ import java.util.List;
 public class CommentService implements ICommentService {
     @Autowired
     AccommodationCommentRepository accommodationCommentRepository;
+
+    @Autowired
+    CommentsRepository commentsRepository;
+
+    @Autowired
+    UserService userService;
+
+    @Autowired
+    RequestService requestService;
 
     @Override
     public Collection<Comments> findAll(Status status) {
@@ -54,12 +65,32 @@ public class CommentService implements ICommentService {
             return (double) (sum/commentsAndRatings.size());
         }
         return 0;
-
     }
 
     @Override
     public Comments createHostComment(Comments comment, Long id) {
-        return new Comments(1L, "Great comment!", LocalDate.now(), 4.5, Status.ACTIVE, null, false);
+        Collection<Request> hostRequests = requestService.findByHost(id);
+
+        boolean check=false;
+        for (Request request : hostRequests) {
+            if (request.getGuest().getId().equals(comment.getGuest().getId())) {
+                check=true;
+                break;
+            }
+        }
+        if (!check) {
+            return null;
+        }
+
+        Host host = (Host) userService.findOne(id);
+        HostComments hostComment = new HostComments();
+        hostComment.setHost(host);
+        hostComment.setDate(comment.getDate());
+        hostComment.setRating(comment.getRating());
+        hostComment.setText(comment.getText());
+        hostComment.setGuest(comment.getGuest());
+        hostComment.setStatus(comment.getStatus());
+        return commentsRepository.save(hostComment);
     }
 
     @Override
