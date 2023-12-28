@@ -35,8 +35,7 @@ public class RequestService implements IRequestService {
 
     @Override
     public Collection<Request> findByHostId(Long id,RequestStatus status, LocalDate begin, LocalDate end, String accommodationName) {
-        return requestRepository.findByAccommodation_Host_IdAndStatusAndTimeSlot_StartDateGreaterThanEqualAndTimeSlot_EndDateLessThanEqualAndAccommodation_NameContaining(
-                id, status, begin, end, accommodationName);
+        return requestRepository.findAllForHost(id, status, begin, end, accommodationName);
     }
 
     @Override
@@ -45,8 +44,7 @@ public class RequestService implements IRequestService {
     }
 
     public Collection<Request> findByGuestId(Long id, RequestStatus status, LocalDate begin, LocalDate end, String accommodationName) {
-        return requestRepository.findByGuest_IdAndStatusAndTimeSlot_StartDateGreaterThanEqualAndTimeSlot_EndDateLessThanEqualAndAccommodation_NameContaining(
-                id, status,  begin, end, accommodationName);
+        return requestRepository.findAllForGuest(id, status,  begin, end, accommodationName);
     }
 
 //    @Override
