@@ -1,7 +1,7 @@
 
-INSERT INTO addresses (country, city, postal_code, address,deleted) VALUES ('Serbia', 'Novi Sad', '21000', 'Alekse Santica 54',false);
-INSERT INTO addresses (country, city, postal_code, address,deleted) VALUES ('Serbia', 'Novi Sad', '21000', 'Futoska 54',false);
-INSERT INTO addresses (country, city, postal_code, address,deleted) VALUES ('Serbia', 'Novi Sad', '21000', 'Puskinova 3',false);
+INSERT INTO addresses (country, city, postal_code, address,deleted) VALUES ('Serbia', 'Novi Sad', '21000', '54 Alekse Santica',false);
+INSERT INTO addresses (country, city, postal_code, address,deleted) VALUES ('Serbia', 'Novi Sad', '21000', '54 Futoska',false);
+INSERT INTO addresses (country, city, postal_code, address,deleted) VALUES ('Serbia', 'Novi Sad', '21000', '3 Puskinova',false);
 
 
 INSERT INTO role (name) VALUES ('ROLE_HOST');
@@ -173,12 +173,12 @@ insert into accommodation_comments values(1,4);
 -- INSERT INTO requests (time_slot_id,price,accommodation_id,guest_number,request_status)
 -- VALUES (21,150.00,10, 2,'ACCEPTED');
 
-INSERT INTO requests (time_slot_id,price,accommodation_id,guest_number,request_status,deleted)
-VALUES (7,3450.00,1, 5,'ACCEPTED' ,false);
-
-INSERT INTO requests (time_slot_id,price,accommodation_id,guest_number,request_status,deleted)
-VALUES (8,350.00,1, 2,'WAITING' ,false);
-
-INSERT INTO requests (time_slot_id,price,accommodation_id,guest_number,request_status,deleted)
-VALUES (9,350.00,2, 2,'WAITING' ,false);
+-- INSERT INTO requests (time_slot_id,price,accommodation_id,guest_number,request_status,guest_id,deleted)
+-- VALUES (7,3450.00,1, 5,'ACCEPTED' ,2,false);
+--
+-- INSERT INTO requests (time_slot_id,price,accommodation_id,guest_number,request_status,guest_id,deleted)
+-- VALUES (8,350.00,3, 2,'WAITING' ,2,false);
+--
+-- INSERT INTO requests (time_slot_id,price,accommodation_id,guest_number,request_status,guest_id,deleted)
+-- VALUES (9,350.00,2, 2,'WAITING' ,2,false);
 

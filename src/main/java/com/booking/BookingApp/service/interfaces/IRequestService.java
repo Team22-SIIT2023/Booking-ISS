@@ -16,9 +16,9 @@ public interface IRequestService {
 
     Request findById(Long id);
 
-    Collection<Request> findByHostId(Long id, RequestStatus status);
+    Collection<Request> findByHostId(Long id,RequestStatus status, LocalDate begin, LocalDate end, String accommodationName);
 
-    Collection<Request> findByGuestId(Long id, RequestStatus status);
+    Collection<Request> findByGuestId(Long id, RequestStatus status, LocalDate begin, LocalDate end, String accommodationName);
 
 //    Collection<Request> findReservationByGuestId(Long id, RequestStatus status);
 //

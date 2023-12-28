@@ -7,6 +7,22 @@ public class UserTokenState {
     private String role;
     private Long id;
 
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
     public UserTokenState() {
         this.accessToken = null;
         this.expiresIn = null;
