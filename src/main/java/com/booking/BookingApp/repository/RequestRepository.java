@@ -17,6 +17,7 @@ import java.util.Collection;
 @Repository
 public interface RequestRepository extends JpaRepository<Request, Long> {
     Collection<Request> findByStatus(RequestStatus status);
+    
     Collection<Request> findByStatusAndAccommodation_Name(RequestStatus status, String accommodationName);
 
     Collection<Request> findByStatusAndAccommodation_NameAndTimeSlot_StartDateLessThanEqualAndTimeSlot_EndDateGreaterThanEqual(RequestStatus status,String accommodationName,LocalDate end,LocalDate begin);
@@ -35,7 +36,7 @@ public interface RequestRepository extends JpaRepository<Request, Long> {
   
     Collection<Request> findByStatusAndAccommodation_Id(RequestStatus status, Long id);
 
-    Collection<Request> findByAccommodation_Host_Id(Long id);
+//    Collection<Request> findByAccommodation_Host_Id(Long id);
 
     @Query("SELECT r FROM Request r WHERE " +
             "(:hostId is null or r.accommodation.host.id = :hostId) " +
@@ -43,27 +44,25 @@ public interface RequestRepository extends JpaRepository<Request, Long> {
             "and (COALESCE(:begin, r.timeSlot.startDate) <= r.timeSlot.endDate) " +
             "and (COALESCE(:end, r.timeSlot.endDate) >= r.timeSlot.startDate) " +
             "and (:accommodationName is null or r.accommodation.name like %:accommodationName%)")
-    Collection<Request> findByAccommodation_Host_IdAndStatusAndTimeSlot_StartDateGreaterThanEqualAndTimeSlot_EndDateLessThanEqualAndAccommodation_NameContaining(
+    Collection<Request> findAllForHost(
             @Param("hostId") Long hostId,
             @Param("status") RequestStatus status,
             @Param("begin") LocalDate begin,
             @Param("end") LocalDate end,
             @Param("accommodationName") String accommodationName
     );
-@Query("SELECT r FROM Request r WHERE " +
-        "(:guestId is null or r.guest.id = :guestId) " +
-        "and (:status is null or r.status = :status) " +
-        "and (COALESCE(:begin, r.timeSlot.startDate) <= r.timeSlot.endDate) " +
-        "and (COALESCE(:end, r.timeSlot.endDate) >= r.timeSlot.startDate) " +
-        "and (:accommodationName is null or r.accommodation.name like %:accommodationName%)")
-Collection<Request> findByGuest_IdAndStatusAndTimeSlot_StartDateGreaterThanEqualAndTimeSlot_EndDateLessThanEqualAndAccommodation_NameContaining(
-        @Param("guestId") Long guestId,
-        @Param("status") RequestStatus status,
-        @Param("begin") LocalDate begin,
-        @Param("end") LocalDate end,
-        @Param("accommodationName") String accommodationName
-);
 
-
-
+    @Query("SELECT r FROM Request r WHERE " +
+            "(:guestId is null or r.guest.id = :guestId) " +
+            "and (:status is null or r.status = :status) " +
+            "and (COALESCE(:begin, r.timeSlot.startDate) <= r.timeSlot.endDate) " +
+            "and (COALESCE(:end, r.timeSlot.endDate) >= r.timeSlot.startDate) " +
+            "and (:accommodationName is null or r.accommodation.name like %:accommodationName%)")
+    Collection<Request> findAllForGuest(
+            @Param("guestId") Long guestId,
+            @Param("status") RequestStatus status,
+            @Param("begin") LocalDate begin,
+            @Param("end") LocalDate end,
+            @Param("accommodationName") String accommodationName
+    );
 }
