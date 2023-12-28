@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Service
@@ -21,13 +22,7 @@ public class RequestService implements IRequestService {
     RequestRepository requestRepository;
     @Override
     public Collection<Request> findAll(RequestStatus status, LocalDate begin, LocalDate end, String accommodationName) {
-
-        if (status != null && accommodationName!=null && begin!=null && end!=null) {
-            return requestRepository.findByStatusAndAccommodation_NameAndTimeSlot_StartDateLessThanEqualAndTimeSlot_EndDateGreaterThanEqual(
-                    status, accommodationName, end, begin);
-        }else if (status!=null && accommodationName!=null) {
-            return requestRepository.findByStatusAndAccommodation_Name(status,accommodationName);
-        }else if(status!=null){
+        if(status!=null){
             return requestRepository.findByStatus(status);
         }
         return requestRepository.findAll();
@@ -39,8 +34,9 @@ public class RequestService implements IRequestService {
     }
 
     @Override
-    public Collection<Request> findByHostId(Long id, RequestStatus status) {
-        return requestRepository.findByStatusAndAccommodation_Host_Id(status,id);
+    public Collection<Request> findByHostId(Long id,RequestStatus status, LocalDate begin, LocalDate end, String accommodationName) {
+        return requestRepository.findByAccommodation_Host_IdAndStatusAndTimeSlot_StartDateGreaterThanEqualAndTimeSlot_EndDateLessThanEqualAndAccommodation_NameContaining(
+                id, status, begin, end, accommodationName);
     }
 
     @Override
@@ -48,9 +44,9 @@ public class RequestService implements IRequestService {
         return requestRepository.findByAccommodation_Host_Id(id);
     }
 
-    @Override
-    public Collection<Request> findByGuestId(Long id, RequestStatus status) {
-        return requestRepository.findByStatusAndGuest_Id(status,id);
+    public Collection<Request> findByGuestId(Long id, RequestStatus status, LocalDate begin, LocalDate end, String accommodationName) {
+        return requestRepository.findByGuest_IdAndStatusAndTimeSlot_StartDateGreaterThanEqualAndTimeSlot_EndDateLessThanEqualAndAccommodation_NameContaining(
+                id, status,  begin, end, accommodationName);
     }
 
 //    @Override
