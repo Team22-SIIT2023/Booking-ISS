@@ -22,6 +22,8 @@ public interface RequestRepository extends JpaRepository<Request, Long> {
     Collection<Request> findByStatusAndAccommodation_NameAndTimeSlot_StartDateLessThanEqualAndTimeSlot_EndDateGreaterThanEqual(RequestStatus status,String accommodationName,LocalDate end,LocalDate begin);
     Collection<Request> findByStatusAndAccommodation_Host_Id(RequestStatus status, Long id);
 
+    Collection<Request> findByAccommodation_Host_Id(Long id);
+
     Collection<Request> findByStatusAndGuest_Id(RequestStatus status, Long id);
 
     @Query("SELECT r FROM Request r WHERE r.status = 'ACCEPTED' AND r.timeSlot.startDate > :currentDateTime AND r.guest = :guest")

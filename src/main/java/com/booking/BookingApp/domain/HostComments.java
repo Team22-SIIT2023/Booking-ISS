@@ -1,9 +1,7 @@
 package com.booking.BookingApp.domain;
 
 import com.booking.BookingApp.domain.enums.Status;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -21,14 +19,15 @@ import java.time.LocalDate;
 //@Where(clause = "deleted = false")
 public class HostComments extends Comments{
 
-    @Column(name = "host_id")
-    private Long hostId;
+    @ManyToOne(cascade = {CascadeType.ALL})
+    private Host host;
+
 //
 //    @Column(name="deleted")
 //    private boolean deleted = Boolean.FALSE;
 
-    public HostComments(Long id, String text, LocalDate date, double rating, Status status, Guest guest, Long hostId, boolean deleted) {
+    public HostComments(Long id, String text, LocalDate date, double rating, Status status, Guest guest, Host hostId, boolean deleted) {
         super(id, text, date, rating, status, guest, deleted);
-        this.hostId = hostId;
+        this.host = hostId;
     }
 }

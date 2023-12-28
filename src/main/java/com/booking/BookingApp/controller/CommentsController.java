@@ -1,13 +1,19 @@
 package com.booking.BookingApp.controller;
 
 import com.booking.BookingApp.domain.Comments;
+import com.booking.BookingApp.domain.Host;
+import com.booking.BookingApp.domain.HostComments;
 import com.booking.BookingApp.domain.enums.Status;
+import com.booking.BookingApp.dto.AccommodationDTO;
 import com.booking.BookingApp.dto.CommentsDTO;
+import com.booking.BookingApp.dto.CreateHostCommentDTO;
 import com.booking.BookingApp.dto.RequestDTO;
 import com.booking.BookingApp.mapper.AccommodationDTOMapper;
 import com.booking.BookingApp.mapper.CommentsDTOMapper;
+import com.booking.BookingApp.mapper.HostCommentDTOMapper;
 import com.booking.BookingApp.mapper.RequestDTOMapper;
 import com.booking.BookingApp.service.CommentService;
+import com.booking.BookingApp.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -29,6 +35,9 @@ public class CommentsController {
 
     @Autowired
     private CommentService commentService;
+
+    @Autowired
+    private UserService userService;
 
     // ako se ne prosledi status onda se svi prikazuju
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
@@ -90,12 +99,25 @@ public class CommentsController {
         return new ResponseEntity<Double>(rating,HttpStatus.OK);
     }
 
+//    @PostMapping(value = "/host/{hostId}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+//    @PreAuthorize("hasRole('GUEST')")
+//    public ResponseEntity<CommentsDTO> createHostComment(@RequestBody CreateHostCommentDTO commentDTO,
+//                                                         @PathVariable("hostId") Long id) {
+//        HostComments commentModel = HostCommentDTOMapper.fromDTOtoComments(commentDTO);
+//        Comments savedComment = commentService.createHostComment(commentModel, id);
+//        return new ResponseEntity<CommentsDTO>(new CommentsDTO(savedComment), HttpStatus.CREATED);
+//    }
+
     @PostMapping(value = "/host/{hostId}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('GUEST')")
     public ResponseEntity<CommentsDTO> createHostComment(@RequestBody CommentsDTO commentDTO,
                                                          @PathVariable("hostId") Long id) {
+//        Host host = (Host) userService.findOne(id);
         Comments commentModel = CommentsDTOMapper.fromDTOtoComments(commentDTO);
         Comments savedComment = commentService.createHostComment(commentModel, id);
+        if (savedComment==null) {
+            return new ResponseEntity<CommentsDTO>(HttpStatus.BAD_REQUEST);
+        }
         return new ResponseEntity<CommentsDTO>(new CommentsDTO(savedComment), HttpStatus.CREATED);
     }
 

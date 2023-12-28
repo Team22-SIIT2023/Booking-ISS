@@ -18,6 +18,8 @@ public interface IRequestService {
 
     Collection<Request> findByHostId(Long id, RequestStatus status);
 
+    Collection<Request> findByHost(Long id);
+
     Collection<Request> findByGuestId(Long id, RequestStatus status);
 
 //    Collection<Request> findReservationByGuestId(Long id, RequestStatus status);

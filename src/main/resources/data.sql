@@ -133,20 +133,19 @@ INSERT INTO accommodations_free_time_slots VALUES (2,5);
 INSERT INTO accommodations_free_time_slots VALUES (2,6);
 
 
-INSERT INTO comments (comment_text, date, rating, comment_status, guest_id,id, deleted)
-VALUES ('For this price great!', '2023-12-11', 4.5, 'ACTIVE', 2,1,false);
-INSERT INTO comments (comment_text, date, rating, comment_status, guest_id,id, deleted)
-VALUES ('Okay, can be better.', '2023-12-11', 3.0, 'ACTIVE', 2,2,false);
-INSERT INTO comments (comment_text, date, rating, comment_status, guest_id,id,deleted)
-VALUES ('Loved it!', '2023-12-11', 5.0, 'ACTIVE', 2,3,false);
-INSERT INTO comments (comment_text, date, rating, comment_status, guest_id,id, deleted)
-VALUES ('Very poor', '2023-12-11', 2.0, 'ACTIVE', 2,4,false);
-
-insert into accommodation_comments values(1,1);
-insert into accommodation_comments values(1,2);
-insert into accommodation_comments values(1,3);
-insert into accommodation_comments values(1,4);
-
+-- INSERT INTO comments (comment_text, date, rating, comment_status, guest_id,id, deleted)
+-- VALUES ('For this price great!', '2023-12-11', 4.5, 'ACTIVE', 2,1,false);
+-- INSERT INTO comments (comment_text, date, rating, comment_status, guest_id,id, deleted)
+-- VALUES ('Okay, can be better.', '2023-12-11', 3.0, 'ACTIVE', 2,2,false);
+-- INSERT INTO comments (comment_text, date, rating, comment_status, guest_id,id,deleted)
+-- VALUES ('Loved it!', '2023-12-11', 5.0, 'ACTIVE', 2,3,false);
+-- INSERT INTO comments (comment_text, date, rating, comment_status, guest_id,id, deleted)
+-- VALUES ('Very poor', '2023-12-11', 2.0, 'ACTIVE', 2,4,false);
+--
+-- insert into accommodation_comments values(1,1);
+-- insert into accommodation_comments values(1,2);
+-- insert into accommodation_comments values(1,3);
+-- insert into accommodation_comments values(1,4);
 
 
 
@@ -173,12 +172,12 @@ insert into accommodation_comments values(1,4);
 -- INSERT INTO requests (time_slot_id,price,accommodation_id,guest_number,request_status)
 -- VALUES (21,150.00,10, 2,'ACCEPTED');
 
-INSERT INTO requests (time_slot_id,price,accommodation_id,guest_number,request_status,deleted)
-VALUES (7,3450.00,1, 5,'ACCEPTED' ,false);
+INSERT INTO requests (time_slot_id,price,accommodation_id,guest_number,request_status,deleted,guest_id)
+VALUES (7,3450.00,1, 5,'ACCEPTED' ,false, 2);
 
-INSERT INTO requests (time_slot_id,price,accommodation_id,guest_number,request_status,deleted)
-VALUES (8,350.00,1, 2,'WAITING' ,false);
+INSERT INTO requests (time_slot_id,price,accommodation_id,guest_number,request_status,deleted,guest_id)
+VALUES (8,350.00,1, 2,'WAITING' ,false, 2);
 
-INSERT INTO requests (time_slot_id,price,accommodation_id,guest_number,request_status,deleted)
-VALUES (9,350.00,2, 2,'WAITING' ,false);
+INSERT INTO requests (time_slot_id,price,accommodation_id,guest_number,request_status,deleted,guest_id)
+VALUES (9,350.00,1, 2,'WAITING' ,false, 2);
 
