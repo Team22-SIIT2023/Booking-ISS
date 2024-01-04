@@ -172,12 +172,29 @@ INSERT INTO accommodations_free_time_slots VALUES (2,6);
 -- INSERT INTO requests (time_slot_id,price,accommodation_id,guest_number,request_status)
 -- VALUES (21,150.00,10, 2,'ACCEPTED');
 
--- INSERT INTO requests (time_slot_id,price,accommodation_id,guest_number,request_status,guest_id,deleted)
--- VALUES (7,3450.00,1, 5,'ACCEPTED' ,2,false);
---
--- INSERT INTO requests (time_slot_id,price,accommodation_id,guest_number,request_status,guest_id,deleted)
--- VALUES (8,350.00,3, 2,'WAITING' ,2,false);
---
--- INSERT INTO requests (time_slot_id,price,accommodation_id,guest_number,request_status,guest_id,deleted)
--- VALUES (9,350.00,2, 2,'WAITING' ,2,false);
+INSERT INTO timeslots (start_date, end_date, deleted)
+VALUES ('2023-01-29 10:00:00','2023-02-04 12:00:00', false);
+INSERT INTO timeslots (start_date, end_date, deleted)
+VALUES ('2023-02-03 10:00:00','2023-02-14 12:00:00', false);
+INSERT INTO timeslots (start_date, end_date, deleted)
+VALUES ('2023-03-22 10:00:00','2023-03-26 12:00:00', false);
+INSERT INTO timeslots (start_date, end_date, deleted)
+VALUES ('2023-04-22 10:00:00','2023-04-26 12:00:00', false);
+INSERT INTO timeslots (start_date, end_date, deleted)
+VALUES ('2023-06-22 10:00:00','2023-06-26 12:00:00', false);
+
+INSERT INTO requests (time_slot_id,price,accommodation_id,guest_number,request_status,guest_id,deleted)
+VALUES (10,3500.00,1, 5,'ACCEPTED' ,2,false);
+
+INSERT INTO requests (time_slot_id,price,accommodation_id,guest_number,request_status,guest_id,deleted)
+VALUES (11,2450.00,3, 2,'ACCEPTED' ,2,false);
+
+INSERT INTO requests (time_slot_id,price,accommodation_id,guest_number,request_status,guest_id,deleted)
+VALUES (12,3000.00,3, 2,'ACCEPTED' ,2,false);
+
+INSERT INTO requests (time_slot_id,price,accommodation_id,guest_number,request_status,guest_id,deleted)
+VALUES (13,5000.00,1, 2,'ACCEPTED' ,2,false);
+
+INSERT INTO requests (time_slot_id,price,accommodation_id,guest_number,request_status,guest_id,deleted)
+VALUES (14,4300.00,1, 2,'ACCEPTED' ,2,false);
 

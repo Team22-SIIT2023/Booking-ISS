@@ -9,14 +9,19 @@ import lombok.Setter;
 @NoArgsConstructor
 public class ReportDTO {
 
+    private Long id;
     private Long accommodationId;
+    private String accommodationName;
     private int totalProfit;
+    private double[] profitByMonth;
     private int numberOfReservations;
 
-    public ReportDTO(Long accommodationId,int total, int numOfRes) {
+    public ReportDTO(Long accommodationId,String accommodationName,int total, int numOfRes,double[]monthly) {
         this.accommodationId = accommodationId;
         this.totalProfit = total;
         this.numberOfReservations = numOfRes;
+        this.profitByMonth=monthly;
+        this.accommodationName=accommodationName;
     }
 
     @Override
