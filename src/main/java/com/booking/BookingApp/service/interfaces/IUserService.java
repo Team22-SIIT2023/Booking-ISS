@@ -34,4 +34,6 @@ public interface IUserService {
     User saveHost(User user);
 
     User updateActivationLink(String activationLink, String username);
+
+    void updateFavoriteAccommodations(Long guestId, Long accommodationId);
 }

@@ -3,5 +3,6 @@ package com.booking.BookingApp.domain.enums;
 public enum RequestStatus {
     ACCEPTED,
     CANCELLED,
-    WAITING
+    PENDING,
+    DENIED
 }

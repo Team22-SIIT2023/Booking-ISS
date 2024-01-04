@@ -69,4 +69,14 @@ public interface RequestRepository extends JpaRepository<Request, Long> {
             @Param("end") LocalDate end,
             @Param("accommodationName") String accommodationName
     );
+
+    @Query("SELECT r FROM Request r " +
+            "WHERE r.accommodation.name like %:accommodationName% " +
+            "AND r.status = 'ACCEPTED' " +
+            "AND (YEAR(r.timeSlot.startDate) = :year OR YEAR(r.timeSlot.endDate) = :year)")
+    Collection<Request> findAllByAccommodationNameAndYear(
+            @Param("accommodationName") String accommodationName,
+            @Param("year") int year
+    );
+
 }

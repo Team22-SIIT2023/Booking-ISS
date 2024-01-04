@@ -9,6 +9,7 @@ import com.booking.BookingApp.domain.enums.AccommodationType;
 import com.booking.BookingApp.domain.enums.RequestStatus;
 import com.booking.BookingApp.repository.RequestRepository;
 import com.booking.BookingApp.service.interfaces.IRequestService;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -72,7 +73,6 @@ public class RequestService implements IRequestService {
 
     @Override
     public Request create(Request request) throws Exception{
-
         return requestRepository.save(request);
     }
 
@@ -88,7 +88,22 @@ public class RequestService implements IRequestService {
     }
 
     @Override
+    @Transactional
     public void delete(Long id) {
-        requestRepository.deleteById(id);
+        Request request = requestRepository.findById(id).orElse(null);
+        if (request != null) {
+            request.setDeleted(true);
+            requestRepository.save(request);
+        }
+    }
+
+    @Override
+    public int findCancellations(Long id) {
+        Collection<Request> requests=requestRepository.findAllForGuest(id,RequestStatus.CANCELLED,null,null,null);
+        return requests.size();
+    }
+    @Override
+    public Collection<Request> findReservationsByYear(String accommodationName,int year) {
+        return requestRepository.findAllByAccommodationNameAndYear(accommodationName,year);
     }
 }

@@ -39,6 +39,11 @@ public class UserService implements IUserService {
 
     @Autowired
     CommentsRepository commentsRepository;
+
+    @Autowired
+    AccommodationService accommodationService;
+    @Autowired
+    GuestRepository guestRepository;
     @Override
     public Collection<User> findAll() {
         return data();
@@ -148,7 +153,24 @@ public class UserService implements IUserService {
 
     @Override
     public Collection<Accommodation> findFavorites(Long id) {
-        return userRepository.findFavoriteAccommodationsByGuestId(id);
+        Guest guest= guestRepository.findGuestById(id);
+        return guest.getFavoriteAccommodations();
+    }
+    @Override
+    public void updateFavoriteAccommodations(Long guestId, Long accommodationId) {
+        Guest guest= guestRepository.findGuestById(guestId);
+        Accommodation favoriteAccommodation=accommodationService.findOne(accommodationId);
+        if(guest.getFavoriteAccommodations().contains(favoriteAccommodation)){
+            guest.getFavoriteAccommodations().remove(favoriteAccommodation);
+        }else{
+            guest.getFavoriteAccommodations().add(favoriteAccommodation);
+
+        }
+        try{
+            guestRepository.save(guest);
+        }catch (Exception ex){
+            System.out.println("Nesto se desilo");
+        }
     }
 
 //    @Override
