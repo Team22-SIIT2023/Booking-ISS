@@ -19,6 +19,7 @@ import java.util.*;
 
 @Service
 public class RequestService implements IRequestService {
+
     @Autowired
     RequestRepository requestRepository;
 
@@ -28,8 +29,8 @@ public class RequestService implements IRequestService {
             return requestRepository.findByStatus(status);
         }
         return requestRepository.findAll();
-
     }
+
     @Override
     public Request findById(Long id) {
         return requestRepository.findById(id).orElse(null);
@@ -39,6 +40,11 @@ public class RequestService implements IRequestService {
     public Collection<Request> findByHostId(Long id,RequestStatus status, LocalDate begin, LocalDate end, String accommodationName) {
         return requestRepository.findAllForHost(id, status, begin, end, accommodationName);
     }
+
+    public Collection<Request> findAllRequestForHost(RequestStatus status, Long id) {
+        return requestRepository.findAllByStatusAndGuest_Id(status, id);
+    }
+
     @Override
     public Collection<Request> findByHost(Long id) {
         return requestRepository.findByAccommodation_Host_Id(id);
@@ -47,6 +53,23 @@ public class RequestService implements IRequestService {
     public Collection<Request> findByGuestId(Long id, RequestStatus status, LocalDate begin, LocalDate end, String accommodationName) {
         return requestRepository.findAllForGuest(id, status,  begin, end, accommodationName);
     }
+
+    public Collection<Request> findByAccommodationId(Long id) {
+        return  requestRepository.findByAccommodation_Id(id);
+    }
+
+//    @Override
+//    public Collection<Request> findReservationByGuestId(Long id, RequestStatus status) {
+//        return data();
+//    }
+
+//    @Override
+//    public Collection<Request> findWaitingRequest(Long id) {return data();}
+
+//    @Override
+//    public Request findByAccommodationId(Long id) {
+//        return oneRequest();
+//    }
 
     @Override
     public Request create(Request request) throws Exception{
@@ -83,5 +106,4 @@ public class RequestService implements IRequestService {
     public Collection<Request> findReservationsByYear(String accommodationName,int year) {
         return requestRepository.findAllByAccommodationNameAndYear(accommodationName,year);
     }
-
 }

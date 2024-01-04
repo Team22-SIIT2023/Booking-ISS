@@ -17,7 +17,7 @@ public interface ICommentService {
 
     Collection<Comments> findByAccommodationId(Long id, Status status);
 
-    int findHostRating(Long id);
+    double findHostRating(Long id);
 
     double findAccommodationRating(Long id);
 
@@ -28,4 +28,6 @@ public interface ICommentService {
     Comments update(Comments commentForUpdate,  Comments comment);
 
     void delete(Long id);
+
+    Comments reportComment(Comments commentForUpdate, Status status);
 }

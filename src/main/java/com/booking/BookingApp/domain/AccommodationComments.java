@@ -18,11 +18,11 @@ import java.time.LocalDate;
 @Table(name = "accommodation_comments")
 public class AccommodationComments extends Comments{
 
-    @Column(name = "accommodation_id")
-    private Long accommodationId;
+    @ManyToOne(cascade = {CascadeType.REFRESH})
+    private Accommodation accommodation;
 
-    public AccommodationComments(Long id, String text, LocalDate date, double rating, Status status, Guest guest, Long accommodationId,boolean deleted) {
+    public AccommodationComments(Long id, String text, LocalDate date, double rating, Status status, Guest guest, Accommodation accommodationId,boolean deleted) {
         super(id, text, date, rating, status, guest,deleted);
-        this.accommodationId = accommodationId;
+        this.accommodation = accommodationId;
     }
 }

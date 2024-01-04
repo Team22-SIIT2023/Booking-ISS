@@ -57,6 +57,12 @@ VALUES ('2024-04-01 10:00:00','2024-04-11 12:00:00', false);
 INSERT INTO timeslots (start_date, end_date, deleted)
 VALUES ('2024-04-01 10:00:00','2024-04-11 12:00:00', false);
 
+INSERT INTO timeslots (start_date, end_date, deleted)
+VALUES ('2023-12-22 10:00:00','2023-12-28 12:00:00', false);
+
+INSERT INTO timeslots (start_date, end_date, deleted)
+VALUES ('2023-12-25 10:00:00','2023-12-28 12:00:00', false);
+
 
 INSERT INTO amenities (amenity_name, deleted) VALUES ('wifi', false);
 INSERT INTO amenities (amenity_name, deleted) VALUES ('pool', false);
@@ -165,7 +171,7 @@ INSERT INTO accommodations_free_time_slots VALUES (2,6);
 
 -- INSERT INTO requests (time_slot_id,price,accommodation_id,guest_number,request_status)
 -- VALUES (,150.00,1, 2,'ACCEPTED' );
---
+-- --
 -- INSERT INTO requests (time_slot_id,price,accommodation_id,guest_number,request_status)
 -- VALUES (2,3450.00,1, 5,'ACCEPTED' );
 
