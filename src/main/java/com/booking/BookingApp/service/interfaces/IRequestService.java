@@ -1,6 +1,7 @@
 package com.booking.BookingApp.service.interfaces;
 
 import com.booking.BookingApp.domain.Request;
+import com.booking.BookingApp.domain.TimeSlot;
 import com.booking.BookingApp.domain.enums.RequestStatus;
 import org.springframework.cglib.core.Local;
 
@@ -22,6 +23,7 @@ public interface IRequestService {
 
     Collection<Request> findByGuestId(Long id, RequestStatus status, LocalDate begin, LocalDate end, String accommodationName);
 
+    public Collection<Request> findReservationsByYear(String accommodationName,int year);
 
 //    Collection<Request> findReservationByGuestId(Long id, RequestStatus status);
 //
@@ -34,4 +36,6 @@ public interface IRequestService {
     Request update(Request requestForUpdate, Request request);
 
     void delete(Long id);
+    int findCancellations(Long id);
+
 }
