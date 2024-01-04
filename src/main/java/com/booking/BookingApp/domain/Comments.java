@@ -40,8 +40,9 @@ public class Comments {
     @Column(name = "commentStatus")
     private Status status;
 
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    @ManyToOne(cascade=CascadeType.REMOVE)
+//    @OnDelete(action = OnDeleteAction.CASCADE)
+//    @ManyToOne(cascade=CascadeType.REMOVE)
+    @ManyToOne
     private Guest guest;
 
     @Column(name="deleted")
