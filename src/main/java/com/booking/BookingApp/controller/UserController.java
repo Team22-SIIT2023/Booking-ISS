@@ -201,4 +201,11 @@ public class UserController {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return new ResponseEntity<>(UserDTOMapper.fromUsertoDTO(user), HttpStatus.OK);
     }
+
+    @PutMapping("/{guestId}/favoriteAccommodations/{accommodationId}")
+    public ResponseEntity<String> updateFavorites(
+            @PathVariable Long guestId, @PathVariable Long accommodationId) {
+        userService.updateFavoriteAccommodations(guestId, accommodationId);
+        return new ResponseEntity<String>("Added favorite.",HttpStatus.OK);
+    }
 }
