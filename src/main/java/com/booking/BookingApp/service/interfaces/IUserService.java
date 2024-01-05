@@ -42,4 +42,6 @@ public interface IUserService {
     User reportHost(User status, Long id);
 
     User reportGuest(User status, Long id);
+
+    void updateFavoriteAccommodations(Long guestId, Long accommodationId);
 }

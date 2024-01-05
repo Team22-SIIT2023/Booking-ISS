@@ -89,6 +89,7 @@ public class RequestController {
     }
 
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAuthority('ROLE_GUEST') or hasAuthority('ROLE_HOST')")
     public ResponseEntity<RequestDTO> updateRequest(@RequestBody RequestDTO requestDTO, @PathVariable("id") Long id) {
         Request requestForUpdate = requestService.findById(id);
         Request request = RequestDTOMapper.fromDTOtoRequest(requestDTO);
@@ -101,5 +102,11 @@ public class RequestController {
     public ResponseEntity<RequestDTO> deleteRequest(@PathVariable("id") Long id) {
         requestService.delete(id);
         return new ResponseEntity<RequestDTO>(HttpStatus.NO_CONTENT);
+    }
+    @GetMapping(value = "/{guestId}/cancelledReservations", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAuthority('ROLE_GUEST') or hasAuthority('ROLE_HOST')")
+    public ResponseEntity<Integer> getGuestCancellations(@PathVariable("guestId") Long id) {
+        int number = requestService.findCancellations(id);
+        return new ResponseEntity<Integer>(number,HttpStatus.OK);
     }
 }
