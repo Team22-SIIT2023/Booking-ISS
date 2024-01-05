@@ -1,6 +1,7 @@
 package com.booking.BookingApp.service;
 
 import com.booking.BookingApp.domain.*;
+import com.booking.BookingApp.domain.enums.RequestStatus;
 import com.booking.BookingApp.domain.enums.Status;
 import com.booking.BookingApp.repository.*;
 import com.booking.BookingApp.service.interfaces.IUserService;
@@ -42,8 +43,10 @@ public class UserService implements IUserService {
 
     @Autowired
     AccommodationService accommodationService;
+  
     @Autowired
     GuestRepository guestRepository;
+
     @Override
     public Collection<User> findAll() {
         return data();
@@ -261,6 +264,57 @@ public class UserService implements IUserService {
         user1.setActivationLinkDate(activationTime);
 
         return userRepository.save(user1);
+    }
+
+    @Override
+    public User reportUser(User user, Long guestId) {
+//        User guest = findOne(guestId);
+        User host = findOne(user.getId());
+
+        Collection<Request> requests = requestRepository.findAllByStatusAndGuest_Id(RequestStatus.ACCEPTED, guestId);
+
+        for (Request r : requests) {
+            System.out.println("REQUEST "+r.getStatus());
+        }
+
+        if (requests.isEmpty()) {
+            return null;
+        }
+
+        host.getAccount().setStatus(Status.REPORTED);
+        System.out.println("SERVICE "+host);
+        return userRepository.save(host);
+    }
+
+    @Override
+    public User reportGuest(User user, Long hostId) {
+        User guest = findOne(user.getId());
+
+        Collection<Request> requests =
+                requestRepository.findAllByStatusAndAccommodation_Host_IdAndGuest_Id(RequestStatus.ACCEPTED,hostId ,guest.getId());
+
+        if (requests.isEmpty()) {
+            return null;
+        }
+
+        guest.getAccount().setStatus(Status.REPORTED);
+        return userRepository.save(guest);
+    }
+
+    @Override
+    public User reportHost(User user, Long guestId) {
+        User host = findOne(user.getId());
+
+        Collection<Request> requests =
+                requestRepository.findAllByStatusAndAccommodation_Host_IdAndGuest_Id(RequestStatus.ACCEPTED, host.getId() ,guestId);
+
+        if (requests.isEmpty()) {
+            System.out.println("NEMA REZZZ");
+            return null;
+        }
+
+        host.getAccount().setStatus(Status.REPORTED);
+        return userRepository.save(host);
     }
 
 
