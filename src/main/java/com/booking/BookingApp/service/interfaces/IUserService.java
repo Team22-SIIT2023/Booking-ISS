@@ -11,6 +11,7 @@ import java.util.Optional;
 public interface IUserService {
 
     Collection<User> findAll();
+
     User findByUsername(String username);
 
     User findOne(Long id);
@@ -31,7 +32,14 @@ public interface IUserService {
 
 //    User save(User user);
     User saveGuest(User user);
+
     User saveHost(User user);
 
     User updateActivationLink(String activationLink, String username);
+
+    User reportUser(User status, Long id);
+
+    User reportHost(User status, Long id);
+
+    User reportGuest(User status, Long id);
 }
