@@ -17,7 +17,7 @@ import org.hibernate.annotations.Where;
 //@Where(clause = "deleted=false")
 public class Host extends User {
 
-    public Host(Long id, String firstName, String lastName, Address address, String phoneNumber, Account account, String picturePath,boolean deleted) {
-        super(id, firstName, lastName, address, phoneNumber, account, picturePath,deleted);
+    public Host(Long id, String firstName, String lastName, Address address, String phoneNumber, Account account,boolean deleted) {
+        super(id, firstName, lastName, address, phoneNumber, account,deleted);
     }
 }

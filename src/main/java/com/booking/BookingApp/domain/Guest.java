@@ -24,8 +24,8 @@ public class Guest extends User {
             inverseJoinColumns = @JoinColumn(name = "accommodation_id"))
     private Collection<Accommodation> favoriteAccommodations;
 
-    public Guest(Long id, String firstName, String lastName, Address address, String phoneNumber, Account account, String picturePath, boolean deleted, Collection<Accommodation> favoriteAccommodations) {
-        super(id, firstName, lastName, address, phoneNumber, account, picturePath, deleted);
+    public Guest(Long id, String firstName, String lastName, Address address, String phoneNumber, Account account, boolean deleted, Collection<Accommodation> favoriteAccommodations) {
+        super(id, firstName, lastName, address, phoneNumber, account, deleted);
         this.favoriteAccommodations = favoriteAccommodations;
     }
 

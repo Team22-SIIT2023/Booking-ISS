@@ -50,9 +50,6 @@ public class User implements UserDetails {
     @OneToOne(cascade = {CascadeType.ALL})
     private Account account;
 
-    @Column(name = "picture_path")
-    private String picturePath;
-
     @Column(name = "last_password_reset_date")
     private Timestamp lastPasswordResetDate;
 
@@ -64,15 +61,32 @@ public class User implements UserDetails {
 
     @Column(name="deleted")
     private boolean deleted = Boolean.FALSE;
-    public User(Long id, String firstName, String lastName, Address address, String phoneNumber, Account account, String picturePath, Boolean deleted) {
+
+    @ElementCollection
+    private List<String> images;
+
+    public User(Long id, String firstName, String lastName, Address address, String phoneNumber, Account account,Boolean deleted) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.address = address;
         this.phoneNumber = phoneNumber;
         this.account = account;
-        this.picturePath = picturePath;
         this.deleted = deleted;
+    }
+
+    public User(Long id, String firstName, String lastName, Address address, String phoneNumber, Account account, Timestamp lastPasswordResetDate, String activationLink, LocalDate activationLinkDate, boolean deleted, List<String> image) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.address = address;
+        this.phoneNumber = phoneNumber;
+        this.account = account;
+        this.lastPasswordResetDate = lastPasswordResetDate;
+        this.activationLink = activationLink;
+        this.activationLinkDate = activationLinkDate;
+        this.deleted = deleted;
+        this.images = image;
     }
 
     @Override
@@ -84,7 +98,6 @@ public class User implements UserDetails {
                 ", address=" + address +
                 ", phoneNumber='" + phoneNumber + '\'' +
                 ", account=" + account +
-                ",picturePath" + picturePath +
                 ",deleted" + deleted +
                 '}';
     }
@@ -157,5 +170,9 @@ public class User implements UserDetails {
 
     public boolean getDeleted() {
         return deleted;
+    }
+
+    public void setImage(String image) {
+        this.images.add(image);
     }
 }

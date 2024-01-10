@@ -1,17 +1,9 @@
 package com.booking.BookingApp.controller;
 
-import com.booking.BookingApp.domain.Comments;
-import com.booking.BookingApp.domain.Host;
-import com.booking.BookingApp.domain.HostComments;
+import com.booking.BookingApp.domain.*;
 import com.booking.BookingApp.domain.enums.Status;
-import com.booking.BookingApp.dto.AccommodationDTO;
-import com.booking.BookingApp.dto.CommentsDTO;
-import com.booking.BookingApp.dto.CreateHostCommentDTO;
-import com.booking.BookingApp.dto.RequestDTO;
-import com.booking.BookingApp.mapper.AccommodationDTOMapper;
-import com.booking.BookingApp.mapper.CommentsDTOMapper;
-import com.booking.BookingApp.mapper.HostCommentDTOMapper;
-import com.booking.BookingApp.mapper.RequestDTOMapper;
+import com.booking.BookingApp.dto.*;
+import com.booking.BookingApp.mapper.*;
 import com.booking.BookingApp.service.CommentService;
 import com.booking.BookingApp.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,12 +36,37 @@ public class CommentsController {
     @PreAuthorize("hasAuthority('ROLE_GUEST') or hasAuthority('ROLE_HOST') or hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<Collection<CommentsDTO>> getComments(@RequestParam(value="status", required = false) Status status) {
         Collection<Comments> comments = commentService.findAll(status);
-
+//        Collection<AccommodationComments> accommodationComments = commentService.findAllAccommodationComments(status);
+//        Collection<HostComments> hostComments = commentService.findAllHostComments(status);
         Collection<CommentsDTO> commentsDTO = comments.stream()
                 .map(CommentsDTOMapper::fromCommentstoDTO)
                 .collect(Collectors.toList());
 
         return new ResponseEntity<Collection<CommentsDTO>>(commentsDTO,HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/hosts", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAuthority('ROLE_GUEST') or hasAuthority('ROLE_HOST') or hasAuthority('ROLE_ADMIN')")
+    public ResponseEntity<Collection<CreateHostCommentDTO>> getAllHostComments(@RequestParam(value = "status", required = false) Status status) {
+        Collection<HostComments> comments = commentService.findAllHostComments(status);
+
+        Collection<CreateHostCommentDTO> commentsDTO = comments.stream()
+                .map(HostCommentDTOMapper::fromCommentstoDTO)
+                .collect(Collectors.toList());
+
+        return new ResponseEntity<Collection<CreateHostCommentDTO>>(commentsDTO,HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/accommodations", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAuthority('ROLE_GUEST') or hasAuthority('ROLE_HOST') or hasAuthority('ROLE_ADMIN')")
+    public ResponseEntity<Collection<AccommodationCommentDTO>> getAllAccommodationComments(@RequestParam(value = "status", required = false) Status status) {
+        Collection<AccommodationComments> comments = commentService.findAllAccommodationComments(status);
+
+        Collection<AccommodationCommentDTO> commentsDTO = comments.stream()
+                .map(AccommodationCommentDTOMapper::fromCommentstoDTO)
+                .collect(Collectors.toList());
+
+        return new ResponseEntity<Collection<AccommodationCommentDTO>>(commentsDTO,HttpStatus.OK);
     }
 
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -132,10 +149,52 @@ public class CommentsController {
 
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CommentsDTO> updateComment(@RequestBody CommentsDTO commentDTO, @PathVariable("id") Long id) {
-        Comments commentForUpdate = commentService.findById(id);
-        Comments comment = CommentsDTOMapper.fromDTOtoComments(commentDTO);
-        Comments updatedComment = commentService.update(commentForUpdate, comment);
-        return new ResponseEntity<CommentsDTO>(new CommentsDTO(updatedComment), HttpStatus.OK);
+        Comments comment= CommentsDTOMapper.fromDTOtoComments(commentDTO);
+        Comments updatedComment = commentService.update(comment);
+        if (updatedComment == null) {
+            return new ResponseEntity<CommentsDTO>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return new ResponseEntity<CommentsDTO>(CommentsDTOMapper.fromCommentstoDTO(updatedComment), HttpStatus.OK);
+    }
+
+    @PutMapping(value = "/approve/accommodations/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<CommentsDTO> approveAccommodationsComment(@RequestBody AccommodationCommentDTO commentDTO) {
+        AccommodationComments comment= AccommodationCommentDTOMapper.fromDTOtoComments(commentDTO);
+        Comments updatedComment = commentService.approve(comment);
+        if (updatedComment == null) {
+            return new ResponseEntity<CommentsDTO>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return new ResponseEntity<CommentsDTO>(CommentsDTOMapper.fromCommentstoDTO(updatedComment), HttpStatus.OK);
+    }
+
+    @PutMapping(value = "/decline/accommodations/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<CommentsDTO> declineAccommodationsComment(@RequestBody AccommodationCommentDTO commentDTO) {
+        AccommodationComments comment= AccommodationCommentDTOMapper.fromDTOtoComments(commentDTO);
+        Comments updatedComment = commentService.decline(comment);
+        if (updatedComment == null) {
+            return new ResponseEntity<CommentsDTO>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return new ResponseEntity<CommentsDTO>(CommentsDTOMapper.fromCommentstoDTO(updatedComment), HttpStatus.OK);
+    }
+
+    @PutMapping(value = "/approve/hosts/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<CommentsDTO> approveHostsComment(@RequestBody CreateHostCommentDTO commentDTO) {
+        HostComments comment= HostCommentDTOMapper.fromDTOtoComments(commentDTO);
+        Comments updatedComment = commentService.approve(comment);
+        if (updatedComment == null) {
+            return new ResponseEntity<CommentsDTO>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return new ResponseEntity<CommentsDTO>(CommentsDTOMapper.fromCommentstoDTO(updatedComment), HttpStatus.OK);
+    }
+
+    @PutMapping(value = "/decline/hosts/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<CommentsDTO> declineHostsComment(@RequestBody CreateHostCommentDTO commentDTO) {
+        HostComments comment= HostCommentDTOMapper.fromDTOtoComments(commentDTO);
+        Comments updatedComment = commentService.decline(comment);
+        if (updatedComment == null) {
+            return new ResponseEntity<CommentsDTO>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return new ResponseEntity<CommentsDTO>(CommentsDTOMapper.fromCommentstoDTO(updatedComment), HttpStatus.OK);
     }
 
     @DeleteMapping(value = "/{id}")

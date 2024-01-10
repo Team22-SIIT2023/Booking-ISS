@@ -22,6 +22,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
     User findByAccount_Username(String username);
 
     Collection<User> findByAccount_Status(Status userStatus);
+
+    Collection<User> findAllByAccountStatus(Status status);
 //
 //    @Modifying
 //    @Query(value = "UPDATE favorite_accommodation SET deleted = true WHERE accommodation_id=:accommodationId", nativeQuery = true)

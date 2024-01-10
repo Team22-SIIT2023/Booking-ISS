@@ -4,6 +4,7 @@ import com.booking.BookingApp.domain.Accommodation;
 import com.booking.BookingApp.domain.Report;
 import com.booking.BookingApp.domain.TimeSlot;
 import com.booking.BookingApp.domain.User;
+import com.booking.BookingApp.domain.enums.AccommodationStatus;
 import com.booking.BookingApp.domain.enums.Status;
 import com.booking.BookingApp.dto.*;
 import com.booking.BookingApp.exception.ResourceConflictException;
@@ -19,16 +20,20 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.io.IOException;
 import java.time.ZoneId;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 @CrossOrigin
@@ -55,6 +60,15 @@ public class UserController {
                 .map(UserDTOMapper::fromUsertoDTO)
                 .toList();
         return new ResponseEntity<Collection<UserDTO>>(usersDTO, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/status", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Collection<UserDTO>> getUsersByStatus(@RequestParam("status") Status status) {
+        Collection<User> users = userService.findAllByStatus(status);
+        Collection<UserDTO> usersDTO = users.stream()
+                .map(UserDTOMapper::fromUsertoDTO)
+                .toList();
+        return ResponseEntity.ok(usersDTO);
     }
 
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -201,4 +215,25 @@ public class UserController {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return new ResponseEntity<>(UserDTOMapper.fromUsertoDTO(user), HttpStatus.OK);
     }
+
+    @PostMapping("/{userId}/upload-picture")
+    public ResponseEntity<String> uploadImage(
+            @PathVariable("userId") Long userId,
+            @RequestParam("images") Collection<MultipartFile> imageFiles) throws IOException {
+        System.out.println("kika");
+
+        for(MultipartFile image: imageFiles) {
+            System.out.println("kika");
+            userService.uploadImage(userId, image);
+        }
+        return new ResponseEntity<>("Pictures uploaded successfully", HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasRole('HOST') or hasRole('GUEST') or hasRole('ADMIN')")
+    @GetMapping(value = "/{userId}/images", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<String>> getImages(@PathVariable("userId") Long userId) throws IOException {
+        List<String> images = userService.getImages(userId);
+        return ResponseEntity.ok().body(images);
+    }
+
 }
