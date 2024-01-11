@@ -1,6 +1,7 @@
 package com.booking.BookingApp.service;
 
 import com.booking.BookingApp.domain.*;
+import com.booking.BookingApp.domain.enums.RequestStatus;
 import com.booking.BookingApp.domain.enums.Status;
 import com.booking.BookingApp.repository.*;
 import com.booking.BookingApp.service.interfaces.IUserService;
@@ -51,6 +52,13 @@ public class UserService implements IUserService {
 
     @Autowired
     CommentsRepository commentsRepository;
+
+    @Autowired
+    AccommodationService accommodationService;
+  
+    @Autowired
+    GuestRepository guestRepository;
+
     @Override
     public Collection<User> findAll() {
         return null;
@@ -159,7 +167,24 @@ public class UserService implements IUserService {
 
     @Override
     public Collection<Accommodation> findFavorites(Long id) {
-        return userRepository.findFavoriteAccommodationsByGuestId(id);
+        Guest guest= guestRepository.findGuestById(id);
+        return guest.getFavoriteAccommodations();
+    }
+    @Override
+    public void updateFavoriteAccommodations(Long guestId, Long accommodationId) {
+        Guest guest= guestRepository.findGuestById(guestId);
+        Accommodation favoriteAccommodation=accommodationService.findOne(accommodationId);
+        if(guest.getFavoriteAccommodations().contains(favoriteAccommodation)){
+            guest.getFavoriteAccommodations().remove(favoriteAccommodation);
+        }else{
+            guest.getFavoriteAccommodations().add(favoriteAccommodation);
+
+        }
+        try{
+            guestRepository.save(guest);
+        }catch (Exception ex){
+            System.out.println("Nesto se desilo");
+        }
     }
 
 //    @Override
@@ -289,6 +314,57 @@ public class UserService implements IUserService {
         user1.setActivationLinkDate(activationTime);
 
         return userRepository.save(user1);
+    }
+
+    @Override
+    public User reportUser(User user, Long guestId) {
+//        User guest = findOne(guestId);
+        User host = findOne(user.getId());
+
+        Collection<Request> requests = requestRepository.findAllByStatusAndGuest_Id(RequestStatus.ACCEPTED, guestId);
+
+        for (Request r : requests) {
+            System.out.println("REQUEST "+r.getStatus());
+        }
+
+        if (requests.isEmpty()) {
+            return null;
+        }
+
+        host.getAccount().setStatus(Status.REPORTED);
+        System.out.println("SERVICE "+host);
+        return userRepository.save(host);
+    }
+
+    @Override
+    public User reportGuest(User user, Long hostId) {
+        User guest = findOne(user.getId());
+
+        Collection<Request> requests =
+                requestRepository.findAllByStatusAndAccommodation_Host_IdAndGuest_Id(RequestStatus.ACCEPTED,hostId ,guest.getId());
+
+        if (requests.isEmpty()) {
+            return null;
+        }
+
+        guest.getAccount().setStatus(Status.REPORTED);
+        return userRepository.save(guest);
+    }
+
+    @Override
+    public User reportHost(User user, Long guestId) {
+        User host = findOne(user.getId());
+
+        Collection<Request> requests =
+                requestRepository.findAllByStatusAndAccommodation_Host_IdAndGuest_Id(RequestStatus.ACCEPTED, host.getId() ,guestId);
+
+        if (requests.isEmpty()) {
+            System.out.println("NEMA REZZZ");
+            return null;
+        }
+
+        host.getAccount().setStatus(Status.REPORTED);
+        return userRepository.save(host);
     }
 
 

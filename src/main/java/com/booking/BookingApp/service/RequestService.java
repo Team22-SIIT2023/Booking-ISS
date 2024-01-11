@@ -9,6 +9,7 @@ import com.booking.BookingApp.domain.enums.AccommodationType;
 import com.booking.BookingApp.domain.enums.RequestStatus;
 import com.booking.BookingApp.repository.RequestRepository;
 import com.booking.BookingApp.service.interfaces.IRequestService;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,16 +19,18 @@ import java.util.*;
 
 @Service
 public class RequestService implements IRequestService {
+
     @Autowired
     RequestRepository requestRepository;
+
     @Override
     public Collection<Request> findAll(RequestStatus status, LocalDate begin, LocalDate end, String accommodationName) {
         if(status!=null){
             return requestRepository.findByStatus(status);
         }
         return requestRepository.findAll();
-
     }
+
     @Override
     public Request findById(Long id) {
         return requestRepository.findById(id).orElse(null);
@@ -38,6 +41,10 @@ public class RequestService implements IRequestService {
         return requestRepository.findAllForHost(id, status, begin, end, accommodationName);
     }
 
+    public Collection<Request> findAllRequestForHost(RequestStatus status, Long id) {
+        return requestRepository.findAllByStatusAndGuest_Id(status, id);
+    }
+
     @Override
     public Collection<Request> findByHost(Long id) {
         return requestRepository.findByAccommodation_Host_Id(id);
@@ -45,6 +52,10 @@ public class RequestService implements IRequestService {
 
     public Collection<Request> findByGuestId(Long id, RequestStatus status, LocalDate begin, LocalDate end, String accommodationName) {
         return requestRepository.findAllForGuest(id, status,  begin, end, accommodationName);
+    }
+
+    public Collection<Request> findByAccommodationId(Long id) {
+        return  requestRepository.findByAccommodation_Id(id);
     }
 
 //    @Override
@@ -62,7 +73,6 @@ public class RequestService implements IRequestService {
 
     @Override
     public Request create(Request request) throws Exception{
-
         return requestRepository.save(request);
     }
 
@@ -78,34 +88,22 @@ public class RequestService implements IRequestService {
     }
 
     @Override
+    @Transactional
     public void delete(Long id) {
-        requestRepository.deleteById(id);
+        Request request = requestRepository.findById(id).orElse(null);
+        if (request != null) {
+            request.setDeleted(true);
+            requestRepository.save(request);
+        }
     }
 
-//    public Collection<Request> data() {
-//        Collection<Request> requestList = new ArrayList<>();
-//        Accommodation accommodation1 = new Accommodation(
-//                1L, "Hotel ABC", "Boasting a garden and views of inner courtyard, The Gate rooms is a sustainable apartment situated in Novi Sad, 1.9 km from SPENS Sports Centre. It is located 2.8 km from Promenada Shopping Mall and features a shared kitchen.",
-//                new Address("Srbija","Novi Sad","21000","Futoska 14"),
-//                2, 4, AccommodationType.HOTEL,
-//                true, true, null, AccommodationStatus.CREATED,
-//                3, new ArrayList<>(), null, new ArrayList<>()
-//        );
-//        TimeSlot timeSlot1 = new TimeSlot(LocalDate.of(2023, 1, 1), LocalDate.of(2023, 1, 5));
-//        TimeSlot timeSlot2 = new TimeSlot(LocalDate.of(2023, 2, 1), LocalDate.of(2023, 2, 7));
-//
-//        requestList.add(new Request(1L, timeSlot1, 100.0, null, accommodation1,5, RequestStatus.CANCELLED));
-//        requestList.add(new Request(1L, timeSlot1, 100.0, null, accommodation1,5, RequestStatus.CANCELLED));
-//        requestList.add(new Request(1L, timeSlot1, 100.0, null, accommodation1,5, RequestStatus.CANCELLED));
-//        requestList.add(new Request(2L, timeSlot1, 130.0, null, accommodation1,5, RequestStatus.WAITING));
-//        requestList.add(new Request(3L, timeSlot2, 90.0, null, accommodation1,5, RequestStatus.ACCEPTED));
-//        requestList.add(new Request(4L, timeSlot2, 150.0, null, accommodation1,5, RequestStatus.ACCEPTED));
-//
-//        return requestList;
-//    }
-//
-//    public Request oneRequest() {
-//        TimeSlot timeSlot1 = new TimeSlot(LocalDate.of(2023, 1, 1), LocalDate.of(2023, 1, 5));
-//        return new Request(1L, timeSlot1, 100.0, null, null,5, RequestStatus.CANCELLED);
-//    }
+    @Override
+    public int findCancellations(Long id) {
+        Collection<Request> requests=requestRepository.findAllForGuest(id,RequestStatus.CANCELLED,null,null,null);
+        return requests.size();
+    }
+    @Override
+    public Collection<Request> findReservationsByYear(String accommodationName,int year) {
+        return requestRepository.findAllByAccommodationNameAndYear(accommodationName,year);
+    }
 }

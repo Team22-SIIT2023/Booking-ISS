@@ -19,7 +19,7 @@ import java.time.LocalDate;
 //@Where(clause = "deleted = false")
 public class HostComments extends Comments{
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = {CascadeType.REFRESH})
     private Host host;
 
 //

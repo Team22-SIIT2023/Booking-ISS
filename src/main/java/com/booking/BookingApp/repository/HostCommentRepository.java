@@ -11,4 +11,7 @@ import java.util.Collection;
 public interface HostCommentRepository extends JpaRepository<HostComments,Long> {
 
     Collection<HostComments> findAllByStatus(Status status);
+
+    Collection<Comments> findByHost_Id(Long id);
+
 }

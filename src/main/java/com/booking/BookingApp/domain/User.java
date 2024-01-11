@@ -59,6 +59,9 @@ public class User implements UserDetails {
     @Column(name="activation_link_date")
     private LocalDate activationLinkDate;
 
+    @Column(name="reporting_reason")
+    private String reportingReason;
+
     @Column(name="deleted")
     private boolean deleted = Boolean.FALSE;
 
@@ -75,7 +78,7 @@ public class User implements UserDetails {
         this.deleted = deleted;
     }
 
-    public User(Long id, String firstName, String lastName, Address address, String phoneNumber, Account account, Timestamp lastPasswordResetDate, String activationLink, LocalDate activationLinkDate, boolean deleted, List<String> image) {
+    public User(Long id, String firstName, String lastName, Address address, String phoneNumber, Account account, Timestamp lastPasswordResetDate, String activationLink, LocalDate activationLinkDate, boolean deleted, List<String> image, String reportingReason) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -87,6 +90,7 @@ public class User implements UserDetails {
         this.activationLinkDate = activationLinkDate;
         this.deleted = deleted;
         this.images = image;
+        this.reportingReason = reportingReason;
     }
 
     @Override

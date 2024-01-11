@@ -27,6 +27,9 @@ public class CommentService implements ICommentService {
     UserService userService;
 
     @Autowired
+    AccommodationService accommodationService;
+
+    @Autowired
     RequestService requestService;
 
     @Autowired
@@ -49,28 +52,39 @@ public class CommentService implements ICommentService {
 
     @Override
     public Comments findById(Long id) {
-        return new Comments(1L, "Great comment!", LocalDate.now(), 4.5, Status.ACTIVE, null, false);
+        return commentsRepository.findById(id).orElse(null);
     }
 
     @Override
     public Collection<Comments> findByHostId(Long id, Status status) {
-        return data();
+        return hostCommentRepository.findByHost_Id(id);
     }
 
     @Override
     public Collection<Comments> findByAccommodationId(Long id, Status status) {
-
-        return accommodationCommentRepository.findAllByAccommodationIdAndStatus(id,status);
-    }
-
-    @Override
-    public int findHostRating(Long id) {
-        return 3;
+        return accommodationCommentRepository.findAllByAccommodation_IdAndStatus(id,status);
     }
 
     @Override
     public double findAccommodationRating(Long id) {
         Collection<Comments> commentsAndRatings= findByAccommodationId(id,Status.ACTIVE);
+        for (Comments com : commentsAndRatings) {
+            System.out.println(com.getText());
+        }
+        double sum=0;
+        for (Comments comment:commentsAndRatings){
+            sum+=comment.getRating();
+        }
+        if(sum!=0){
+            return (double) (sum/commentsAndRatings.size());
+        }
+        return 0;
+    }
+
+    @Override
+    public double findHostRating(Long id) {
+        Collection<Comments> commentsAndRatings = findByHostId(id,Status.ACTIVE);
+
         double sum=0;
         for (Comments comment:commentsAndRatings){
             sum+=comment.getRating();
@@ -103,13 +117,41 @@ public class CommentService implements ICommentService {
         hostComment.setRating(comment.getRating());
         hostComment.setText(comment.getText());
         hostComment.setGuest(comment.getGuest());
-        hostComment.setStatus(comment.getStatus());
+        hostComment.setStatus(Status.ACTIVE);
         return commentsRepository.save(hostComment);
     }
 
     @Override
     public Comments createAccommodationComment(Comments comment, Long id) {
-        return new Comments(1L, "Great comment!", LocalDate.now(), 4.5, Status.ACTIVE, null, false);
+        Accommodation accommodation = accommodationService.findOne(id);
+
+        Collection<Request> accommodationRequests = requestService.findByAccommodationId(id);
+
+        LocalDate now = LocalDate.now();
+
+        boolean check = false;
+        for (Request request : accommodationRequests) {
+            if (request.getGuest().getId().equals(comment.getGuest().getId())) {
+                if (!now.minusDays(7).isAfter(request.getTimeSlot().getEndDate())) {
+                    check=true;
+                    break;
+                }
+            }
+        }
+
+        if (!check) {
+            return null;
+        }
+
+        AccommodationComments accommodationComment = new AccommodationComments();
+        accommodationComment.setDate(comment.getDate());
+        accommodationComment.setAccommodation(accommodation);
+        accommodationComment.setRating(comment.getRating());
+        accommodationComment.setDate(comment.getDate());
+        accommodationComment.setText(comment.getText());
+        accommodationComment.setGuest(comment.getGuest());
+        accommodationComment.setStatus(Status.ACTIVE);
+        return commentsRepository.save(accommodationComment);
     }
 
     @Override
@@ -130,7 +172,16 @@ public class CommentService implements ICommentService {
     }
 
     @Override
-    public void delete(Long id) {}
+    public void delete(Long id) {
+        commentsRepository.deleteById(id);
+    }
+
+    @Override
+    public Comments reportComment(Comments commentForUpdate, Status status) {
+        commentForUpdate.setStatus(Status.REPORTED);
+        commentsRepository.save(commentForUpdate);
+        return commentForUpdate;
+    }
 
     public Collection<Comments> data() {
         Collection<Comments> commentsList = new ArrayList<>();

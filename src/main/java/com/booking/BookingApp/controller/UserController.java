@@ -192,6 +192,33 @@ public class UserController {
         return new ResponseEntity<UserDTO>(UserDTOMapper.fromUsertoDTO(savedUser), HttpStatus.CREATED);
     }
 
+//    @PutMapping(value = "reportUser/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+//    public ResponseEntity<UserDTO> reportUser(@RequestBody Status status, @PathVariable Long id)
+//            throws Exception {
+//        User updatedUser = userService.reportUser(status, id);
+//        if (updatedUser == null) {
+//            return new ResponseEntity<UserDTO>(HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
+//        return new ResponseEntity<UserDTO>(UserDTOMapper.fromUsertoDTO(updatedUser), HttpStatus.OK);
+//    }
+
+    @PutMapping(value = "reportUser/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<UserDTO> reportUser(@RequestBody UserDTO reportedUserDTO, @PathVariable("id") Long guestId)
+            throws Exception {
+        User user = UserDTOMapper.fromDTOtoUser(reportedUserDTO);
+
+        User updatedUser;
+        if (user.getAccount().getRoles().get(0).getName().equals("ROLE_GUEST")) {
+            updatedUser = userService.reportGuest(user, guestId);
+        }
+        else { updatedUser = userService.reportHost(user, guestId); }
+
+        if (updatedUser == null) {
+            return new ResponseEntity<UserDTO>(HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<UserDTO>(UserDTOMapper.fromUsertoDTO(updatedUser), HttpStatus.OK);
+    }
+
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserDTO> updateUser(@RequestBody UserDTO userDTO, @PathVariable Long id)
             throws Exception {
@@ -236,4 +263,10 @@ public class UserController {
         return ResponseEntity.ok().body(images);
     }
 
+    @PutMapping("/{guestId}/favoriteAccommodations/{accommodationId}")
+    public ResponseEntity<String> updateFavorites(
+            @PathVariable Long guestId, @PathVariable Long accommodationId) {
+        userService.updateFavoriteAccommodations(guestId, accommodationId);
+        return new ResponseEntity<String>("Added favorite.",HttpStatus.OK);
+    }
 }

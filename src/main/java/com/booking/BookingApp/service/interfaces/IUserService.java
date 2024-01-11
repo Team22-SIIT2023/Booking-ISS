@@ -14,6 +14,7 @@ import java.util.Optional;
 public interface IUserService {
 
     Collection<User> findAll();
+
     User findByUsername(String username);
 
     User findOne(Long id);
@@ -34,6 +35,7 @@ public interface IUserService {
 
 //    User save(User user);
     User saveGuest(User user);
+
     User saveHost(User user);
 
     User updateActivationLink(String activationLink, String username);
@@ -43,4 +45,13 @@ public interface IUserService {
     List<String> getImages(Long userId) throws IOException;
 
     Collection<User> findAllByStatus(Status status);
+
+    User reportUser(User status, Long id);
+
+    User reportHost(User status, Long id);
+
+    User reportGuest(User status, Long id);
+
+    void updateFavoriteAccommodations(Long guestId, Long accommodationId);
+
 }

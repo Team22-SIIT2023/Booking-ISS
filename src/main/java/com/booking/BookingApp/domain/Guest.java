@@ -18,7 +18,7 @@ import java.util.Set;
 @Table(name = "guests")
 public class Guest extends User {
 
-    @ManyToMany(cascade = {CascadeType.ALL})
+    @ManyToMany
     @JoinTable(name = "favorite_accommodation",
             joinColumns = @JoinColumn(name = "guest_id"),
             inverseJoinColumns = @JoinColumn(name = "accommodation_id"))

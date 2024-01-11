@@ -17,7 +17,11 @@ import java.util.Collection;
 @Repository
 public interface RequestRepository extends JpaRepository<Request, Long> {
     Collection<Request> findByStatus(RequestStatus status);
-    
+
+    Collection<Request> findAllByStatusAndGuest_Id(RequestStatus status, Long id);
+
+    Collection<Request> findAllByStatusAndAccommodation_Host_IdAndGuest_Id(RequestStatus status, Long hostId, Long guestId);
+
     Collection<Request> findByStatusAndAccommodation_Name(RequestStatus status, String accommodationName);
 
     Collection<Request> findByStatusAndAccommodation_NameAndTimeSlot_StartDateLessThanEqualAndTimeSlot_EndDateGreaterThanEqual(RequestStatus status,String accommodationName,LocalDate end,LocalDate begin);
@@ -32,11 +36,11 @@ public interface RequestRepository extends JpaRepository<Request, Long> {
 
     Collection<Request> findByAccommodation_Host(Host host);
 
+    Collection<Request> findByAccommodation_Id(Long id);
+
     Collection<Request> findByGuest_Id(Long id);
   
     Collection<Request> findByStatusAndAccommodation_Id(RequestStatus status, Long id);
-
-//    Collection<Request> findByAccommodation_Host_Id(Long id);
 
     @Query("SELECT r FROM Request r WHERE " +
             "(:hostId is null or r.accommodation.host.id = :hostId) " +
@@ -65,4 +69,14 @@ public interface RequestRepository extends JpaRepository<Request, Long> {
             @Param("end") LocalDate end,
             @Param("accommodationName") String accommodationName
     );
+
+    @Query("SELECT r FROM Request r " +
+            "WHERE r.accommodation.name like %:accommodationName% " +
+            "AND r.status = 'ACCEPTED' " +
+            "AND (YEAR(r.timeSlot.startDate) = :year OR YEAR(r.timeSlot.endDate) = :year)")
+    Collection<Request> findAllByAccommodationNameAndYear(
+            @Param("accommodationName") String accommodationName,
+            @Param("year") int year
+    );
+
 }
