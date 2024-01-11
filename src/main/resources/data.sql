@@ -38,9 +38,9 @@ insert into hosts values (1);
 insert into hosts values (3);
 
 INSERT INTO timeslots (start_date, end_date, deleted)
-VALUES ('2024-01-01 10:00:00','2024-01-10 12:00:00', false);
+VALUES ('2024-01-10 10:00:00','2024-01-20 12:00:00', false);
 INSERT INTO timeslots (start_date, end_date, deleted)
-VALUES ('2024-01-14 10:00:00','2024-01-22 12:00:00', false);
+VALUES ('2024-01-22 10:00:00','2024-01-24 12:00:00', false);
 INSERT INTO timeslots (start_date, end_date, deleted)
 VALUES ('2024-03-21 10:00:00','2024-03-30 12:00:00', false);
 INSERT INTO timeslots (start_date, end_date, deleted)
@@ -58,7 +58,7 @@ INSERT INTO timeslots (start_date, end_date, deleted)
 VALUES ('2024-04-01 10:00:00','2024-04-11 12:00:00', false);
 
 INSERT INTO timeslots (start_date, end_date, deleted)
-VALUES ('2023-12-22 10:00:00','2023-12-28 12:00:00', false);
+VALUES ('2023-12-22 10:00:00','2024-01-10 12:00:00', false);
 
 INSERT INTO timeslots (start_date, end_date, deleted)
 VALUES ('2023-12-25 10:00:00','2023-12-28 12:00:00', false);
@@ -138,33 +138,33 @@ INSERT INTO accommodations_free_time_slots VALUES (2,4);
 INSERT INTO accommodations_free_time_slots VALUES (2,5);
 INSERT INTO accommodations_free_time_slots VALUES (2,6);
 
-
-INSERT INTO comments (comment_text, date, rating, comment_status, guest_id,id, deleted)
-VALUES ('For this price great!', '2023-12-11', 4.5, 'PENDING', 2,1,false);
-INSERT INTO comments (comment_text, date, rating, comment_status, guest_id,id, deleted)
-VALUES ('Okay, can be better.', '2023-12-11', 3.0, 'REPORTED', 2,2,false);
-INSERT INTO comments (comment_text, date, rating, comment_status, guest_id,id,deleted)
-VALUES ('Loved it!', '2023-12-11', 5.0, 'PENDING', 2,3,false);
-INSERT INTO comments (comment_text, date, rating, comment_status, guest_id,id, deleted)
-VALUES ('Very poor', '2023-12-11', 2.0, 'REPORTED', 2,4,false);
-INSERT INTO comments (comment_text, date, rating, comment_status, guest_id,id, deleted)
-VALUES ('Host is great person!', '2023-12-11', 4.5, 'PENDING', 2,5,false);
-INSERT INTO comments (comment_text, date, rating, comment_status, guest_id,id, deleted)
-VALUES ('The man is nice, he did not bothered us at all.', '2023-12-11', 3.0, 'PENDING', 2,6,false);
-INSERT INTO comments (comment_text, date, rating, comment_status, guest_id,id,deleted)
-VALUES ('Good,I am very happy to get to know this nice man!', '2023-12-11', 5.0, 'PENDING', 2,7,false);
-INSERT INTO comments (comment_text, date, rating, comment_status, guest_id,id, deleted)
-VALUES ('Not bad.', '2023-12-11', 2.0, 'ACTIVE', 2,8,false);
-
-insert into accommodation_comments values(2,1);
-insert into accommodation_comments values(2,2);
-insert into accommodation_comments values(2,3);
-insert into accommodation_comments values(2,4);
-
-insert into host_comments values (1,5);
-insert into host_comments values (1,6);
-insert into host_comments values (1,7);
-insert into host_comments values (1,8);
+--
+-- INSERT INTO comments (comment_text, date, rating, comment_status, guest_id,id, deleted)
+-- VALUES ('For this price great!', '2023-12-11', 4.5, 'PENDING', 2,1,false);
+-- INSERT INTO comments (comment_text, date, rating, comment_status, guest_id,id, deleted)
+-- VALUES ('Okay, can be better.', '2023-12-11', 3.0, 'REPORTED', 2,2,false);
+-- INSERT INTO comments (comment_text, date, rating, comment_status, guest_id,id,deleted)
+-- VALUES ('Loved it!', '2023-12-11', 5.0, 'PENDING', 2,3,false);
+-- INSERT INTO comments (comment_text, date, rating, comment_status, guest_id,id, deleted)
+-- VALUES ('Very poor', '2023-12-11', 2.0, 'REPORTED', 2,4,false);
+-- INSERT INTO comments (comment_text, date, rating, comment_status, guest_id,id, deleted)
+-- VALUES ('Host is great person!', '2023-12-11', 4.5, 'PENDING', 2,5,false);
+-- INSERT INTO comments (comment_text, date, rating, comment_status, guest_id,id, deleted)
+-- VALUES ('The man is nice, he did not bothered us at all.', '2023-12-11', 3.0, 'PENDING', 2,6,false);
+-- INSERT INTO comments (comment_text, date, rating, comment_status, guest_id,id,deleted)
+-- VALUES ('Good,I am very happy to get to know this nice man!', '2023-12-11', 5.0, 'PENDING', 2,7,false);
+-- INSERT INTO comments (comment_text, date, rating, comment_status, guest_id,id, deleted)
+-- VALUES ('Not bad.', '2023-12-11', 2.0, 'ACTIVE', 2,8,false);
+--
+-- insert into accommodation_comments values(2,1);
+-- insert into accommodation_comments values(2,2);
+-- insert into accommodation_comments values(2,3);
+-- insert into accommodation_comments values(2,4);
+--
+-- insert into host_comments values (1,5);
+-- insert into host_comments values (1,6);
+-- insert into host_comments values (1,7);
+-- insert into host_comments values (1,8);
 
 
 

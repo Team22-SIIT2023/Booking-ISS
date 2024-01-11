@@ -117,7 +117,7 @@ public class CommentService implements ICommentService {
         hostComment.setRating(comment.getRating());
         hostComment.setText(comment.getText());
         hostComment.setGuest(comment.getGuest());
-        hostComment.setStatus(Status.ACTIVE);
+        hostComment.setStatus(Status.PENDING);
         return commentsRepository.save(hostComment);
     }
 
@@ -150,7 +150,7 @@ public class CommentService implements ICommentService {
         accommodationComment.setDate(comment.getDate());
         accommodationComment.setText(comment.getText());
         accommodationComment.setGuest(comment.getGuest());
-        accommodationComment.setStatus(Status.ACTIVE);
+        accommodationComment.setStatus(Status.PENDING);
         return commentsRepository.save(accommodationComment);
     }
 
