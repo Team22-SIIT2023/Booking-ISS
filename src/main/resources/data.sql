@@ -9,7 +9,7 @@ INSERT INTO role (name) VALUES ('ROLE_GUEST');
 INSERT INTO role (name) VALUES ('ROLE_ADMIN');
 
 
-INSERT INTO accounts(username, password, status,deleted) VALUES ('pera@example.com', '123', 'ACTIVE',false);
+INSERT INTO accounts(username, password, status,deleted) VALUES ('pera@example.com', '123', 'REPORTED',false);
 INSERT INTO accounts(username, password, status,deleted) VALUES ('mika@example.com', '123', 'ACTIVE',false);
 INSERT INTO accounts(username, password, status,deleted) VALUES ('zika@example.com', '123', 'ACTIVE',false);
 INSERT INTO accounts(username, password, status,deleted) VALUES ('kika@example.com', '123', 'ACTIVE',false);
@@ -22,14 +22,14 @@ INSERT INTO account_role VALUES (3,1);
 INSERT INTO account_role VALUES (4,3);
 
 
-INSERT INTO users (first_name, last_name, address_id, phone_number, account_id, picture_path, last_password_reset_date,deleted)
-VALUES ('pera', 'peric', 1, '1234', 1, '', '2023-01-01 12:00:00',false);
-insert into users(first_name,last_name,address_id,phone_number,account_id,picture_path,last_password_reset_date,deleted)
-values ('mika','peric',1,'1234',2,'','2023-01-01 12:00:00',false);
-insert into users(first_name,last_name,address_id,phone_number,account_id,picture_path,last_password_reset_date,deleted)
-values ('zika','peric',1,'1234',3,'','2023-01-01 12:00:00',false);
-insert into users(first_name,last_name,address_id,phone_number,account_id,picture_path,last_password_reset_date,deleted)
-values ('kika','peric',1,'1234',4,'','2023-01-01 12:00:00',false);
+INSERT INTO users (first_name, last_name, address_id, phone_number, account_id, last_password_reset_date,deleted)
+VALUES ('pera', 'peric', 1, '1234', 1, '2023-01-01 12:00:00',false);
+insert into users(first_name,last_name,address_id,phone_number,account_id,last_password_reset_date,deleted)
+values ('mika','peric',1,'1234',2,'2023-01-01 12:00:00',false);
+insert into users(first_name,last_name,address_id,phone_number,account_id,last_password_reset_date,deleted)
+values ('zika','peric',1,'1234',3,'2023-01-01 12:00:00',false);
+insert into users(first_name,last_name,address_id,phone_number,account_id,last_password_reset_date,deleted)
+values ('kika','peric',1,'1234',4,'2023-01-01 12:00:00',false);
 
 
 
@@ -139,19 +139,32 @@ INSERT INTO accommodations_free_time_slots VALUES (2,5);
 INSERT INTO accommodations_free_time_slots VALUES (2,6);
 
 
--- INSERT INTO comments (comment_text, date, rating, comment_status, guest_id,id, deleted)
--- VALUES ('For this price great!', '2023-12-11', 4.5, 'ACTIVE', 2,1,false);
--- INSERT INTO comments (comment_text, date, rating, comment_status, guest_id,id, deleted)
--- VALUES ('Okay, can be better.', '2023-12-11', 3.0, 'ACTIVE', 2,2,false);
--- INSERT INTO comments (comment_text, date, rating, comment_status, guest_id,id,deleted)
--- VALUES ('Loved it!', '2023-12-11', 5.0, 'ACTIVE', 2,3,false);
--- INSERT INTO comments (comment_text, date, rating, comment_status, guest_id,id, deleted)
--- VALUES ('Very poor', '2023-12-11', 2.0, 'ACTIVE', 2,4,false);
---
--- insert into accommodation_comments values(1,1);
--- insert into accommodation_comments values(1,2);
--- insert into accommodation_comments values(1,3);
--- insert into accommodation_comments values(1,4);
+INSERT INTO comments (comment_text, date, rating, comment_status, guest_id,id, deleted)
+VALUES ('For this price great!', '2023-12-11', 4.5, 'PENDING', 2,1,false);
+INSERT INTO comments (comment_text, date, rating, comment_status, guest_id,id, deleted)
+VALUES ('Okay, can be better.', '2023-12-11', 3.0, 'REPORTED', 2,2,false);
+INSERT INTO comments (comment_text, date, rating, comment_status, guest_id,id,deleted)
+VALUES ('Loved it!', '2023-12-11', 5.0, 'PENDING', 2,3,false);
+INSERT INTO comments (comment_text, date, rating, comment_status, guest_id,id, deleted)
+VALUES ('Very poor', '2023-12-11', 2.0, 'REPORTED', 2,4,false);
+INSERT INTO comments (comment_text, date, rating, comment_status, guest_id,id, deleted)
+VALUES ('Host is great person!', '2023-12-11', 4.5, 'PENDING', 2,5,false);
+INSERT INTO comments (comment_text, date, rating, comment_status, guest_id,id, deleted)
+VALUES ('The man is nice, he did not bothered us at all.', '2023-12-11', 3.0, 'PENDING', 2,6,false);
+INSERT INTO comments (comment_text, date, rating, comment_status, guest_id,id,deleted)
+VALUES ('Good,I am very happy to get to know this nice man!', '2023-12-11', 5.0, 'PENDING', 2,7,false);
+INSERT INTO comments (comment_text, date, rating, comment_status, guest_id,id, deleted)
+VALUES ('Not bad.', '2023-12-11', 2.0, 'ACTIVE', 2,8,false);
+
+insert into accommodation_comments values(2,1);
+insert into accommodation_comments values(2,2);
+insert into accommodation_comments values(2,3);
+insert into accommodation_comments values(2,4);
+
+insert into host_comments values (1,5);
+insert into host_comments values (1,6);
+insert into host_comments values (1,7);
+insert into host_comments values (1,8);
 
 
 

@@ -1,5 +1,7 @@
 package com.booking.BookingApp.dto;
 
+import com.booking.BookingApp.domain.Accommodation;
+import com.booking.BookingApp.domain.Comments;
 import com.booking.BookingApp.domain.Guest;
 import com.booking.BookingApp.domain.Host;
 import com.booking.BookingApp.domain.enums.Status;
@@ -12,20 +14,20 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @NoArgsConstructor
-public class CreateHostCommentDTO extends CommentsDTO{
+public class AccommodationCommentDTO extends CommentsDTO{
     private String text;
     private LocalDate date;
     private double rating;
     private Status status;
     private Guest guest;
-    private Host host;
+    private Accommodation accommodation;
 
-    public CreateHostCommentDTO(String text, LocalDate date, double rating, Status status, Guest guest, Host host) {
+    public AccommodationCommentDTO(String text, LocalDate date, double rating, Status status, Guest guest, Accommodation accommodation) {
         this.text = text;
         this.date = date;
         this.rating = rating;
         this.status = status;
         this.guest = guest;
-        this.host = host;
+        this.accommodation = accommodation;
     }
 }

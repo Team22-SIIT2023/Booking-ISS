@@ -9,5 +9,10 @@ import java.util.Collection;
 
 public interface AccommodationCommentRepository extends JpaRepository<AccommodationComments,Long> {
     Collection<Comments> findAllByAccommodationIdAndStatus(Long id, Status status);
+
+
+    Collection<AccommodationComments> findAllByStatus(Status status);
+
     Collection<Comments> findAllByAccommodation_IdAndStatus(Long id, Status status);
+
 }

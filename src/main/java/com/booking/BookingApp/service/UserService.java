@@ -5,10 +5,18 @@ import com.booking.BookingApp.domain.enums.RequestStatus;
 import com.booking.BookingApp.domain.enums.Status;
 import com.booking.BookingApp.repository.*;
 import com.booking.BookingApp.service.interfaces.IUserService;
+import com.booking.BookingApp.utils.ImageUploadUtil;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.time.Duration;
 import javax.xml.stream.events.Comment;
 import java.time.LocalDate;
@@ -20,6 +28,10 @@ import java.util.*;
 @Service
 @Transactional
 public class UserService implements IUserService {
+
+    @Value("${image-path-users}")
+    private String imagesDirPath;
+
     @Autowired
     UserRepository userRepository;
 
@@ -49,7 +61,7 @@ public class UserService implements IUserService {
 
     @Override
     public Collection<User> findAll() {
-        return data();
+        return null;
     }
 
     @Override
@@ -104,7 +116,6 @@ public class UserService implements IUserService {
         existingUser.setAddress(updatedUser.getAddress());
         existingUser.setAccount(updatedUser.getAccount());
         existingUser.setPhoneNumber(updatedUser.getPhoneNumber());
-        existingUser.setPicturePath(updatedUser.getPicturePath());
 
         System.out.println(existingUser);
 
@@ -125,7 +136,7 @@ public class UserService implements IUserService {
     @Override
     public void deleteGuest(User user) {
         Guest guest = new Guest(user.getId(), user.getFirstName(), user.getLastName(), user.getAddress(),
-                user.getPhoneNumber(), user.getAccount(), user.getPicturePath(), user.getDeleted(),
+                user.getPhoneNumber(), user.getAccount(), user.getDeleted(),
                 userRepository.findFavoriteAccommodationsByGuestId(user.getId()));
         Collection<Request> reservations = requestRepository.findActiveReservationsForGuest(LocalDate.now(), guest);
         if(reservations.isEmpty()) {
@@ -142,7 +153,7 @@ public class UserService implements IUserService {
     @Override
     public void deleteHost(User user) {
         Host host = new Host(user.getId(), user.getFirstName(), user.getLastName(),
-                user.getAddress(), user.getPhoneNumber(), user.getAccount(), user.getPicturePath(), user.getDeleted());
+                user.getAddress(), user.getPhoneNumber(), user.getAccount(), user.getDeleted());
         Collection<Request> reservations = requestRepository.findActiveReservationsForHost(LocalDate.now(), host);
         if (reservations.isEmpty()) {
             Collection<Accommodation> accommodations = accommodationRepository.findAllByHost(host);
@@ -201,7 +212,49 @@ public class UserService implements IUserService {
 //        return u;
 //    }
 
+    public void uploadImage(Long id, MultipartFile image) throws IOException {
+        User user = findOne(id);
 
+        String fileName = StringUtils.cleanPath(image.getOriginalFilename());
+        String uploadDir = StringUtils.cleanPath(imagesDirPath + user.getId());
+
+        System.out.println(uploadDir);
+
+        ImageUploadUtil.saveImage(uploadDir, fileName, image);
+
+        user.setImage(fileName);
+        userRepository.save(user);
+    }
+
+    public List<String> getImages(Long id) throws IOException {
+        System.out.println("GET SLIKE ID:    " + id);
+        User user = findOne(id);
+        List<String> base64Images = new ArrayList<>();
+
+        String directoryPath = StringUtils.cleanPath(imagesDirPath + user.getId());
+        File directory = new File(directoryPath);
+
+        if (directory.exists() && directory.isDirectory()) {
+            File[] imageFiles = directory.listFiles();
+
+            if (imageFiles != null) {
+                for (File imageFile : imageFiles) {
+                    if (imageFile.isFile()) {
+                        byte[] imageData = Files.readAllBytes(imageFile.toPath());
+                        String base64Image = Base64.getEncoder().encodeToString(imageData);
+                        base64Images.add(base64Image);
+                    }
+                }
+            }
+        }
+        return base64Images;
+    }
+
+    @Override
+    public Collection<User> findAllByStatus(Status status) {
+        System.out.println("uslo u status");
+        return userRepository.findAllByAccountStatus(status);
+    }
 
     @Override
     public User saveGuest(User userRequest) {
@@ -217,7 +270,6 @@ public class UserService implements IUserService {
         u.setPhoneNumber(userRequest.getPhoneNumber());
         u.setAddress(userRequest.getAddress());
         u.setAccount(userRequest.getAccount());
-        u.setPicturePath(userRequest.getPicturePath());
 
         // u primeru se registruju samo obicni korisnici i u skladu sa tim im se i dodeljuje samo rola USER
         List<Role> roles = roleService.findByName(userRequest.getAccount().getRoles().get(0).getName());
@@ -241,8 +293,6 @@ public class UserService implements IUserService {
         u.setPhoneNumber(userRequest.getPhoneNumber());
         u.setAddress(userRequest.getAddress());
         u.setAccount(userRequest.getAccount());
-        u.setPicturePath(userRequest.getPicturePath());
-
         // u primeru se registruju samo obicni korisnici i u skladu sa tim im se i dodeljuje samo rola USER
         List<Role> roles = roleService.findByName(userRequest.getAccount().getRoles().get(0).getName());
         u.getAccount().setRoles(roles);
@@ -318,31 +368,5 @@ public class UserService implements IUserService {
     }
 
 
-    public User dataOne(){
-        Role role=new Role(1L,"guest");
-        List<Role> roles = new ArrayList<>();
-        roles.add(role);
-        Address address = new Address("Srbija","Novi Sad","21000","Futoska 1",false);
-        Account account = new Account(1L, "isidorica","slatkica",Status.ACTIVE, roles,false);
-        return new User(1L,"Isidora","Aleksic",address,"0692104221",account,"../../../assets/images/userpicture.jpg",false);
-    }
-    public List<User> data() {
-        List<User> users = new ArrayList<>();
-        Address address = new Address("Srbija","Novi Sad","21000","Futoska 1",false);
-        Role role=new Role(1L,"guest");
-        List<Role> roles = new ArrayList<>();
-        roles.add(role);
-        Account account = new Account(1L, "aleksicisidora@yahoo.com","682002",Status.ACTIVE, roles,false);
-        users.add(new User(1L,"Isidora","Aleksic",address,"0692104221",account,"../../../assets/images/userpicture.jpg",false));
-        users.add(new User(2L,"Tamara","Aleksic",address,"0692104221",account,"../../../assets/images/userpicture.jpg",false));
-        users.add(new User(3L,"Kikica","Aleksic",address,"0692104221",account,"../../../assets/images/userpicture.jpg",false));
-        users.add(new User(4L,"Kile","Aleksic",address,"0692104221",account,"../../../assets/images/userpicture.jpg",false));
-        users.add(new User(5L,"Isidorica","Aleksic",address,"0692104221",account,"../../../assets/images/userpicture.jpg",false));
-        users.add(new User(6L,"Isi","Aleksic",address,"0692104221",account,"../../../assets/images/userpicture.jpg",false));
-        users.add(new User(7L,"Kika","Aleksic",address,"0692104221",account,"../../../assets/images/userpicture.jpg",false));
-        users.add(new User(8L,"Tamarica","Aleksic",address,"0692104221",account,"../../../assets/images/userpicture.jpg",false));
-        users.add(new User(9L,"Taki","Aleksic",address,"0692104221",account,"../../../assets/images/userpicture.jpg",false));
-        return users;
-    }
 }
 

@@ -37,7 +37,17 @@ public class CommentService implements ICommentService {
 
     @Override
     public Collection<Comments> findAll(Status status) {
-        return data();
+        return commentsRepository.findAll();
+    }
+
+    @Override
+    public Collection<AccommodationComments> findAllAccommodationComments(Status status) {
+        return accommodationCommentRepository.findAllByStatus(status);
+    }
+
+    @Override
+    public Collection<HostComments> findAllHostComments(Status status) {
+        return hostCommentRepository.findAllByStatus(status);
     }
 
     @Override
@@ -145,8 +155,20 @@ public class CommentService implements ICommentService {
     }
 
     @Override
-    public Comments update(Comments commentForUpdate,  Comments comment) {
-        return new Comments(1L, "Great comment!", LocalDate.now(), 4.5, Status.ACTIVE, null, false);
+    public Comments update(Comments commentForUpdate) {
+        return null;
+    }
+
+    @Override
+    public Comments approve(Comments commentForApproving) {
+        commentForApproving.setStatus(Status.ACTIVE);
+        return commentsRepository.save(commentForApproving);
+    }
+
+    @Override
+    public Comments decline(Comments commentForDeclining) {
+        commentForDeclining.setStatus(Status.BLOCKED);
+        return commentsRepository.save(commentForDeclining);
     }
 
     @Override
@@ -168,7 +190,7 @@ public class CommentService implements ICommentService {
         List<Role> roles = new ArrayList<>();
         roles.add(role);
         Account account = new Account(1L, "aleksicisidora@yahoo.com","slatkica",Status.ACTIVE, roles, false);
-        Guest guest = new Guest(1L,"Isidora","Aleksic",address,"0692104221",account,"../../../assets/images/userpicture.jpg",false, null);
+        Guest guest = new Guest(1L,"Isidora","Aleksic",address,"0692104221",account,false, null);
         // Adding instances to the collection
         commentsList.add(new Comments(1L, "Great comment!", LocalDate.now(), 4.5, Status.ACTIVE, guest, false));
         commentsList.add(new Comments(2L, "Agree with you.", LocalDate.now(), 3.0, Status.REPORTED, guest,false));

@@ -3,9 +3,12 @@ package com.booking.BookingApp.service.interfaces;
 import com.booking.BookingApp.domain.Accommodation;
 import com.booking.BookingApp.domain.User;
 import com.booking.BookingApp.domain.enums.Status;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 public interface IUserService {
@@ -37,6 +40,12 @@ public interface IUserService {
 
     User updateActivationLink(String activationLink, String username);
 
+    void uploadImage(Long userId, MultipartFile image) throws IOException;
+
+    List<String> getImages(Long userId) throws IOException;
+
+    Collection<User> findAllByStatus(Status status);
+
     User reportUser(User status, Long id);
 
     User reportHost(User status, Long id);
@@ -44,4 +53,5 @@ public interface IUserService {
     User reportGuest(User status, Long id);
 
     void updateFavoriteAccommodations(Long guestId, Long accommodationId);
+
 }
