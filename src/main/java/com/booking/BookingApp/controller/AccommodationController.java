@@ -1,6 +1,7 @@
 package com.booking.BookingApp.controller;
 
 import com.booking.BookingApp.domain.Accommodation;
+import com.booking.BookingApp.domain.TimeSlot;
 import com.booking.BookingApp.domain.User;
 import com.booking.BookingApp.domain.enums.AccommodationStatus;
 import com.booking.BookingApp.domain.enums.AccommodationType;
@@ -155,6 +156,17 @@ public class AccommodationController {
         return new ResponseEntity<AccommodationDTO>(AccommodationDTOMapper.fromAccommodationtoDTO(updatedAccommodation), HttpStatus.OK);
     }
 
+
+    @PutMapping("/changeFreeTimeSlots/{accommodationId}")
+    public ResponseEntity<AccommodationDTO> changeFreeTimeSlots(
+            @PathVariable Long accommodationId,
+            @RequestBody TimeSlotDTO reservationTimeSlot) {
+         Accommodation accommodation = accommodationService.changeFreeTimeSlotsAcceptingReservation(accommodationId, reservationTimeSlot);
+         if(accommodation == null){
+             return new ResponseEntity<AccommodationDTO>(HttpStatus.NOT_FOUND);
+         }
+        return new ResponseEntity<AccommodationDTO>(AccommodationDTOMapper.fromAccommodationtoDTO(accommodation), HttpStatus.OK);
+    }
 
     @PutMapping(value = "/editTimeSlot/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('HOST')")

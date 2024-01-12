@@ -7,6 +7,8 @@ import com.booking.BookingApp.domain.TimeSlot;
 import com.booking.BookingApp.domain.enums.AccommodationStatus;
 import com.booking.BookingApp.domain.enums.AccommodationType;
 import com.booking.BookingApp.domain.enums.RequestStatus;
+import com.booking.BookingApp.dto.TimeSlotDTO;
+import com.booking.BookingApp.repository.AccommodationRepository;
 import com.booking.BookingApp.repository.RequestRepository;
 import com.booking.BookingApp.service.interfaces.IRequestService;
 import jakarta.transaction.Transactional;
@@ -22,6 +24,9 @@ public class RequestService implements IRequestService {
 
     @Autowired
     RequestRepository requestRepository;
+
+    @Autowired
+    AccommodationService accommodationService;
 
     @Override
     public Collection<Request> findAll(RequestStatus status, LocalDate begin, LocalDate end, String accommodationName) {
@@ -102,6 +107,37 @@ public class RequestService implements IRequestService {
         Collection<Request> requests=requestRepository.findAllForGuest(id,RequestStatus.CANCELLED,null,null,null);
         return requests.size();
     }
+
+    @Override
+    public Request accept(Request request) {
+        Collection<Request> requests = requestRepository.findAllByAccommodationAndTimeSlot(request.getAccommodation()
+                ,request.getTimeSlot().getStartDate(),request.getTimeSlot().getEndDate());
+        System.out.println(requests.size());
+        System.out.println("ACCEPTING REQUESTS:" + requests);
+        for(Request _request:requests){
+            _request.setStatus(RequestStatus.DENIED);
+            requestRepository.save(_request);
+        }
+        TimeSlotDTO timeSlotDTO = new TimeSlotDTO(request.getTimeSlot().getStartDate(),request.getTimeSlot().getEndDate());
+        Accommodation accommodation = accommodationService.changeFreeTimeSlotsAcceptingReservation(request.getAccommodation().getId(),timeSlotDTO);
+        request.setStatus(RequestStatus.ACCEPTED);
+        return requestRepository.save(request);
+    }
+
+    @Override
+    public Request deny(Request request) {
+        request.setStatus(RequestStatus.DENIED);
+        return requestRepository.save(request);
+    }
+
+    @Override
+    public Request cancel(Request request) {
+        TimeSlotDTO timeSlotDTO = new TimeSlotDTO(request.getTimeSlot().getStartDate(),request.getTimeSlot().getEndDate());
+        accommodationService.changeFreeTimeSlotsCancelingReservation(request.getAccommodation().getId(),timeSlotDTO);
+        request.setStatus(RequestStatus.CANCELLED);
+        return requestRepository.save(request);
+    }
+
     @Override
     public Collection<Request> findReservationsByYear(String accommodationName,int year) {
         return requestRepository.findAllByAccommodationNameAndYear(accommodationName,year);

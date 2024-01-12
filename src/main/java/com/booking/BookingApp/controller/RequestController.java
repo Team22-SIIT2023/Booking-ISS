@@ -3,6 +3,7 @@ package com.booking.BookingApp.controller;
 import com.booking.BookingApp.domain.Request;
 import com.booking.BookingApp.domain.enums.RequestStatus;
 import com.booking.BookingApp.dto.RequestDTO;
+import com.booking.BookingApp.dto.UserDTO;
 import com.booking.BookingApp.mapper.RequestDTOMapper;
 import com.booking.BookingApp.service.RequestService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -95,6 +96,38 @@ public class RequestController {
         Request request = RequestDTOMapper.fromDTOtoRequest(requestDTO);
         Request updatedRequest = requestService.update(requestForUpdate, request);
         return new ResponseEntity<RequestDTO>(new RequestDTO(updatedRequest), HttpStatus.OK);
+    }
+
+
+
+    @PutMapping(value = "/accept/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAuthority('ROLE_GUEST') or hasAuthority('ROLE_HOST')")
+    public ResponseEntity<RequestDTO> acceptRequest(@RequestBody RequestDTO requestDTO, @PathVariable("id") Long id) {
+        Request request = requestService.accept(RequestDTOMapper.fromDTOtoRequest(requestDTO));
+        if(request == null){
+            return new ResponseEntity<RequestDTO>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return new ResponseEntity<RequestDTO>(new RequestDTO(request), HttpStatus.OK);
+    }
+
+    @PutMapping(value = "/deny/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAuthority('ROLE_GUEST') or hasAuthority('ROLE_HOST')")
+    public ResponseEntity<RequestDTO> denyRequest(@RequestBody RequestDTO requestDTO, @PathVariable("id") Long id) {
+        Request request = requestService.deny(RequestDTOMapper.fromDTOtoRequest(requestDTO));
+        if(request == null){
+            return new ResponseEntity<RequestDTO>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return new ResponseEntity<RequestDTO>(new RequestDTO(request), HttpStatus.OK);
+    }
+
+    @PutMapping(value = "/cancel/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAuthority('ROLE_GUEST') or hasAuthority('ROLE_HOST')")
+    public ResponseEntity<RequestDTO> cancelRequest(@RequestBody RequestDTO requestDTO, @PathVariable("id") Long id) {
+        Request request = requestService.cancel(RequestDTOMapper.fromDTOtoRequest(requestDTO));
+        if(request == null){
+            return new ResponseEntity<RequestDTO>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return new ResponseEntity<RequestDTO>(new RequestDTO(request), HttpStatus.OK);
     }
 
     @DeleteMapping(value = "/{id}")

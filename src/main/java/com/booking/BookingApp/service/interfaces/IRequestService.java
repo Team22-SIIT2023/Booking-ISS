@@ -38,4 +38,9 @@ public interface IRequestService {
     void delete(Long id);
     int findCancellations(Long id);
 
+    Request accept(Request request);
+
+    Request deny(Request request);
+
+    Request cancel(Request request);
 }

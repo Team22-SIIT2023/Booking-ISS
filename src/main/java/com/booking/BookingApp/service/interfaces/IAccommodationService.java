@@ -36,4 +36,7 @@ public interface IAccommodationService {
     Accommodation accept(Accommodation accommodation);
 
     Accommodation decline(Accommodation accommodation);
+
+    Accommodation changeFreeTimeSlotsAcceptingReservation(Long accommodationId, TimeSlotDTO reservationTimeSlot);
+    Accommodation changeFreeTimeSlotsCancelingReservation(Long accommodationId, TimeSlotDTO reservationTimeSlot);
 }
