@@ -65,7 +65,7 @@ public class Accommodation {
     private int reservationDeadline;
 
 
-    @OneToMany(cascade = {CascadeType.REMOVE,CascadeType.REFRESH,CascadeType.PERSIST},orphanRemoval = true)
+    @OneToMany(cascade = {CascadeType.REMOVE,CascadeType.REFRESH,CascadeType.PERSIST})
     private Collection<TimeSlot> freeTimeSlots;
 
     @ManyToMany

@@ -187,6 +187,49 @@ public class UserService implements IUserService {
         }
     }
 
+    @Override
+    public User block(Long userId) {
+        User user = findOne(userId);
+        if (user.getAccount().getRoles().get(0).getName().equals("ROLE_GUEST")) {
+            return blockGuest(user);
+        } else if (user.getAccount().getRoles().get(0).getName().equals("ROLE_HOST")) {
+            return blockHost(user);
+        }
+        return null;
+    }
+
+    private User blockHost(User user) {
+        user.getAccount().setStatus(Status.BLOCKED);
+        System.out.println(user);
+        userRepository.save(user);
+        Host host = new Host(user.getId(), user.getFirstName(), user.getLastName(),
+                user.getAddress(), user.getPhoneNumber(), user.getAccount(), user.getDeleted());
+        Collection<Accommodation> accommodations = accommodationRepository.findAllByHost(host);
+        if(!accommodations.isEmpty()){
+            for(Accommodation a: accommodations){
+                accommodationRepository.deleteById(a.getId());
+            }
+        }
+        return user;
+    }
+
+    private User blockGuest(User user) {
+        Guest guest = new Guest(user.getId(),
+                user.getFirstName(), user.getLastName(),
+                user.getAddress(), user.getPhoneNumber(),
+                user.getAccount(), user.getDeleted(),
+                userRepository.findFavoriteAccommodationsByGuestId(user.getId()));
+        Collection<Request> requests = requestRepository.findFutureRequestsForGuest(LocalDate.now(),guest);
+        System.out.println(requests);
+        for(Request request: requests){
+            request.setStatus(RequestStatus.CANCELLED);
+            requestRepository.save(request);
+        }
+        user.getAccount().setStatus(Status.BLOCKED);
+        return userRepository.save(user);
+    }
+
+
 //    @Override
 //    public User save(User userRequest) {
 //        User u = new User();

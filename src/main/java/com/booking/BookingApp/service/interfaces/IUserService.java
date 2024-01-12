@@ -54,4 +54,5 @@ public interface IUserService {
 
     void updateFavoriteAccommodations(Long guestId, Long accommodationId);
 
+    User block(Long userId);
 }
