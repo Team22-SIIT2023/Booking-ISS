@@ -54,6 +54,7 @@ public class WebSecurityConfig {
         configuration.setAllowedOrigins(Arrays.asList("http://localhost:4200"));
         configuration.setAllowedMethods(Arrays.asList("POST", "PUT", "GET", "OPTIONS", "DELETE", "PATCH")); // or simply "*"
         configuration.setAllowedHeaders(Arrays.asList("*"));
+        configuration.setAllowCredentials(true);
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
@@ -135,8 +136,9 @@ public class WebSecurityConfig {
         http.authorizeHttpRequests(requests -> {
             requests .requestMatchers("/api/users/**").permitAll()
 //                    .requestMatchers("/api/accommodations/**").permitAll()
-//                    .requestMatchers("/api/amenities/**").permitAll()
+                    .requestMatchers("/api/amenities/**").permitAll()
                     .requestMatchers("/api/email/**").permitAll()
+                    .requestMatchers("/socket/**").permitAll()
 //                    .requestMatchers("/api/accommodations").permitAll()
                     .requestMatchers(new AntPathRequestMatcher("/error")).permitAll()
 //                    .requestMatchers("/api/requests/**").permitAll()

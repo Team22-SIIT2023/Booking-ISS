@@ -382,6 +382,7 @@ public class UserService implements IUserService {
     @Override
     public User reportGuest(User user, Long hostId) {
         User guest = findOne(user.getId());
+        guest.setReportingReason(user.getReportingReason());
 
         Collection<Request> requests =
                 requestRepository.findAllByStatusAndAccommodation_Host_IdAndGuest_Id(RequestStatus.ACCEPTED,hostId ,guest.getId());
@@ -397,6 +398,7 @@ public class UserService implements IUserService {
     @Override
     public User reportHost(User user, Long guestId) {
         User host = findOne(user.getId());
+        host.setReportingReason(user.getReportingReason());
 
         Collection<Request> requests =
                 requestRepository.findAllByStatusAndAccommodation_Host_IdAndGuest_Id(RequestStatus.ACCEPTED, host.getId() ,guestId);

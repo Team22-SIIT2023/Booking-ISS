@@ -28,7 +28,7 @@ public class GuestNotification extends Notification{
     private boolean deleted = Boolean.FALSE;
 
     public GuestNotification(Long id, String text, LocalDate date, boolean turnedOn, NotificationType type, Long guestId, boolean deleted) {
-        super(id, text, date, turnedOn, type, deleted);
+//        super(id, text, date, turnedOn, type, deleted);
         this.guestId = guestId;
     }
 }

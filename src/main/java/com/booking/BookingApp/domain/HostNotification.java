@@ -28,7 +28,7 @@ public class HostNotification extends Notification{
     private boolean deleted;
 
     public HostNotification(Long id, String text, LocalDate date, boolean turnedOn, NotificationType type, Long hostId, boolean deleted) {
-        super(id, text, date, turnedOn, type, deleted);
+//        super(id, text, date, turnedOn, type, deleted);
         this.hostId = hostId;
     }
 }
