@@ -12,6 +12,7 @@ import com.booking.BookingApp.mapper.AccommodationDTOMapper;
 import com.booking.BookingApp.mapper.ReportDTOMapper;
 import com.booking.BookingApp.mapper.UserDTOMapper;
 import com.booking.BookingApp.service.EmailService;
+import com.booking.BookingApp.service.NotificationSettingsService;
 import com.booking.BookingApp.service.interfaces.IUserService;
 import com.booking.BookingApp.util.TokenUtils;
 import jakarta.servlet.http.HttpServletResponse;
@@ -52,6 +53,10 @@ public class UserController {
 
     @Autowired
     private EmailService emailService;
+
+    @Autowired
+    private NotificationSettingsService notificationSettingsService;
+
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Collection<UserDTO>> getUsers() {
@@ -135,6 +140,8 @@ public class UserController {
         }
         else { savedUser = userService.saveHost(user);}
 
+        notificationSettingsService.createNotificationSettings(savedUser);
+
         emailService.sendEmail("sonjabaljicki2002@gmail.com", "Account activation", savedUser.getUsername());
 
         return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
@@ -206,6 +213,8 @@ public class UserController {
     public ResponseEntity<UserDTO> reportUser(@RequestBody UserDTO reportedUserDTO, @PathVariable("id") Long guestId)
             throws Exception {
         User user = UserDTOMapper.fromDTOtoUser(reportedUserDTO);
+        user.setReportingReason(reportedUserDTO.getReportingReason());
+
 
         User updatedUser;
         if (user.getAccount().getRoles().get(0).getName().equals("ROLE_GUEST")) {

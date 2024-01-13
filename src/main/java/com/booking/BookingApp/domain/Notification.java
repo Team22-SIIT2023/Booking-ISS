@@ -19,20 +19,19 @@ import java.time.LocalDate;
 @Table(name = "notifications")
 @SQLDelete(sql = "UPDATE notifications SET deleted = true WHERE id=?")
 @Where(clause = "deleted = false")
-//@MappedSuperclass
 public class Notification {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @ManyToOne
+    private User user;
 
     @Column(name = "notification_text")
     private String text;
 
     @Column(name = "date")
     private LocalDate date;
-
-    @Column(name = "turnedON")
-    private boolean turnedOn;
 
     @Column(name = "notification_type")
     @Enumerated(EnumType.STRING)
@@ -41,11 +40,10 @@ public class Notification {
     @Column(name="deleted")
     private boolean deleted = Boolean.FALSE;
 
-    public Notification(Long id, String text, LocalDate date, boolean turnedOn, NotificationType type, boolean deleted) {
+    public Notification(Long id, String text, LocalDate date, NotificationType type, boolean deleted) {
         this.id = id;
         this.text = text;
         this.date = date;
-        this.turnedOn = turnedOn;
         this.type = type;
         this.deleted=deleted;
     }
@@ -56,7 +54,6 @@ public class Notification {
                 "id=" + id +
                 ", text='" + text + '\'' +
                 ", date=" + date +
-                ", turnedOn=" + turnedOn +
                 ", type=" + type +
                 ",deleted=" + deleted +
                 '}';

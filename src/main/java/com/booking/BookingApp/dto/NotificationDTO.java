@@ -1,6 +1,7 @@
 package com.booking.BookingApp.dto;
 
 
+import com.booking.BookingApp.domain.User;
 import com.booking.BookingApp.domain.enums.NotificationType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,12 +17,14 @@ public class NotificationDTO {
     private String text;
     private LocalDate date;
     private NotificationType type;
+    private User user;
 
-    public NotificationDTO(Long id, String text, LocalDate date, NotificationType type) {
+    public NotificationDTO(Long id, String text, LocalDate date, NotificationType type, User user) {
         this.id = id;
         this.text = text;
         this.date = date;
         this.type = type;
+        this.user=user;
     }
 
     @Override

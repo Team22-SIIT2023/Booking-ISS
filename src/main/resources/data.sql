@@ -37,6 +37,14 @@ insert into guests values (2);
 insert into hosts values (1);
 insert into hosts values (3);
 
+insert into notification_settings (user_id) values (1);
+insert into notification_settings (user_id) values (2);
+insert into notification_settings (user_id) values (3);
+insert into host_notification_settings (id, is_reservation_cancelled, is_request_created, is_rated, is_accommodation_rated) values (1, true, false, true, true);
+insert into host_notification_settings (id, is_reservation_cancelled, is_request_created, is_rated, is_accommodation_rated) values (3, true, false, true, true);
+insert into guest_notification_settings (id, is_request_responded) values (2, false);
+
+
 INSERT INTO timeslots (start_date, end_date, deleted)
 VALUES ('2024-01-10 10:00:00','2024-01-20 12:00:00', false);
 INSERT INTO timeslots (start_date, end_date, deleted)
