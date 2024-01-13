@@ -1,9 +1,6 @@
 package com.booking.BookingApp.repository;
 
-import com.booking.BookingApp.domain.Guest;
-import com.booking.BookingApp.domain.Host;
-import com.booking.BookingApp.domain.Request;
-import com.booking.BookingApp.domain.User;
+import com.booking.BookingApp.domain.*;
 import com.booking.BookingApp.domain.enums.RequestStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -11,7 +8,6 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Collection;
 
 @Repository
@@ -30,6 +26,10 @@ public interface RequestRepository extends JpaRepository<Request, Long> {
 
     @Query("SELECT r FROM Request r WHERE r.status = 'ACCEPTED' AND r.timeSlot.startDate > :currentDateTime AND r.guest = :guest")
     Collection<Request> findActiveReservationsForGuest(@Param("currentDateTime") LocalDate currentDateTime, @Param("guest") Guest guest);
+
+
+    @Query("SELECT r FROM Request r WHERE r.timeSlot.startDate > :currentDateTime AND r.guest = :guest")
+    Collection<Request> findFutureRequestsForGuest(@Param("currentDateTime") LocalDate currentDateTime, @Param("guest") Guest guest);
 
     @Query("SELECT r FROM Request r JOIN r.accommodation a JOIN a.host h WHERE r.status = 'ACCEPTED' AND r.timeSlot.startDate > :currentDateTime AND h = :host")
     Collection<Request> findActiveReservationsForHost(@Param("currentDateTime") LocalDate currentDateTime, @Param("host") Host host);
@@ -79,4 +79,16 @@ public interface RequestRepository extends JpaRepository<Request, Long> {
             @Param("year") int year
     );
 
+    @Query("SELECT r FROM Request r " +
+            "WHERE r.accommodation = :accommodation " +
+            "AND (" +
+            "   r.timeSlot.startDate BETWEEN :startDate AND :endDate " +
+            "   OR r.timeSlot.endDate BETWEEN :startDate AND :endDate " +
+            "   OR :startDate BETWEEN r.timeSlot.startDate AND r.timeSlot.endDate " +
+            "   OR :endDate BETWEEN r.timeSlot.startDate AND r.timeSlot.endDate" +
+            ")")
+    Collection<Request> findAllByAccommodationAndTimeSlot(
+            @Param("accommodation") Accommodation accommodation,
+            @Param("startDate") LocalDate startDate,
+            @Param("endDate") LocalDate endDate);
 }

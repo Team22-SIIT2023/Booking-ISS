@@ -8,6 +8,7 @@ import com.booking.BookingApp.dto.PricelistItemDTO;
 import com.booking.BookingApp.dto.TimeSlotDTO;
 import com.booking.BookingApp.repository.AccommodationRepository;
 import com.booking.BookingApp.repository.RequestRepository;
+import com.booking.BookingApp.repository.TimeSlotRepository;
 import com.booking.BookingApp.service.interfaces.IAccommodationService;
 import com.booking.BookingApp.utils.ImageUploadUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.sql.Time;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -36,6 +38,9 @@ public class AccommodationService implements IAccommodationService {
 
     @Autowired
     RequestRepository requestRepository;
+
+    @Autowired
+    TimeSlotRepository timeSlotRepository;
 
     @Override
     public double calculatePriceForAccommodation(Long id, int guestNumber, Date begin, Date end) {
@@ -81,6 +86,90 @@ public class AccommodationService implements IAccommodationService {
         accommodation.setStatus(AccommodationStatus.DECLINED);
         return accommodationRepository.save(accommodation);
     }
+
+    @Override
+    public Accommodation changeFreeTimeSlotsAcceptingReservation(Long accommodationId, TimeSlotDTO reservationTimeSlot) {
+        Accommodation accommodation = removeReservedTimeSlots(findOne(accommodationId),reservationTimeSlot);
+        System.out.println("posle brisanja       " + accommodation);
+        accommodationRepository.save(accommodation);
+        return accommodation;
+    }
+
+    @Override
+    public Accommodation changeFreeTimeSlotsCancelingReservation(Long accommodationId, TimeSlotDTO reservationTimeSlot) {
+        Accommodation accommodation = addReservedTimeSlots(findOne(accommodationId),reservationTimeSlot);
+        System.out.println("posle dodavanja       " + accommodation);
+        accommodationRepository.save(accommodation);
+        return accommodation;
+    }
+
+    private static List<LocalDate> convertTimeSlotsToLocalDates(List<TimeSlot> timeSlots) {
+        List<LocalDate> localDates = new ArrayList<>();
+        for (TimeSlot timeSlot : timeSlots) {
+            LocalDate currentDate = timeSlot.getStartDate();
+
+            while (!currentDate.isAfter(timeSlot.getEndDate())) {
+                localDates.add(currentDate);
+                currentDate = currentDate.plusDays(1);
+            }
+        }
+        return localDates;
+    }
+
+    private static List<LocalDate> mergeAndSort(List<LocalDate> list1, List<LocalDate> list2) {
+        List<LocalDate> mergedList = new ArrayList<>(list1);
+        mergedList.addAll(list2);
+        Collections.sort(mergedList);
+        return mergedList;
+    }
+
+    private List<TimeSlot> createTimeSlots(List<LocalDate> sortedDates) {
+        List<TimeSlot> newFreeTimeSlots = new ArrayList<>();
+        List<LocalDate> datesForTimeSlot = new ArrayList<>();
+        for(LocalDate date:sortedDates){
+            if(!sortedDates.contains(date.plusDays(1))){
+                datesForTimeSlot.add(date);
+            }
+            if(!sortedDates.contains(date.minusDays(1))){
+                datesForTimeSlot.add(date);
+            }
+        }
+        for(int i=0;i<datesForTimeSlot.size();i++){
+            if(i%2==0){
+                TimeSlot timeSlot = new TimeSlot(datesForTimeSlot.get(i), datesForTimeSlot.get(i + 1),false);
+                timeSlotRepository.save(timeSlot);
+                newFreeTimeSlots.add(timeSlot);
+            }
+        }
+        System.out.println(datesForTimeSlot);
+        System.out.println(newFreeTimeSlots);
+        return newFreeTimeSlots;
+    }
+
+    public Accommodation addReservedTimeSlots(Accommodation accommodation, TimeSlotDTO reservationTimeSlot) {
+        List<TimeSlot> freeTimeSlots = new ArrayList<>(accommodation.getFreeTimeSlots());
+        List<LocalDate> accommodationsFreeDates = convertTimeSlotsToLocalDates(freeTimeSlots);
+        List<LocalDate> reservationDates = convertTimeSlotToLocalDates(reservationTimeSlot);
+        List<LocalDate> newFreeDates = mergeAndSort(accommodationsFreeDates,reservationDates);
+        List<TimeSlot> newFreeTimeSlots = createTimeSlots(newFreeDates);
+        System.out.println(accommodationsFreeDates);
+        System.out.println(reservationDates);
+        System.out.println(newFreeTimeSlots);
+        accommodation.setFreeTimeSlots(newFreeTimeSlots);
+        return accommodation;
+    }
+
+    private List<LocalDate> convertTimeSlotToLocalDates(TimeSlotDTO reservationTimeSlot) {
+        List<LocalDate> localDates = new ArrayList<>();
+        LocalDate currentDate = reservationTimeSlot.getStartDate();
+        while (!currentDate.isAfter(reservationTimeSlot.getEndDate())) {
+            localDates.add(currentDate);
+            currentDate = currentDate.plusDays(1);
+        }
+        return localDates;
+    }
+
+
 
     @Override
     public Collection<Accommodation> findAll(LocalDate begin, LocalDate end, int guestNumber, AccommodationType accommodationType, double startPrice, double endPrice, AccommodationStatus status, String country, String city, List<String> amenities, Integer hostId) {
@@ -174,6 +263,43 @@ public class AccommodationService implements IAccommodationService {
 //        return accommodationRepository.save(accommodationForUpdate);
 
     }
+
+    public Accommodation removeReservedTimeSlots(Accommodation accommodation, TimeSlotDTO reservationTimeSlot) {
+        List<TimeSlot> freeTimeSlots = new ArrayList<>(accommodation.getFreeTimeSlots());
+        List<TimeSlot> newFreeTimeSlots = new ArrayList<>();
+        for(TimeSlot freeTimeSlot: freeTimeSlots){
+            LocalDate freeStartDate = freeTimeSlot.getStartDate();
+            LocalDate freeEndDate = freeTimeSlot.getEndDate();
+
+            LocalDate reservationStartDate = reservationTimeSlot.getStartDate();
+            LocalDate reservationEndDate = reservationTimeSlot.getEndDate();
+
+            if((reservationStartDate.isAfter(freeStartDate) || reservationStartDate.equals(freeStartDate))
+                    && reservationStartDate.isBefore(freeEndDate) && reservationEndDate.isAfter(freeStartDate)
+                    && (reservationEndDate.isBefore(freeEndDate)||reservationEndDate.equals(freeEndDate))){
+                if(!freeStartDate.plusDays(1).equals(reservationStartDate)){
+                    TimeSlot timeSlot = new TimeSlot(freeStartDate,reservationStartDate.minusDays(1),false);
+                    System.out.println("TIMESLOT1:            " + timeSlot);
+                    timeSlotRepository.save(timeSlot);
+                    newFreeTimeSlots.add(timeSlot);
+                }
+                if(!reservationEndDate.plusDays(1).equals(freeEndDate)){
+                    TimeSlot timeSlot1 = new TimeSlot(reservationEndDate.plusDays(1),freeEndDate,false);
+                    System.out.println("TIMESLOT2:            " + timeSlot1);
+                    timeSlotRepository.save(timeSlot1);
+                    newFreeTimeSlots.add(timeSlot1);
+                }
+
+            }
+            else{
+                newFreeTimeSlots.add(freeTimeSlot);
+            }
+        }
+        accommodation.setFreeTimeSlots(newFreeTimeSlots);
+        return accommodation;
+    }
+
+
 
     @Override
     public Accommodation editAccommodationFreeTimeSlots(TimeSlotDTO newTimeSlot, Accommodation accommodationForUpdate) {
