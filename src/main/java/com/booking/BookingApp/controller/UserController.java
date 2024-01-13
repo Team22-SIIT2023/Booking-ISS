@@ -256,6 +256,17 @@ public class UserController {
         return new ResponseEntity<>("Pictures uploaded successfully", HttpStatus.OK);
     }
 
+    @PutMapping("/block/{userId}")
+    public ResponseEntity<UserDTO> blockUser(@RequestBody UserDTO userDTO,
+                                             @PathVariable("userId") Long userId) {
+        System.out.println("dobrodosao na listu block");
+        User user = userService.block(userId);
+        if (user == null) {
+            return new ResponseEntity<UserDTO>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return new ResponseEntity<UserDTO>(UserDTOMapper.fromUsertoDTO(user),HttpStatus.OK);
+    }
+
     @PreAuthorize("hasRole('HOST') or hasRole('GUEST') or hasRole('ADMIN')")
     @GetMapping(value = "/{userId}/images", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<String>> getImages(@PathVariable("userId") Long userId) throws IOException {

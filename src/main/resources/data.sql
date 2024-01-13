@@ -9,7 +9,7 @@ INSERT INTO role (name) VALUES ('ROLE_GUEST');
 INSERT INTO role (name) VALUES ('ROLE_ADMIN');
 
 
-INSERT INTO accounts(username, password, status,deleted) VALUES ('pera@example.com', '123', 'REPORTED',false);
+INSERT INTO accounts(username, password, status,deleted) VALUES ('pera@example.com', '123', 'ACTIVE',false);
 INSERT INTO accounts(username, password, status,deleted) VALUES ('mika@example.com', '123', 'ACTIVE',false);
 INSERT INTO accounts(username, password, status,deleted) VALUES ('zika@example.com', '123', 'ACTIVE',false);
 INSERT INTO accounts(username, password, status,deleted) VALUES ('kika@example.com', '123', 'ACTIVE',false);
@@ -90,7 +90,7 @@ VALUES (
            true,
            true,
            'ACCEPTED',
-           7,3,false
+           2,3,false
        );
 INSERT INTO accommodations (
     name, description, address_id, min_guest, max_guest,
@@ -196,11 +196,11 @@ VALUES ('2023-01-29 10:00:00','2023-02-04 12:00:00', false);
 INSERT INTO timeslots (start_date, end_date, deleted)
 VALUES ('2023-02-03 10:00:00','2023-02-14 12:00:00', false);
 INSERT INTO timeslots (start_date, end_date, deleted)
-VALUES ('2023-03-22 10:00:00','2023-03-26 12:00:00', false);
+VALUES ('2024-03-22 10:00:00','2024-03-26 12:00:00', false);
 INSERT INTO timeslots (start_date, end_date, deleted)
 VALUES ('2023-04-22 10:00:00','2023-04-26 12:00:00', false);
 INSERT INTO timeslots (start_date, end_date, deleted)
-VALUES ('2023-06-22 10:00:00','2023-06-26 12:00:00', false);
+VALUES ('2024-06-22 10:00:00','2024-06-26 12:00:00', false);
 
 INSERT INTO requests (time_slot_id,price,accommodation_id,guest_number,request_status,guest_id,deleted)
 VALUES (10,3500.00,1, 5,'ACCEPTED' ,2,false);
