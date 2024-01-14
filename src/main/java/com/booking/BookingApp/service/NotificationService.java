@@ -75,69 +75,39 @@ public class NotificationService implements INotificationService{
 //        }
     }
 
-    @Override
-    public Notification findOne(Long id) {
-//        return notificationRepository.findById(id);
-        return new Notification(1L, "New message received",LocalDate.now(), NotificationType.HOST_RATED,false);
-    }
-
-    @Override
-    public Collection<Notification> findAllForGuest(Long id) {return data();}
-
-    @Override
-    public Collection<Notification> findAllForHost(Long id) {
-        return data();
-    }
-
-    @Override
-    public Notification createHostNotification(Long id, Notification notification) throws Exception {
-        return new Notification(1L, "New message received",LocalDate.now(), NotificationType.HOST_RATED,false);
-    }
 
     @Override
     public Notification createUserNotification(Notification notification) throws Exception {
         return notificationRepository.save(notification);
     }
 
-
-    @Override
-    public Notification createGuestNotification(Long id, Notification notification) throws Exception {
-        return new Notification(1L, "New message received",LocalDate.now(), NotificationType.HOST_RATED,false);
-    }
-
-    @Override
-    public Notification update(Notification notification, Notification notificationForUpdate) throws Exception {
-        return new Notification(1L, "New message received",LocalDate.now(), NotificationType.HOST_RATED,false);
-    }
     @Override
     public void delete(Long id) {}
 
     @Override
-    public boolean updateGuestSettings(Long id, GuestNotificationSettings settings) {
+    public GuestNotificationSettings updateGuestSettings(Long id, GuestNotificationSettings settings) {
         GuestNotificationSettings notificationSettings = guestNotificationSettingsRepository.findByUser_Id(id);
         if (notificationSettings == null) {
-            return false;
+            return null;
         }
 //        notificationSettings.setRequestResponded(!notificationSettings.isRequestResponded());
         notificationSettings.setRequestResponded(settings.isRequestResponded());
-        guestNotificationSettingsRepository.save(notificationSettings);
-        return true;
+        return guestNotificationSettingsRepository.save(notificationSettings);
     }
 
     @Override
-    public boolean updateHostSettings(Long id, HostNotificationSettings settings) {
+    public HostNotificationSettings updateHostSettings(Long id, HostNotificationSettings settings) {
         HostNotificationSettings notificationSettings = hostNotificationSettingsRepository.findByUser_Id(id);
 
         if (notificationSettings == null) {
-            return false;
+            return null;
         }
 
         notificationSettings.setRated(settings.isRated());
         notificationSettings.setReservationCancelled(settings.isReservationCancelled());
         notificationSettings.setRequestCreated(settings.isRequestCreated());
         notificationSettings.setAccommodationRated(settings.isAccommodationRated());
-        hostNotificationSettingsRepository.save(notificationSettings);
-        return true;
+        return hostNotificationSettingsRepository.save(notificationSettings);
     }
 
 //    @Override
