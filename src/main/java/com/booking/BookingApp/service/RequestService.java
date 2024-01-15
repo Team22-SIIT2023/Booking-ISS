@@ -15,7 +15,9 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
@@ -27,6 +29,9 @@ public class RequestService implements IRequestService {
 
     @Autowired
     AccommodationService accommodationService;
+
+    @Autowired
+    AvailabilityService availabilityService;
 
     @Override
     public Collection<Request> findAll(RequestStatus status, LocalDate begin, LocalDate end, String accommodationName) {
@@ -78,6 +83,25 @@ public class RequestService implements IRequestService {
 
     @Override
     public Request create(Request request) throws Exception{
+
+        if(request.getTimeSlot().getStartDate().isBefore(LocalDate.now())){
+            return null;
+        }
+        if(request.getTimeSlot().getEndDate().isBefore(request.getTimeSlot().getStartDate())){
+            return null;
+        }
+        if(!availabilityService.checkFreeTimeSlots(request.getTimeSlot(),request.getAccommodation())){
+            return null;
+        }
+        if(!(request.getGuestNumber()<=request.getAccommodation().getMaxGuests() && request.getGuestNumber()>=request.getAccommodation().getMinGuests())){
+            return null;
+        }
+        Date startDate=Date.from(request.getTimeSlot().getStartDate().atStartOfDay(ZoneId.systemDefault()).toInstant());
+        Date endDate=Date.from(request.getTimeSlot().getEndDate().atStartOfDay(ZoneId.systemDefault()).toInstant());
+        if(accommodationService.calculatePriceForAccommodation(request.getAccommodation().getId(),request.getGuestNumber(),startDate,endDate)==0){
+            return null;
+        }
+
         return requestRepository.save(request);
     }
 
