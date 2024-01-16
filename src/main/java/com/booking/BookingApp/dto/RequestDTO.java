@@ -29,6 +29,14 @@ public class RequestDTO {
         this.status = status;
         this.guestNumber=number;
     }
+    public RequestDTO(Long id, TimeSlot timeSlot, double price, AccommodationDTO accommodationDTO, RequestStatus status,int number) {
+        this.id = id;
+        this.timeSlot = timeSlot;
+        this.price = price;
+        this.accommodation = accommodationDTO;
+        this.status = status;
+        this.guestNumber=number;
+    }
 
     public RequestDTO(Request request) {
         this(request.getId(), request.getTimeSlot(), request.getPrice(), request.getGuest(), null,

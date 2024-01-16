@@ -45,6 +45,10 @@ public class AccommodationService implements IAccommodationService {
     @Override
     public double calculatePriceForAccommodation(Long id, int guestNumber, Date begin, Date end) {
         Accommodation accommodation=findOne(id);
+        if(accommodation==null){
+            return 0.0;
+        }
+
         double price = 0;
 
         long timeDifference=end.getTime()-begin.getTime();

@@ -26,6 +26,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.context.RequestAttributeSecurityContextRepository;
+import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -34,6 +35,8 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.Arrays;
+
+import static org.springframework.security.config.http.MatcherType.mvc;
 
 
 @Configuration
@@ -106,6 +109,7 @@ public class WebSecurityConfig {
     @Autowired
     private TokenUtils tokenUtils;
 
+
     // Definisemo prava pristupa za zahteve ka odredjenim URL-ovima/rutama
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -135,12 +139,16 @@ public class WebSecurityConfig {
 
         http.authorizeHttpRequests(requests -> {
             requests .requestMatchers("/api/users/**").permitAll()
-//                    .requestMatchers("/api/accommodations/**").permitAll()
-                    .requestMatchers("/api/amenities/**").permitAll()
-                    .requestMatchers("/api/email/**").permitAll()
-                    .requestMatchers("/socket/**").permitAll()
+//                    .requestMatchers("/api/accommodations/").permitAll()
+                    .requestMatchers("/api/amenities/").permitAll()
+                    .requestMatchers("/api/email/").permitAll()
+                    .requestMatchers("/socket/").permitAll()
+                    .requestMatchers("/h2-console/").permitAll()
 //                    .requestMatchers("/api/accommodations").permitAll()
                     .requestMatchers(new AntPathRequestMatcher("/error")).permitAll()
+                    .requestMatchers(new AntPathRequestMatcher("/h2-console/**")).permitAll()
+
+
 //                    .requestMatchers("/api/requests/**").permitAll()
 //                    .requestMatchers("api/comments/**").permitAll()
                     // ukoliko ne zelimo da koristimo @PreAuthorize anotacije nad metodama kontrolera, moze se iskoristiti hasRole() metoda da se ogranici
@@ -150,8 +158,11 @@ public class WebSecurityConfig {
 //                    .requestMatchers("/api/accommodations").hasAuthority("ROLE_GUEST")
 //                    .requestMatchers("/api/accommodations").hasAuthority("ROLE_HOST")
                     // za svaki drugi zahtev korisnik mora biti autentifikovan
+
                     .anyRequest().authenticated();
         });
+
+
 
         // umetni custom filter TokenAuthenticationFilter kako bi se vrsila provera JWT tokena
         http.addFilterBefore(new TokenAuthenticationFilter(tokenUtils,  userDetailsService()), UsernamePasswordAuthenticationFilter.class);
@@ -168,7 +179,9 @@ public class WebSecurityConfig {
         // Autentifikacija ce biti ignorisana ispod navedenih putanja (kako bismo ubrzali pristup resursima)
         // Zahtevi koji se mecuju za web.ignoring().antMatchers() nemaju pristup SecurityContext-u
         // Dozvoljena POST metoda na ruti /auth/login, za svaki drugi tip HTTP metode greska je 401 Unauthorized
-        return (web) -> web.ignoring().requestMatchers(HttpMethod.POST, "/api/users/login");
+        return (web) -> web.ignoring()
+                .requestMatchers(HttpMethod.POST, "/api/users/login");
+
 
 
         // Ovim smo dozvolili pristup statickim resursima aplikacije

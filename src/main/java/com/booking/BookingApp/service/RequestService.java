@@ -98,7 +98,8 @@ public class RequestService implements IRequestService {
         }
         Date startDate=Date.from(request.getTimeSlot().getStartDate().atStartOfDay(ZoneId.systemDefault()).toInstant());
         Date endDate=Date.from(request.getTimeSlot().getEndDate().atStartOfDay(ZoneId.systemDefault()).toInstant());
-        if(accommodationService.calculatePriceForAccommodation(request.getAccommodation().getId(),request.getGuestNumber(),startDate,endDate)==0){
+        if(accommodationService.calculatePriceForAccommodation(request.getAccommodation().getId(),request.getGuestNumber(),startDate,endDate)==0
+            ||accommodationService.calculatePriceForAccommodation(request.getAccommodation().getId(),request.getGuestNumber(),startDate,endDate)!=request.getPrice()){
             return null;
         }
 
