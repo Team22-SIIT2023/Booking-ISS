@@ -86,6 +86,10 @@ public class RequestController {
     public ResponseEntity<RequestDTO> createRequest(@RequestBody RequestDTO requestDTO) throws Exception {
         Request requestModel = RequestDTOMapper.fromDTOtoRequest(requestDTO);
         Request savedRequest = requestService.create(requestModel);
+        if(savedRequest==null){
+            return new ResponseEntity<RequestDTO>(HttpStatus.BAD_REQUEST);
+
+        }
         return new ResponseEntity<RequestDTO>(RequestDTOMapper.fromRequesttoDTO(savedRequest), HttpStatus.CREATED);
     }
 
