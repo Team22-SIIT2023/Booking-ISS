@@ -64,7 +64,6 @@ public class Accommodation {
     @Column(name = "reservation_deadline")
     private int reservationDeadline;
 
-
     @OneToMany(cascade = {CascadeType.REMOVE,CascadeType.REFRESH,CascadeType.PERSIST,CascadeType.MERGE})
     private Collection<TimeSlot> freeTimeSlots;
 
