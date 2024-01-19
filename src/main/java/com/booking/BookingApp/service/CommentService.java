@@ -161,14 +161,34 @@ public class CommentService implements ICommentService {
 
     @Override
     public Comments approve(Comments commentForApproving) {
-        commentForApproving.setStatus(Status.ACTIVE);
-        return commentsRepository.save(commentForApproving);
+        AccommodationComments accommodationComments = accommodationCommentRepository.findById(commentForApproving.getId()).orElse(null);
+        if(accommodationComments == null){
+            HostComments hostComments = hostCommentRepository.findById(commentForApproving.getId()).orElse(null);
+            assert hostComments != null;
+            hostComments.setStatus(Status.ACTIVE);
+            hostCommentRepository.save(hostComments);
+        }
+        else {
+            accommodationComments.setStatus(Status.ACTIVE);
+            accommodationCommentRepository.save(accommodationComments);
+        }
+        return commentForApproving;
     }
 
     @Override
     public Comments decline(Comments commentForDeclining) {
-        commentForDeclining.setStatus(Status.BLOCKED);
-        return commentsRepository.save(commentForDeclining);
+        AccommodationComments accommodationComments = accommodationCommentRepository.findById(commentForDeclining.getId()).orElse(null);
+        if(accommodationComments == null){
+            HostComments hostComments = hostCommentRepository.findById(commentForDeclining.getId()).orElse(null);
+            assert hostComments != null;
+            hostComments.setStatus(Status.BLOCKED);
+            hostCommentRepository.save(hostComments);
+        }
+        else {
+            accommodationComments.setStatus(Status.BLOCKED);
+            accommodationCommentRepository.save(accommodationComments);
+        }
+        return commentForDeclining;
     }
 
     @Override
