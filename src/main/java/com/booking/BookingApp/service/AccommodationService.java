@@ -200,6 +200,8 @@ public class AccommodationService implements IAccommodationService {
                         hostId
                 );
         }else{
+            System.out.println(hostId);
+            System.out.println("HOSTID");
                 accommodations= accommodationRepository.findAccommodationsByCountryTypeGuestNumberAndAmenities(
                         country,
                         city,
@@ -210,6 +212,7 @@ public class AccommodationService implements IAccommodationService {
                         hostId
                 );
             }
+            System.out.println(accommodations);
 
             if(endPrice>0 && startPrice>0 && begin!=null && end!=null && guestNumber>0){
                 Date beginDate = Date.from(begin.atStartOfDay(ZoneId.systemDefault()).toInstant());

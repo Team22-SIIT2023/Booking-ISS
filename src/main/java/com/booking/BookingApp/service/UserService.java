@@ -190,12 +190,17 @@ public class UserService implements IUserService {
     @Override
     public User block(Long userId) {
         User user = findOne(userId);
-        if (user.getAccount().getRoles().get(0).getName().equals("ROLE_GUEST")) {
-            return blockGuest(user);
-        } else if (user.getAccount().getRoles().get(0).getName().equals("ROLE_HOST")) {
-            return blockHost(user);
+        if(user == null){
+            return null;
         }
-        return null;
+        else{
+            if (user.getAccount().getRoles().get(0).getName().equals("ROLE_GUEST")) {
+                 return blockGuest(user);
+            } else if (user.getAccount().getRoles().get(0).getName().equals("ROLE_HOST")) {
+                return blockHost(user);
+            }
+        }
+        return user;
     }
 
     private User blockHost(User user) {
