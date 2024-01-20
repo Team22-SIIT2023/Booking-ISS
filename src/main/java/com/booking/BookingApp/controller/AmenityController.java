@@ -25,7 +25,7 @@ public class AmenityController {
     private AmenityService amenityService;
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasAuthority('ROLE_GUEST') or hasAuthority('ROLE_HOST')")
+    @PreAuthorize("hasAuthority('ROLE_GUEST') or hasAuthority('ROLE_HOST') or hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<Collection<AmenityDTO>> getAmenities() {
         Collection<Amenity> amenities = amenityService.findAll();
 
