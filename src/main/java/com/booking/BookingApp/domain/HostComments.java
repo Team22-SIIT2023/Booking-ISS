@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
@@ -19,6 +21,7 @@ import java.time.LocalDate;
 //@Where(clause = "deleted = false")
 public class HostComments extends Comments{
 
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.MERGE})
     private Host host;
 
