@@ -91,4 +91,6 @@ Collection<Accommodation> findAccommodationsByCountryTypeGuestNumberTimeRangeAnd
     void deleteHostAccommodations(Long accommodationId);
 
     Collection<Accommodation> findByStatus(AccommodationStatus status);
+
+    Accommodation findByName(String accommodationName);
 }
