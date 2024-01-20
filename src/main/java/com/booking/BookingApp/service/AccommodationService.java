@@ -523,4 +523,15 @@ public class AccommodationService implements IAccommodationService {
         accommodationList.add(accommodation2);
         return accommodationList;
     }
+    @Override
+    public Accommodation updateRequestApproval(Accommodation accommodation) {
+        Long accommodationId = accommodation.getId();
+        Accommodation existingAccommodation = accommodationRepository.findById(accommodationId).orElse(null);
+
+        if(existingAccommodation!=null){
+            existingAccommodation.setAutomaticConfirmation(accommodation.isAutomaticConfirmation());
+            return accommodationRepository.save(existingAccommodation);
+        }
+        return  new Accommodation();
+    }
 }

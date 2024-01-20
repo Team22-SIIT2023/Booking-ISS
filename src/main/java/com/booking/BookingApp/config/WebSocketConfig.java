@@ -13,8 +13,11 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
+
+        System.out.println("pogodio");
         registry.addEndpoint("/socket").setAllowedOrigins("http://localhost:4200").withSockJS();
         registry.addEndpoint("/socket").setAllowedOrigins("*");
+
 //        registry.addEndpoint("/socket")
 //                .setAllowedOrigins("*")
 //                .withSockJS();

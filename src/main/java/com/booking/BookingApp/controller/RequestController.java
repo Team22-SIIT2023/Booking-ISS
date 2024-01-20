@@ -6,6 +6,7 @@ import com.booking.BookingApp.dto.RequestDTO;
 import com.booking.BookingApp.dto.UserDTO;
 import com.booking.BookingApp.mapper.RequestDTOMapper;
 import com.booking.BookingApp.service.RequestService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
@@ -83,7 +84,7 @@ public class RequestController {
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('GUEST')")
-    public ResponseEntity<RequestDTO> createRequest(@RequestBody RequestDTO requestDTO) throws Exception {
+    public ResponseEntity<RequestDTO> createRequest(@RequestBody @Valid RequestDTO requestDTO) throws Exception {
         Request requestModel = RequestDTOMapper.fromDTOtoRequest(requestDTO);
         Request savedRequest = requestService.create(requestModel);
         if(savedRequest==null){

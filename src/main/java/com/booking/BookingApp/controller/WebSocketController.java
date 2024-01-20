@@ -53,6 +53,8 @@ public class WebSocketController {
     @MessageMapping("/send/message")
     public Map<String, String> broadcastNotification(String message) {
         Map<String, String> messageConverted = parseMessage(message);
+        System.out.println("sonja");
+        System.out.println(messageConverted);
 
         if (messageConverted != null) {
             if (messageConverted.containsKey("toId") && messageConverted.get("toId") != null
