@@ -223,4 +223,3 @@ VALUES (13,5000.00,1, 2,'ACCEPTED' ,2,false);
 
 INSERT INTO requests (time_slot_id,price,accommodation_id,guest_number,request_status,guest_id,deleted)
 VALUES (14,4300.00,1, 2,'ACCEPTED' ,2,false);
-

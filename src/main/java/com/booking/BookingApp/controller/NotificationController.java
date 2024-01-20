@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.ParseException;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
@@ -41,6 +42,15 @@ public class NotificationController {
                 .map(NotificationDTOMapper::fromNotificationtoDTO)
                 .collect(Collectors.toList());
         return new ResponseEntity<>(notificationDTOS, HttpStatus.OK);
+    }
+    @GetMapping(value = "/new/{userId}",produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAuthority('ROLE_GUEST') or hasAuthority('ROLE_HOST') ")
+    public ResponseEntity<NotificationDTO> getUserNewNotifications(@PathVariable("userId") Long id) throws ParseException {
+        Notification notification=notificationService.findNewForUser(id);
+        if(notification==null){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(NotificationDTOMapper.fromNotificationtoDTO(notification), HttpStatus.OK);
     }
 
 
@@ -132,5 +142,20 @@ public class NotificationController {
     public ResponseEntity<NotificationDTO> deleteNotification(@PathVariable("id") Long id) {
         notificationService.delete(id);
         return new ResponseEntity<NotificationDTO>(HttpStatus.NO_CONTENT);
+    }
+
+
+
+    @PutMapping(value = "/{notificationId}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAuthority('ROLE_GUEST') or hasAuthority('ROLE_HOST') ")
+    public ResponseEntity<Notification> updateNotification(@PathVariable("notificationId") Long id, @RequestBody Notification notification) throws Exception {
+
+        Notification result = notificationService.updateNotification(id, notification);
+
+        if (result==null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        return new ResponseEntity<Notification>(result,HttpStatus.OK);
     }
 }

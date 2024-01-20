@@ -23,8 +23,7 @@ import java.util.Collection;
 import java.util.Date;
 
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @SpringBootTest()
@@ -200,6 +199,7 @@ public class RequestServiceTest {
         when(requestRepository.save(request)).thenReturn(request);
 
         Request result=requestService.create(request);
+        assertNotNull(result);
         assertEquals(result,request);
 
         verify(availabilityService).checkFreeTimeSlots(timeSlot,accommodation);
