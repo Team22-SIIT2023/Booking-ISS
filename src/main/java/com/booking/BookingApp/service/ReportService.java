@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -34,13 +36,18 @@ public class ReportService implements IReportService {
                     timeslot.getEndDate(),accommodation.getName());
             int sum=0;
             for(Request reservation:reservations){
-                if(reservation.getTimeSlot().getEndDate().isBefore(LocalDate.now())){
-                    sum+= (int) reservation.getPrice();
+                LocalDate startDate = reservation.getTimeSlot().getStartDate();
+                LocalDate endDate = reservation.getTimeSlot().getEndDate();
+                long reservationDays= ChronoUnit.DAYS.between(startDate, endDate) + 1;
+                if(endDate.isBefore(LocalDate.now())){
+                    LocalDate start = startDate.isBefore(timeslot.getStartDate()) ? timeslot.getStartDate() : startDate;
+                    LocalDate end = endDate.isAfter(timeslot.getEndDate()) ? timeslot.getEndDate() : endDate;
+                    long days= ChronoUnit.DAYS.between(start, end) + 1;
+                    sum+= (int) ((int)(reservation.getPrice()/reservationDays)*days);
                 }
             }
             Report report=new Report(accommodation.getId(),accommodation.getName(),sum,reservations.size(),new double[]{});
             reports.add(report);
-            //reportRepository.save(report);
         }
         return reports;
     }
@@ -56,26 +63,38 @@ public class ReportService implements IReportService {
             if(request.getTimeSlot().getEndDate().isBefore(LocalDate.now())){
                 LocalDate startDate = request.getTimeSlot().getStartDate();
                 LocalDate endDate = request.getTimeSlot().getEndDate();
+                double profit = request.getPrice();
+                int totalDays = (int) ChronoUnit.DAYS.between(startDate, endDate) + 1;
+                double profitPerNight = profit / totalDays;
+
+                if (startDate.getYear() != endDate.getYear()) {
+                    if(startDate.getYear()==year){
+                        endDate = endDate.withYear(year).with(TemporalAdjusters.lastDayOfYear());
+                    }else{
+                        startDate = startDate.withYear(year).withDayOfYear(1);
+                    }
+                }
 
                 int startMonth = startDate.getMonthValue()-1;
                 int endMonth = endDate.getMonthValue()-1;
 
-                double profit = request.getPrice();
-
                 if (startMonth == endMonth) {
-                    profitByMonth[startMonth] += profit;
+                    int days = (int) ChronoUnit.DAYS.between(startDate, endDate) + 1;
+                    profitByMonth[startMonth] += days * profitPerNight;
                 } else {
-                    int startDays = startDate.lengthOfMonth() - startDate.getDayOfMonth();
-                    int endDays = endDate.getDayOfMonth();
-                    double profitPerNight = profit / (startDays + endDays);
-                    profitByMonth[startMonth] += startDays * profitPerNight;
-                    profitByMonth[endMonth] += endDays * profitPerNight;
+
+                    for (int day = startDate.getDayOfMonth(); day <= startDate.lengthOfMonth(); day++) {
+                        profitByMonth[startMonth] += profitPerNight;
+                    }
+
+                    for (int day = 1; day <= endDate.getDayOfMonth(); day++) {
+                        profitByMonth[endMonth] += profitPerNight;
+                    }
                 }
             }
         }
         report.setAccommodationName(accommodationName);
         report.setProfitByMonth(profitByMonth);
-        //reportRepository.save(report);
         return report;
     }
 

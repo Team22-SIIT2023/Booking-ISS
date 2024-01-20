@@ -51,7 +51,6 @@ public class AccommodationController {
             @RequestParam(value = "hostId", required = false)Integer hostId
     ) {
 
-        System.out.println("USAO?");
         Collection<Accommodation>accommodations=accommodationService.findAll(begin,end,guestNumber,type,
                 startPrice,endPrice,status,country,city,amenities,hostId);
         Collection<AccommodationDTO> accommodationDTOS = accommodations.stream()
@@ -106,7 +105,7 @@ public class AccommodationController {
     @GetMapping(value = "/{accommodationId}/images", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<String>> getImages(@PathVariable("accommodationId") Long accommodationId) throws IOException {
         List<String> images = accommodationService.getImages(accommodationId);
-        return ResponseEntity.ok().body(images);
+        return new ResponseEntity<>(images, HttpStatus.OK);
     }
 
     @PreAuthorize("hasRole('ADMIN')")
@@ -189,5 +188,16 @@ public class AccommodationController {
     public ResponseEntity<AccommodationDTO> deleteAccommodation(@PathVariable("id") Long id) {
         accommodationService.delete(id);
         return new ResponseEntity<AccommodationDTO>(HttpStatus.NO_CONTENT);
+    }
+    @PreAuthorize("hasRole('HOST')")
+    @PutMapping(value = "request/approval", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<AccommodationDTO> updateRequestApproval(@RequestBody @Valid AccommodationDTO accommodationDTO)
+            throws Exception {
+        Accommodation accommodation = AccommodationDTOMapper.fromDTOtoAccommodation(accommodationDTO);
+        Accommodation updatedAccommodation = accommodationService.updateRequestApproval(accommodation);
+        if (updatedAccommodation == null) {
+            return new ResponseEntity<AccommodationDTO>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return new ResponseEntity<AccommodationDTO>(AccommodationDTOMapper.fromAccommodationtoDTO(updatedAccommodation), HttpStatus.OK);
     }
 }

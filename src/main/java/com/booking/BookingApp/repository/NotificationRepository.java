@@ -9,5 +9,5 @@ import java.util.Collection;
 @Repository
 public interface NotificationRepository extends JpaRepository<Notification, Long> {
 
-    Collection<Notification> findAllByUser_Id(Long id);
+    Collection<Notification> findAllByUser_IdAndReadIsFalse(Long id);
 }

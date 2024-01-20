@@ -12,7 +12,6 @@ public class TestBase {
 
     @BeforeEach
     public void initializeWebDriver() {
-        System.setProperty("webdriver.chrome.driver", "chromedriver.exe");
         driver = new ChromeDriver();
 
         driver.manage().window().maximize();

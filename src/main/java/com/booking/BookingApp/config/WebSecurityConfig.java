@@ -26,6 +26,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.context.RequestAttributeSecurityContextRepository;
+import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -34,6 +35,8 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.Arrays;
+
+import static org.springframework.security.config.http.MatcherType.mvc;
 
 
 @Configuration
@@ -135,19 +138,19 @@ public class WebSecurityConfig {
 
 
         http.authorizeHttpRequests(requests -> {
-            requests .requestMatchers("/api/users/").permitAll()
+            requests .requestMatchers("/api/users/**").permitAll()
 //                    .requestMatchers("/api/accommodations/").permitAll()
                     .requestMatchers("/api/amenities/").permitAll()
-                    .requestMatchers("/api/email/").permitAll()
-                    .requestMatchers("/socket/").permitAll()
+                    .requestMatchers("/api/email/**").permitAll()
+                    .requestMatchers("/socket/**").permitAll()
                     .requestMatchers("/h2-console/").permitAll()
 //                    .requestMatchers("/api/accommodations").permitAll()
                     .requestMatchers(new AntPathRequestMatcher("/error")).permitAll()
-                    .requestMatchers(new AntPathRequestMatcher("/h2-console/")).permitAll()
+                    .requestMatchers(new AntPathRequestMatcher("/h2-console/**")).permitAll()
 
 
-//                    .requestMatchers("/api/requests/").permitAll()
-//                    .requestMatchers("api/comments/").permitAll()
+//                    .requestMatchers("/api/requests/**").permitAll()
+//                    .requestMatchers("api/comments/**").permitAll()
                     // ukoliko ne zelimo da koristimo @PreAuthorize anotacije nad metodama kontrolera, moze se iskoristiti hasRole() metoda da se ogranici
                     // koji tip korisnika moze da pristupi odgovarajucoj ruti. Npr. ukoliko zelimo da definisemo da ruti 'admin' moze da pristupi
                     // samo korisnik koji ima rolu 'ADMIN', navodimo na sledeci nacin:

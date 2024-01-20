@@ -274,7 +274,7 @@ public class UserController {
         System.out.println("dobrodosao na listu block");
         User user = userService.block(userId);
         if (user == null) {
-            return new ResponseEntity<UserDTO>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<UserDTO>(HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<UserDTO>(UserDTOMapper.fromUsertoDTO(user),HttpStatus.OK);
     }

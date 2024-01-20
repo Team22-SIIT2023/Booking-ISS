@@ -7,7 +7,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.util.Date;
 
 @Getter
 @Setter
@@ -15,11 +17,11 @@ import java.time.LocalDate;
 public class NotificationDTO {
     private Long id;
     private String text;
-    private LocalDate date;
+    private String date;
     private NotificationType type;
     private User user;
 
-    public NotificationDTO(Long id, String text, LocalDate date, NotificationType type, User user) {
+    public NotificationDTO(Long id, String text, String date, NotificationType type, User user) {
         this.id = id;
         this.text = text;
         this.date = date;

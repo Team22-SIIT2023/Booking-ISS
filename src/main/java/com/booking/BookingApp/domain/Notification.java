@@ -8,7 +8,10 @@ import lombok.Setter;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
+import java.sql.Time;
+import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.util.Date;
 
 
 @Getter
@@ -31,7 +34,7 @@ public class Notification {
     private String text;
 
     @Column(name = "date")
-    private LocalDate date;
+    private String date;
 
     @Column(name = "notification_type")
     @Enumerated(EnumType.STRING)
@@ -40,12 +43,23 @@ public class Notification {
     @Column(name="deleted")
     private boolean deleted = Boolean.FALSE;
 
-    public Notification(Long id, String text, LocalDate date, NotificationType type, boolean deleted) {
+    @Column(name="read")
+    private boolean read = Boolean.FALSE;
+
+    public Notification(Long id, String text, String date, NotificationType type, boolean deleted) {
         this.id = id;
         this.text = text;
         this.date = date;
         this.type = type;
         this.deleted=deleted;
+    }
+    public Notification(Long id, String text, String date, NotificationType type, boolean deleted,boolean read) {
+        this.id = id;
+        this.text = text;
+        this.date = date;
+        this.type = type;
+        this.deleted=deleted;
+        this.read=read;
     }
 
     @Override

@@ -10,6 +10,7 @@ import lombok.Setter;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 @Getter
@@ -31,7 +32,7 @@ public class AccommodationDTO {
     private int reservationDeadline;
     private ArrayList<AmenityDTO> amenities;
     private ArrayList<PricelistItem> priceList;
-    private ArrayList<TimeSlot> freeTimeSlots;
+    private Collection<TimeSlot> freeTimeSlots;
     private double price;
     private double unitPrice;
 

@@ -153,6 +153,7 @@ public class CommentsController {
     @PutMapping(value = "/approve/accommodations/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CommentsDTO> approveAccommodationsComment(@RequestBody AccommodationCommentDTO commentDTO) {
         AccommodationComments comment= AccommodationCommentDTOMapper.fromDTOtoComments(commentDTO);
+        System.out.println(comment);
         Comments updatedComment = commentService.approve(comment);
         if (updatedComment == null) {
             return new ResponseEntity<CommentsDTO>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -163,6 +164,7 @@ public class CommentsController {
     @PutMapping(value = "/decline/accommodations/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CommentsDTO> declineAccommodationsComment(@RequestBody AccommodationCommentDTO commentDTO) {
         AccommodationComments comment= AccommodationCommentDTOMapper.fromDTOtoComments(commentDTO);
+        System.out.println(commentDTO);
         Comments updatedComment = commentService.decline(comment);
         if (updatedComment == null) {
             return new ResponseEntity<CommentsDTO>(HttpStatus.INTERNAL_SERVER_ERROR);

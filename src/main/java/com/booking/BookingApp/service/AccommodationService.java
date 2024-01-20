@@ -48,6 +48,10 @@ public class AccommodationService implements IAccommodationService {
     @Override
     public double calculatePriceForAccommodation(Long id, int guestNumber, Date begin, Date end) {
         Accommodation accommodation=findOne(id);
+        if(accommodation==null){
+            return 0.0;
+        }
+
         double price = 0;
 
         long timeDifference=end.getTime()-begin.getTime();
@@ -199,6 +203,8 @@ public class AccommodationService implements IAccommodationService {
                         hostId
                 );
         }else{
+            System.out.println(hostId);
+            System.out.println("HOSTID");
                 accommodations= accommodationRepository.findAccommodationsByCountryTypeGuestNumberAndAmenities(
                         country,
                         city,
@@ -209,6 +215,7 @@ public class AccommodationService implements IAccommodationService {
                         hostId
                 );
             }
+            System.out.println(accommodations);
 
             if(endPrice>0 && startPrice>0 && begin!=null && end!=null && guestNumber>0){
                 Date beginDate = Date.from(begin.atStartOfDay(ZoneId.systemDefault()).toInstant());
@@ -479,5 +486,16 @@ public class AccommodationService implements IAccommodationService {
         accommodationList.add(accommodation1);
         accommodationList.add(accommodation2);
         return accommodationList;
+    }
+    @Override
+    public Accommodation updateRequestApproval(Accommodation accommodation) {
+        Long accommodationId = accommodation.getId();
+        Accommodation existingAccommodation = accommodationRepository.findById(accommodationId).orElse(null);
+
+        if(existingAccommodation!=null){
+            existingAccommodation.setAutomaticConfirmation(accommodation.isAutomaticConfirmation());
+            return accommodationRepository.save(existingAccommodation);
+        }
+        return  new Accommodation();
     }
 }
