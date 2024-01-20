@@ -45,6 +45,11 @@ public class TimeSlot {
         this.deleted = deleted;
     }
 
+    public TimeSlot(LocalDate startDate, LocalDate endDate) {
+        this.startDate = startDate;
+        this.endDate = endDate;
+    }
+
     @Override
     public String toString() {
         return "TimeSlot{" +

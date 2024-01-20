@@ -57,7 +57,10 @@ public class CommentService implements ICommentService {
 
     @Override
     public Collection<Comments> findByHostId(Long id, Status status) {
-        return hostCommentRepository.findByHost_Id(id);
+        System.out.println("DOOOOSAAAAAOAOOAOAOAOAOOAOAOAOAO");
+        System.out.println(id);
+        System.out.println(hostCommentRepository.findByHost_IdAndStatus(id, status));
+        return hostCommentRepository.findByHost_IdAndStatus(id, Status.ACTIVE);
     }
 
     @Override

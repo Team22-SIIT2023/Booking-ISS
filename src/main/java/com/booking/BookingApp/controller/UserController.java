@@ -215,6 +215,9 @@ public class UserController {
         User user = UserDTOMapper.fromDTOtoUser(reportedUserDTO);
         user.setReportingReason(reportedUserDTO.getReportingReason());
 
+        if (user.getAccount().getStatus().equals(Status.REPORTED)) {
+            return new ResponseEntity<UserDTO>(HttpStatus.NOT_FOUND);
+        }
 
         User updatedUser;
         if (user.getAccount().getRoles().get(0).getName().equals("ROLE_GUEST")) {

@@ -5,6 +5,9 @@ import com.booking.BookingApp.domain.PricelistItem;
 import com.booking.BookingApp.domain.TimeSlot;
 import com.booking.BookingApp.domain.enums.AccommodationStatus;
 import com.booking.BookingApp.domain.enums.AccommodationType;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -15,15 +18,23 @@ import java.util.ArrayList;
 @Setter
 @NoArgsConstructor
 public class CreateAccommodationDTO {
+    @NotEmpty
     private String name;
+    @NotEmpty
     private String description;
+    @NotNull
     private AddressDTO address;
+    @Min(value = 0)
     private int minGuests;
+    @Min(value = 0)
     private int maxGuests;
+    @NotNull
     private AccommodationType type;
     private boolean pricePerGuest;
     private boolean automaticConfirmation;
+    @NotNull
     private Host host;
+    @Min(value = 0)
     private int reservationDeadline;
     private ArrayList<AmenityDTO> amenities;
     private ArrayList<PricelistItem> priceList;

@@ -1,5 +1,6 @@
 package com.booking.BookingApp.dto;
 
+import jakarta.validation.constraints.Future;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -10,7 +11,9 @@ import java.time.LocalDate;
 @Setter
 @NoArgsConstructor
 public class TimeSlotDTO {
+    @Future
     private LocalDate startDate;
+    @Future
     private LocalDate endDate;
 
     public TimeSlotDTO(LocalDate startDate, LocalDate endDate) {

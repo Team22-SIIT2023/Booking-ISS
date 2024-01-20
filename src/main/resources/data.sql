@@ -49,8 +49,8 @@ INSERT INTO timeslots (start_date, end_date, deleted)
 VALUES ('2024-01-10 10:00:00','2024-01-20 12:00:00', false);
 INSERT INTO timeslots (start_date, end_date, deleted)
 VALUES ('2024-01-22 10:00:00','2024-01-24 12:00:00', false);
-INSERT INTO timeslots (start_date, end_date, deleted)
-VALUES ('2024-03-21 10:00:00','2024-03-30 12:00:00', false);
+-- INSERT INTO timeslots (start_date, end_date, deleted)
+-- VALUES ('2024-03-21 10:00:00','2024-03-30 12:00:00', false);
 INSERT INTO timeslots (start_date, end_date, deleted)
 VALUES ('2024-01-21 10:00:00','2024-01-24 12:00:00', false);
 INSERT INTO timeslots (start_date, end_date, deleted)

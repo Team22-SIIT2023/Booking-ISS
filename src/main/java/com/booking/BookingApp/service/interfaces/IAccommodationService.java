@@ -21,9 +21,9 @@ public interface IAccommodationService {
 
     Accommodation update(Accommodation accommodation) throws Exception;
 
-    Accommodation editAccommodationPricelistItem(PricelistItemDTO price, Accommodation accommodationForUpdate);
+    Accommodation editAccommodationPricelistItem(PricelistItemDTO price, Long id);
 
-    Accommodation editAccommodationFreeTimeSlots(TimeSlotDTO timeSlotDTO, Accommodation accommodationForUpdate);
+    Accommodation editAccommodationFreeTimeSlots(TimeSlotDTO timeSlotDTO, Long idAccommodationForUpdate);
 
     void uploadImage(Long id, MultipartFile image) throws IOException;
 

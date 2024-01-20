@@ -56,7 +56,7 @@ public class WebSecurityConfig {
         configuration.setAllowedHeaders(Arrays.asList("*"));
         configuration.setAllowCredentials(true);
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
+        source.registerCorsConfiguration("/", configuration);
         return source;
     }
     // Servis koji se koristi za citanje podataka o korisnicima aplikacije
@@ -106,6 +106,7 @@ public class WebSecurityConfig {
     @Autowired
     private TokenUtils tokenUtils;
 
+
     // Definisemo prava pristupa za zahteve ka odredjenim URL-ovima/rutama
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -134,15 +135,19 @@ public class WebSecurityConfig {
 
 
         http.authorizeHttpRequests(requests -> {
-            requests .requestMatchers("/api/users/**").permitAll()
-//                    .requestMatchers("/api/accommodations/**").permitAll()
-                    .requestMatchers("/api/amenities/**").permitAll()
-                    .requestMatchers("/api/email/**").permitAll()
-                    .requestMatchers("/socket/**").permitAll()
+            requests .requestMatchers("/api/users/").permitAll()
+//                    .requestMatchers("/api/accommodations/").permitAll()
+                    .requestMatchers("/api/amenities/").permitAll()
+                    .requestMatchers("/api/email/").permitAll()
+                    .requestMatchers("/socket/").permitAll()
+                    .requestMatchers("/h2-console/").permitAll()
 //                    .requestMatchers("/api/accommodations").permitAll()
                     .requestMatchers(new AntPathRequestMatcher("/error")).permitAll()
-//                    .requestMatchers("/api/requests/**").permitAll()
-//                    .requestMatchers("api/comments/**").permitAll()
+                    .requestMatchers(new AntPathRequestMatcher("/h2-console/")).permitAll()
+
+
+//                    .requestMatchers("/api/requests/").permitAll()
+//                    .requestMatchers("api/comments/").permitAll()
                     // ukoliko ne zelimo da koristimo @PreAuthorize anotacije nad metodama kontrolera, moze se iskoristiti hasRole() metoda da se ogranici
                     // koji tip korisnika moze da pristupi odgovarajucoj ruti. Npr. ukoliko zelimo da definisemo da ruti 'admin' moze da pristupi
                     // samo korisnik koji ima rolu 'ADMIN', navodimo na sledeci nacin:
@@ -150,8 +155,11 @@ public class WebSecurityConfig {
 //                    .requestMatchers("/api/accommodations").hasAuthority("ROLE_GUEST")
 //                    .requestMatchers("/api/accommodations").hasAuthority("ROLE_HOST")
                     // za svaki drugi zahtev korisnik mora biti autentifikovan
+
                     .anyRequest().authenticated();
         });
+
+
 
         // umetni custom filter TokenAuthenticationFilter kako bi se vrsila provera JWT tokena
         http.addFilterBefore(new TokenAuthenticationFilter(tokenUtils,  userDetailsService()), UsernamePasswordAuthenticationFilter.class);
@@ -168,13 +176,14 @@ public class WebSecurityConfig {
         // Autentifikacija ce biti ignorisana ispod navedenih putanja (kako bismo ubrzali pristup resursima)
         // Zahtevi koji se mecuju za web.ignoring().antMatchers() nemaju pristup SecurityContext-u
         // Dozvoljena POST metoda na ruti /auth/login, za svaki drugi tip HTTP metode greska je 401 Unauthorized
-        return (web) -> web.ignoring().requestMatchers(HttpMethod.POST, "/api/users/login");
+        return (web) -> web.ignoring()
+                .requestMatchers(HttpMethod.POST, "/api/users/login");
+
 
 
         // Ovim smo dozvolili pristup statickim resursima aplikacije
-//                .requestMatchers(HttpMethod.GET, "/", "/webjars/*", "/*.html", "favicon.ico",
-//                        "/*/*.html", "/*/*.css", "/*/*.js");
+//                .requestMatchers(HttpMethod.GET, "/", "/webjars/", "/.html", "favicon.ico",
+//                        "//.html", "//.css", "//.js");
 
     }
-
 }
