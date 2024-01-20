@@ -133,7 +133,7 @@ public class AccommodationController {
 
     @PreAuthorize("hasRole('HOST')")
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<AccommodationDTO> updateAccommodation(@RequestBody AccommodationDTO accommodationDTO, @PathVariable Long id)
+    public ResponseEntity<AccommodationDTO> updateAccommodation(@RequestBody @Valid AccommodationDTO accommodationDTO, @PathVariable Long id)
             throws Exception {
         Accommodation accommodation = AccommodationDTOMapper.fromDTOtoAccommodation(accommodationDTO);
         Accommodation updatedAccommodation = accommodationService.update(accommodation);

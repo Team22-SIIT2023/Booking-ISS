@@ -33,8 +33,15 @@ public class RequestService implements IRequestService {
     @Autowired
     AvailabilityService availabilityService;
 
+    @Autowired
+    AccommodationRepository accommodationRepository;
+
     @Override
     public Collection<Request> findAll(RequestStatus status, LocalDate begin, LocalDate end, String accommodationName) {
+        if(status!=null && begin!=null && end!=null && accommodationName!=null){
+            Accommodation accommodation = accommodationRepository.findByName(accommodationName);
+            return requestRepository.findAllActiveReservationsForAccommodation(LocalDate.now(),accommodation);
+        }
         if(status!=null){
             return requestRepository.findByStatus(status);
         }

@@ -16,6 +16,7 @@ import com.booking.BookingApp.service.NotificationSettingsService;
 import com.booking.BookingApp.service.interfaces.IUserService;
 import com.booking.BookingApp.util.TokenUtils;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
@@ -229,7 +230,7 @@ public class UserController {
     }
 
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<UserDTO> updateUser(@RequestBody UserDTO userDTO, @PathVariable Long id)
+    public ResponseEntity<UserDTO> updateUser(@RequestBody @Valid UserDTO userDTO, @PathVariable Long id)
             throws Exception {
         User user = UserDTOMapper.fromDTOtoUser(userDTO);
         User updatedUser = userService.update(user);

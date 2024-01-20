@@ -4,6 +4,11 @@ import com.booking.BookingApp.domain.*;
 import com.booking.BookingApp.domain.enums.AccommodationStatus;
 import com.booking.BookingApp.domain.enums.AccommodationType;
 import com.booking.BookingApp.domain.enums.Status;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.AssertTrue;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -18,22 +23,49 @@ import java.util.List;
 @NoArgsConstructor
 public class AccommodationDTO {
 
+    @NotNull(message = "ID cannot be null")
     private Long id;
+
+    @NotEmpty(message = "Name can not be empty.")
     private String name;
+
+    @NotEmpty(message = "Description can not be empty")
     private String description;
+
+    @NotNull(message = "Address can not be null.")
+    @Valid
     private AddressDTO address;
+
+    @Min(value = 0, message = "Minimum number of guests must be at least 0.")
     private int minGuests;
+
+    @Min(value = 0, message = "Maximum number of guests must be at least 0.")
     private int maxGuests;
+
+    @NotNull
     private AccommodationType type;
+
     private boolean pricePerGuest;
+
     private boolean automaticConfirmation;
+
+    @NotNull
     private Host host;
+
+    @NotNull
     private AccommodationStatus status;
+
+    @Min(value=0)
     private int reservationDeadline;
+
     private ArrayList<AmenityDTO> amenities;
+
     private ArrayList<PricelistItem> priceList;
+
     private Collection<TimeSlot> freeTimeSlots;
+
     private double price;
+
     private double unitPrice;
 
 

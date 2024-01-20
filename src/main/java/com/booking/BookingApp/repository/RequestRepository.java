@@ -5,6 +5,7 @@ import com.booking.BookingApp.domain.enums.RequestStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
@@ -27,6 +28,8 @@ public interface RequestRepository extends JpaRepository<Request, Long> {
     @Query("SELECT r FROM Request r WHERE r.status = 'ACCEPTED' AND r.timeSlot.startDate > :currentDateTime AND r.guest = :guest")
     Collection<Request> findActiveReservationsForGuest(@Param("currentDateTime") LocalDate currentDateTime, @Param("guest") Guest guest);
 
+    @Query("SELECT r FROM Request r WHERE r.status = 'ACCEPTED' AND r.timeSlot.startDate > :currentDateTime AND r.accommodation = :accommodation")
+    Collection<Request> findAllActiveReservationsForAccommodation(@Param("currentDateTime") LocalDate currentDateTime, @Param("accommodation") Accommodation accommodation);
 
     @Query("SELECT r FROM Request r WHERE r.timeSlot.startDate > :currentDateTime AND r.guest = :guest")
     Collection<Request> findFutureRequestsForGuest(@Param("currentDateTime") LocalDate currentDateTime, @Param("guest") Guest guest);
@@ -91,4 +94,5 @@ public interface RequestRepository extends JpaRepository<Request, Long> {
             @Param("accommodation") Accommodation accommodation,
             @Param("startDate") LocalDate startDate,
             @Param("endDate") LocalDate endDate);
+
 }
