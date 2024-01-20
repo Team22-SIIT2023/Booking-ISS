@@ -44,6 +44,7 @@ public class TimeSlot {
         this.endDate = endDate;
         this.deleted = deleted;
     }
+
     public TimeSlot(LocalDate startDate, LocalDate endDate) {
         this.startDate = startDate;
         this.endDate = endDate;

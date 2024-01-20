@@ -3,15 +3,14 @@ package com.booking.BookingApp.dto;
 import com.booking.BookingApp.domain.Role;
 import com.booking.BookingApp.domain.enums.Status;
 import com.booking.BookingApp.domain.enums.UserType;
-import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Size;
 
 import java.util.List;
@@ -23,13 +22,11 @@ import java.util.List;
 public class AccountDTO {
 
     @NotNull(message = "ID cannot be null")
-    @Positive(message = "ID must be a positive number")
     private Long id;
 
 
     @Email(regexp = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")
     @NotEmpty(message = "Username cannot be empty")
-    @Size(max = 50, message = "Username must not exceed 50 characters")
     private String username;
 
 

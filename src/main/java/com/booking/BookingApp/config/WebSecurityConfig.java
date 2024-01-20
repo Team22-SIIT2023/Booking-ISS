@@ -185,9 +185,8 @@ public class WebSecurityConfig {
 
 
         // Ovim smo dozvolili pristup statickim resursima aplikacije
-//                .requestMatchers(HttpMethod.GET, "/", "/webjars/*", "/*.html", "favicon.ico",
-//                        "/*/*.html", "/*/*.css", "/*/*.js");
+//                .requestMatchers(HttpMethod.GET, "/", "/webjars/", "/.html", "favicon.ico",
+//                        "//.html", "//.css", "//.js");
 
     }
-
 }

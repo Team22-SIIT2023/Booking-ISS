@@ -1,6 +1,12 @@
-
 INSERT INTO addresses (country, city, postal_code, address,deleted) VALUES ('Serbia', 'Novi Sad', '21000', '54 Alekse Santica',false);
 INSERT INTO addresses (country, city, postal_code, address,deleted) VALUES ('Serbia', 'Novi Sad', '21000', '54 Futoska',false);
+INSERT INTO addresses (country, city, postal_code, address,deleted) VALUES ('Serbia', 'Novi Sad', '21000', '54 Gogoljeva',false);
+INSERT INTO addresses (country, city, postal_code, address,deleted) VALUES ('Serbia', 'Novi Sad', '21000', '54 Puskinova',false);
+INSERT INTO addresses (country, city, postal_code, address,deleted) VALUES ('Serbia', 'Novi Sad', '21000', '54 Jevrejska',false);
+INSERT INTO addresses (country, city, postal_code, address,deleted) VALUES ('Serbia', 'Novi Sad', '21000', '54 Narodnog fronta',false);
+INSERT INTO addresses (country, city, postal_code, address,deleted) VALUES ('Serbia', 'Novi Sad', '21000', '54 Zitni Trg',false);
+INSERT INTO addresses (country, city, postal_code, address,deleted) VALUES ('Serbia', 'Novi Sad', '21000', '54 Mise Dimitrijevica',false);
+INSERT INTO addresses (country, city, postal_code, address,deleted) VALUES ('Serbia', 'Novi Sad', '21000', '54 Danila Kisa',false);
 -- INSERT INTO addresses (country, city, postal_code, address,deleted) VALUES ('Serbia', 'Novi Sad', '21000', '3 Puskinova',false);
 
 
@@ -98,6 +104,132 @@ VALUES (
            'ACCEPTED',
            2,3,false
        );
+
+
+INSERT INTO accommodations (
+    name, description, address_id, min_guest, max_guest,
+    acc_type, price_per_guest, automatic_conf, acc_status,
+    reservation_deadline,host_id, deleted)
+VALUES (
+           'Accommodation Name 2',
+           'Accommodation Description',
+           2,
+           1,
+           5,
+           'HOTEL',
+           true,
+           true,
+           'ACCEPTED',
+           2,3,false
+       );
+
+
+INSERT INTO accommodations (
+    name, description, address_id, min_guest, max_guest,
+    acc_type, price_per_guest, automatic_conf, acc_status,
+    reservation_deadline,host_id, deleted)
+VALUES (
+           'Accommodation Name 13',
+           'Accommodation Description',
+           3,
+           1,
+           5,
+           'HOTEL',
+           true,
+           true,
+           'ACCEPTED',
+           2,3,false
+       );
+
+
+INSERT INTO accommodations (
+    name, description, address_id, min_guest, max_guest,
+    acc_type, price_per_guest, automatic_conf, acc_status,
+    reservation_deadline,host_id, deleted)
+VALUES (
+           'Accommodation Name 4',
+           'Accommodation Description',
+           4,
+           1,
+           5,
+           'HOTEL',
+           true,
+           true,
+           'ACCEPTED',
+           2,3,false
+       );
+
+
+INSERT INTO accommodations (
+    name, description, address_id, min_guest, max_guest,
+    acc_type, price_per_guest, automatic_conf, acc_status,
+    reservation_deadline,host_id, deleted)
+VALUES (
+           'Accommodation Name 5',
+           'Accommodation Description',
+           5,
+           1,
+           5,
+           'HOTEL',
+           true,
+           true,
+           'ACCEPTED',
+           2,3,false
+       );
+
+
+INSERT INTO accommodations (
+    name, description, address_id, min_guest, max_guest,
+    acc_type, price_per_guest, automatic_conf, acc_status,
+    reservation_deadline,host_id, deleted)
+VALUES (
+           'Accommodation Name 6',
+           'Accommodation Description',
+           6,
+           1,
+           5,
+           'HOTEL',
+           true,
+           true,
+           'ACCEPTED',
+           2,3,false
+       );
+
+INSERT INTO accommodations (
+    name, description, address_id, min_guest, max_guest,
+    acc_type, price_per_guest, automatic_conf, acc_status,
+    reservation_deadline,host_id, deleted)
+VALUES (
+           'Accommodation Name 7',
+           'Accommodation Description',
+           7,
+           1,
+           5,
+           'HOTEL',
+           true,
+           true,
+           'ACCEPTED',
+           2,3,false
+       );
+
+
+INSERT INTO accommodations (
+    name, description, address_id, min_guest, max_guest,
+    acc_type, price_per_guest, automatic_conf, acc_status,
+    reservation_deadline,host_id, deleted)
+VALUES (
+           'Accommodation Name 8',
+           'Accommodation Description',
+           8,
+           1,
+           5,
+           'HOTEL',
+           true,
+           true,
+           'ACCEPTED',
+           2,3,false
+       );
+
 -- INSERT INTO accommodations (
 --     name, description, address_id, min_guest, max_guest,
 --     acc_type, price_per_guest, automatic_conf, acc_status,
@@ -134,15 +266,91 @@ VALUES (
 
 INSERT INTO timeslots (start_date, end_date, deleted)
 VALUES (DATE '2024-01-20',DATE '2024-01-30', false);
+
 INSERT INTO timeslots (start_date, end_date, deleted)
 VALUES (DATE '2024-01-20',DATE  '2024-01-30', false);
+
+INSERT INTO timeslots (start_date, end_date, deleted)
+VALUES (DATE '2024-02-10',DATE '2024-02-25', false);
+
+INSERT INTO timeslots (start_date, end_date, deleted)
+VALUES (DATE '2024-01-20',DATE  '2024-01-30', false);
+
+INSERT INTO timeslots (start_date, end_date, deleted)
+VALUES (DATE '2024-01-20',DATE  '2024-01-30', false);
+
+INSERT INTO timeslots (start_date, end_date, deleted)
+VALUES (DATE '2024-01-20',DATE  '2024-01-30', false);
+
+INSERT INTO timeslots (start_date, end_date, deleted)
+VALUES (DATE '2024-01-20',DATE  '2024-01-30', false);
+
+INSERT INTO timeslots (start_date, end_date, deleted)
+VALUES (DATE '2024-01-20',DATE  '2024-01-30', false);
+
+INSERT INTO timeslots (start_date, end_date, deleted)
+VALUES (DATE '2024-01-20',DATE  '2024-01-30', false);
+
+INSERT INTO timeslots (start_date, end_date, deleted)
+VALUES (DATE '2024-01-20',DATE  '2024-01-30', false);
+
+INSERT INTO timeslots (start_date, end_date, deleted)
+VALUES (DATE '2024-01-20',DATE  '2024-01-30', false);
+
+INSERT INTO timeslots (start_date, end_date, deleted)
+VALUES (DATE '2024-01-20',DATE  '2024-01-30', false);
+
+INSERT INTO timeslots (start_date, end_date, deleted)
+VALUES (DATE '2024-01-20',DATE  '2024-01-30', false);
+
+INSERT INTO timeslots (start_date, end_date, deleted)
+VALUES (DATE '2024-01-20',DATE  '2024-01-30', false);
+
+INSERT INTO timeslots (start_date, end_date, deleted)
+VALUES (DATE '2024-01-20',DATE  '2024-01-30', false);
+
+INSERT INTO timeslots (start_date, end_date, deleted)
+VALUES (DATE '2024-01-20',DATE  '2024-01-30', false);
+
+INSERT INTO timeslots (start_date, end_date, deleted)
+VALUES (DATE '2024-01-20',DATE  '2024-01-30', false);
+
+
+
+
+
+
 INSERT INTO pricelist_items (time_slot_id, price, deleted) VALUES (1,100.00, false);
+INSERT INTO pricelist_items (time_slot_id, price, deleted) VALUES (10,100.00, false);
+INSERT INTO pricelist_items (time_slot_id, price, deleted) VALUES (11,100.00, false);
+INSERT INTO pricelist_items (time_slot_id, price, deleted) VALUES (12,100.00, false);
+INSERT INTO pricelist_items (time_slot_id, price, deleted) VALUES (13,100.00, false);
+INSERT INTO pricelist_items (time_slot_id, price, deleted) VALUES (14,100.00, false);
+INSERT INTO pricelist_items (time_slot_id, price, deleted) VALUES (15,100.00, false);
+INSERT INTO pricelist_items (time_slot_id, price, deleted) VALUES (16,100.00, false);
+
 --
 INSERT INTO accommodations_price_list VALUES (1,1);
 -- INSERT INTO amenities_accommodation VALUES (1,1);
 -- INSERT INTO amenities_accommodation VALUES (1,2);
 -- INSERT INTO amenities_accommodation VALUES (2,1);
 INSERT INTO accommodations_free_time_slots VALUES (1,2);
+INSERT INTO accommodations_free_time_slots VALUES (2,17);
+INSERT INTO accommodations_free_time_slots VALUES (3,4);
+INSERT INTO accommodations_free_time_slots VALUES (4,5);
+INSERT INTO accommodations_free_time_slots VALUES (5,6);
+INSERT INTO accommodations_free_time_slots VALUES (6,7);
+INSERT INTO accommodations_free_time_slots VALUES (7,8);
+-- INSERT INTO accommodations_free_time_slots VALUES (8,9);
+
+INSERT INTO accommodations_price_list VALUES (2,2);
+INSERT INTO accommodations_price_list VALUES (3,3);
+INSERT INTO accommodations_price_list VALUES (4,4);
+INSERT INTO accommodations_price_list VALUES (5,5);
+INSERT INTO accommodations_price_list VALUES (6,6);
+INSERT INTO accommodations_price_list VALUES (7,7);
+INSERT INTO accommodations_price_list VALUES (8,8);
+
 -- INSERT INTO accommodations_free_time_slots VALUES (1,2);
 -- INSERT INTO accommodations_free_time_slots VALUES (1,3);
 -- INSERT INTO accommodations_free_time_slots VALUES (2,4);
@@ -213,8 +421,8 @@ INSERT INTO accommodations_free_time_slots VALUES (1,2);
 -- INSERT INTO timeslots (start_date, end_date, deleted)
 -- VALUES ('2024-06-22 10:00:00','2024-06-26 12:00:00', false);
 --
--- INSERT INTO requests (time_slot_id,price,accommodation_id,guest_number,request_status,guest_id,deleted)
--- VALUES (10,3500.00,1, 5,'ACCEPTED' ,2,false);
+INSERT INTO requests (time_slot_id,price,accommodation_id,guest_number,request_status,guest_id,deleted)
+VALUES (3,3500.00,1, 5,'ACCEPTED' ,2,false);
 --
 -- INSERT INTO requests (time_slot_id,price,accommodation_id,guest_number,request_status,guest_id,deleted)
 -- VALUES (11,2450.00,3, 2,'ACCEPTED' ,2,false);
@@ -226,5 +434,5 @@ INSERT INTO accommodations_free_time_slots VALUES (1,2);
 -- VALUES (13,5000.00,1, 2,'ACCEPTED' ,2,false);
 --
 -- INSERT INTO requests (time_slot_id,price,accommodation_id,guest_number,request_status,guest_id,deleted)
--- VALUES (14,4300.00,1, 2,'ACCEPTED' ,2,false);
+-- VALUES (14,4300.00,1, 2,'ACCEPTED' ,2,false);
 --

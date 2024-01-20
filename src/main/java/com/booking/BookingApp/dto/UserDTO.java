@@ -17,7 +17,7 @@ public class UserDTO {
 
     @NotNull(message = "ID cannot be null")
     private Long id;
-
+  
     @NotEmpty(message = "First name cannot be empty")
     @Size(max = 50, message = "First name must not exceed 50 characters")
     @Size(min = 3, message = "First name must not have minimum 3 characters")
@@ -32,6 +32,7 @@ public class UserDTO {
     private AddressDTO address;
 
     @Pattern(regexp = "\\d+", message = "Phone number must contain only numeric digits")
+    @NotEmpty
     private String phoneNumber;
 
     @Valid
