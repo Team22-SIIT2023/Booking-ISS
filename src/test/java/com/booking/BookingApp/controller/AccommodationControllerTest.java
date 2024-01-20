@@ -12,6 +12,7 @@ import org.springframework.http.*;
 import org.springframework.test.context.TestPropertySource;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -50,11 +51,12 @@ public class AccommodationControllerTest {
         ResponseEntity<AccommodationDTO> responseEntity = restTemplate.exchange("/api/accommodations/editTimeSlot/{id}", HttpMethod.PUT, httpEntity, AccommodationDTO.class, 1L);
 
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        List<TimeSlot> timeSlotList=responseEntity.getBody().getFreeTimeSlots().stream().toList();
         assertEquals(2, responseEntity.getBody().getFreeTimeSlots().size());
-        assertEquals(LocalDate.parse("2024-01-20"), responseEntity.getBody().getFreeTimeSlots().get(0).getStartDate());
-        assertEquals(LocalDate.parse("2024-01-30"), responseEntity.getBody().getFreeTimeSlots().get(0).getEndDate());
-        assertEquals(LocalDate.parse("2024-03-20"), responseEntity.getBody().getFreeTimeSlots().get(1).getStartDate());
-        assertEquals(LocalDate.parse("2024-03-27"), responseEntity.getBody().getFreeTimeSlots().get(1).getEndDate());
+        assertEquals(LocalDate.parse("2024-01-20"), timeSlotList.get(0).getStartDate());
+        assertEquals(LocalDate.parse("2024-01-30"), timeSlotList.get(0).getEndDate());
+        assertEquals(LocalDate.parse("2024-03-20"), timeSlotList.get(1).getStartDate());
+        assertEquals(LocalDate.parse("2024-03-27"), timeSlotList.get(1).getEndDate());
     }
 
     @Test
@@ -85,9 +87,11 @@ public class AccommodationControllerTest {
         ResponseEntity<AccommodationDTO> responseEntity = restTemplate.exchange("/api/accommodations/editTimeSlot/{id}", HttpMethod.PUT, httpEntity, AccommodationDTO.class, 2L);
 
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        List<TimeSlot> timeSlotList=responseEntity.getBody().getFreeTimeSlots().stream().toList();
+
         assertEquals(1, responseEntity.getBody().getFreeTimeSlots().size());
-        assertEquals(LocalDate.parse("2024-01-25"), responseEntity.getBody().getFreeTimeSlots().get(0).getStartDate());
-        assertEquals(LocalDate.parse("2024-01-31"), responseEntity.getBody().getFreeTimeSlots().get(0).getEndDate());
+        assertEquals(LocalDate.parse("2024-01-25"), timeSlotList.get(0).getStartDate());
+        assertEquals(LocalDate.parse("2024-01-31"), timeSlotList.get(0).getEndDate());
     }
 
     @Test
@@ -103,9 +107,11 @@ public class AccommodationControllerTest {
         ResponseEntity<AccommodationDTO> responseEntity = restTemplate.exchange("/api/accommodations/editTimeSlot/{id}", HttpMethod.PUT, httpEntity, AccommodationDTO.class, 3L);
 
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        List<TimeSlot> timeSlotList=responseEntity.getBody().getFreeTimeSlots().stream().toList();
+
         assertEquals(1, responseEntity.getBody().getFreeTimeSlots().size());
-        assertEquals(LocalDate.parse("2024-01-16"), responseEntity.getBody().getFreeTimeSlots().get(0).getStartDate());
-        assertEquals(LocalDate.parse("2024-01-31"), responseEntity.getBody().getFreeTimeSlots().get(0).getEndDate());
+        assertEquals(LocalDate.parse("2024-01-16"), timeSlotList.get(0).getStartDate());
+        assertEquals(LocalDate.parse("2024-01-31"),timeSlotList.get(0).getEndDate());
     }
 
     @Test
@@ -121,9 +127,11 @@ public class AccommodationControllerTest {
         ResponseEntity<AccommodationDTO> responseEntity = restTemplate.exchange("/api/accommodations/editTimeSlot/{id}", HttpMethod.PUT, httpEntity, AccommodationDTO.class, 4L);
 
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        List<TimeSlot> timeSlotList=responseEntity.getBody().getFreeTimeSlots().stream().toList();
+
         assertEquals(1, responseEntity.getBody().getFreeTimeSlots().size());
-        assertEquals(LocalDate.parse("2024-01-10"), responseEntity.getBody().getFreeTimeSlots().get(0).getStartDate());
-        assertEquals(LocalDate.parse("2024-01-25"), responseEntity.getBody().getFreeTimeSlots().get(0).getEndDate());
+        assertEquals(LocalDate.parse("2024-01-10"), timeSlotList.get(0).getStartDate());
+        assertEquals(LocalDate.parse("2024-01-25"), timeSlotList.get(0).getEndDate());
     }
 
     @Test
@@ -139,9 +147,12 @@ public class AccommodationControllerTest {
         ResponseEntity<AccommodationDTO> responseEntity = restTemplate.exchange("/api/accommodations/editTimeSlot/{id}", HttpMethod.PUT, httpEntity, AccommodationDTO.class, 5L);
 
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        List<TimeSlot> timeSlotList=responseEntity.getBody().getFreeTimeSlots().stream().toList();
+
+
         assertEquals(1, responseEntity.getBody().getFreeTimeSlots().size());
-        assertEquals(LocalDate.parse("2024-01-20"), responseEntity.getBody().getFreeTimeSlots().get(0).getStartDate());
-        assertEquals(LocalDate.parse("2024-01-30"), responseEntity.getBody().getFreeTimeSlots().get(0).getEndDate());
+        assertEquals(LocalDate.parse("2024-01-20"), timeSlotList.get(0).getStartDate());
+        assertEquals(LocalDate.parse("2024-01-30"),timeSlotList.get(0).getEndDate());
     }
 
     @Test
