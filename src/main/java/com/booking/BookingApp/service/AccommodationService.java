@@ -42,6 +42,9 @@ public class AccommodationService implements IAccommodationService {
     @Autowired
     TimeSlotRepository timeSlotRepository;
 
+    @Autowired
+    AvailabilityService availabilityService;
+
     @Override
     public double calculatePriceForAccommodation(Long id, int guestNumber, Date begin, Date end) {
         Accommodation accommodation=findOne(id);
@@ -309,90 +312,30 @@ public class AccommodationService implements IAccommodationService {
 
 
     @Override
-    public Accommodation editAccommodationFreeTimeSlots(TimeSlotDTO newTimeSlot, Accommodation accommodationForUpdate) {
+    public Accommodation editAccommodationFreeTimeSlots(TimeSlotDTO newTimeSlot, Long id) {
+        Accommodation accommodationForUpdate = accommodationRepository.findById(id).orElse(null);
 
-        if (reservationOverlaps(newTimeSlot, accommodationForUpdate.getId())) {
+        if (accommodationForUpdate == null) {
             return null;
         }
-        boolean check = false;
+
+        if (availabilityService.reservationOverlaps(newTimeSlot, accommodationForUpdate.getId())) {
+            return null;
+        }
 
         Collection<TimeSlot> timeSlots = accommodationForUpdate.getFreeTimeSlots();
-        for (TimeSlot timeSlot : timeSlots) {
-            if (timeSlot.getStartDate().isBefore(newTimeSlot.getStartDate()) && timeSlot.getEndDate().isAfter(newTimeSlot.getEndDate())) {
-                timeSlot.setStartDate(newTimeSlot.getStartDate());
-                timeSlot.setEndDate(newTimeSlot.getEndDate());
-                check=true;
-                break;
-            }
 
-            if (timeSlot.getStartDate().isAfter(newTimeSlot.getStartDate()) && timeSlot.getEndDate().isAfter(newTimeSlot.getEndDate()) && timeSlot.getStartDate().isBefore(newTimeSlot.getEndDate())) {
-                timeSlot.setStartDate(newTimeSlot.getStartDate());
-                timeSlot.setEndDate(newTimeSlot.getEndDate());
-                check=true;
-                break;
-            }
+//        Collection<TimeSlot> updatedTimeSlots = availabilityService.updateFreeTimeSlots(newTimeSlot, timeSlots); //5
+//        Collection<TimeSlot> updatedTimeSlots = availabilityService.updateFreeTimeSlots(newTimeSlot, timeSlots); //5
+        availabilityService.updateFreeTimeSlots(newTimeSlot, timeSlots); //5
 
-            if (timeSlot.getStartDate().isBefore(newTimeSlot.getStartDate()) && timeSlot.getEndDate().isBefore(newTimeSlot.getEndDate()) && timeSlot.getEndDate().isAfter(newTimeSlot.getStartDate())) {
-                timeSlot.setStartDate(newTimeSlot.getStartDate());
-                timeSlot.setEndDate(newTimeSlot.getEndDate());
-                check=true;
-                break;
-            }
+//        accommodationForUpdate.setFreeTimeSlots(updatedTimeSlots);
 
-            if (timeSlot.getStartDate().isAfter(newTimeSlot.getStartDate()) && timeSlot.getEndDate().isBefore(newTimeSlot.getEndDate())) {
-                timeSlot.setStartDate(newTimeSlot.getStartDate());
-                timeSlot.setEndDate(newTimeSlot.getEndDate());
-                check=true;
-                break;
-            }
-        }
-        if (!check) {
-            TimeSlot newFreeTimeSlot = new TimeSlot(newTimeSlot.getStartDate(), newTimeSlot.getEndDate(),false);
-            accommodationForUpdate.getFreeTimeSlots().add(newFreeTimeSlot);
-        }
-        return accommodationRepository.save(accommodationForUpdate);
+        System.out.println("Vanja");
+        System.out.println(accommodationForUpdate);
+        accommodationRepository.save(accommodationForUpdate);
+        return accommodationForUpdate;
     }
-
-
-    public boolean reservationOverlaps(TimeSlotDTO timslot, Long accommodationId) {
-        for (Request request : requestRepository.findByStatusAndAccommodation_Id(RequestStatus.ACCEPTED, accommodationId)) {
-            LocalDate requestStart = request.getTimeSlot().getStartDate();
-            LocalDate requestEnd = request.getTimeSlot().getEndDate();
-            if (requestStart.isAfter(timslot.getStartDate()) && requestEnd.isBefore(timslot.getEndDate())) {
-                return true;
-            }
-            if (requestStart.isBefore(timslot.getStartDate()) && requestEnd.isBefore(timslot.getEndDate()) &&
-                timslot.getStartDate().isBefore(requestEnd)) {
-                return true;
-            }
-            if (requestStart.isAfter(timslot.getStartDate()) && requestEnd.isAfter(timslot.getEndDate()) &&
-            requestStart.isBefore(timslot.getEndDate())) {
-                return true;
-            }
-            if (requestStart.isBefore(timslot.getStartDate()) && requestEnd.isAfter(timslot.getEndDate())) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-//            for (TimeSlot ts : accommodation.getFreeTimeSlots()) {
-//
-//                //imamo jedan veci timeslot i onda se doda jedan manji unutar jel se prekida na kraju malog?
-//                if (timeSlot.getStartDate().isBefore(ts.getStartDate()) && timeSlot.getEndDate().isAfter(ts.getEndDate())) {
-//                    timeSlot.setEndDate(ts.getEndDate());
-//                }
-//
-//                if (timeSlot.getStartDate().isBefore(ts.getStartDate()) && timeSlot.getEndDate().isBefore(ts.getEndDate())) {
-//                    timeSlot.setEndDate(ts.getEndDate());
-//                }
-//
-//                if (timeSlot.getStartDate().isAfter(ts.getStartDate()) && timeSlot.getEndDate().isAfter(ts.getEndDate())) {
-//                    timeSlot.setStartDate(ts.getStartDate());
-//                    //da li kraj da bude kraj novog (ts) ili starog (timeslot)???
-//                }
-//            }
-
 
     @Override
     public void delete(Long id) {
@@ -400,16 +343,23 @@ public class AccommodationService implements IAccommodationService {
     }
 
     @Override
-    public Accommodation editAccommodationPricelistItem(PricelistItemDTO price, Accommodation accommodationForUpdate) {
+    public Accommodation editAccommodationPricelistItem(PricelistItemDTO price, Long id) {
         boolean check = false;
+        Accommodation accommodationForUpdate = findOne(id);
+
+        if (accommodationForUpdate == null) {
+            return null;
+        }
+
         System.out.println(accommodationForUpdate);
+
         for (PricelistItem pricelist : accommodationForUpdate.getPriceList()) {
             LocalDate startDate = pricelist.getTimeSlot().getStartDate();
             LocalDate endDate = pricelist.getTimeSlot().getEndDate();
 
-            // startdate????????????????????????????
             if (startDate.isBefore(price.getTimeSlot().getStartDate()) && endDate.isAfter(price.getTimeSlot().getEndDate())) {
                 pricelist.getTimeSlot().setEndDate(price.getTimeSlot().getStartDate());
+
                 PricelistItem pricelistItem2 = new PricelistItem();
                 pricelistItem2.setPrice(price.getPrice());
                 pricelistItem2.setTimeSlot(new TimeSlot(price.getTimeSlot().getStartDate(), price.getTimeSlot().getEndDate(),false));
@@ -445,8 +395,17 @@ public class AccommodationService implements IAccommodationService {
                 check=true;
                 break;
             }
-            // proveritiii
+
             if (startDate.isAfter(price.getTimeSlot().getStartDate()) && endDate.isBefore(price.getTimeSlot().getEndDate())) {
+                pricelist.setPrice(price.getPrice());
+                pricelist.getTimeSlot().setStartDate(price.getTimeSlot().getStartDate());
+                pricelist.getTimeSlot().setEndDate(price.getTimeSlot().getEndDate());
+                check=true;
+                break;
+            }
+
+            //proveriti
+            if (startDate.isEqual(price.getTimeSlot().getStartDate()) && endDate.isEqual(price.getTimeSlot().getEndDate())) {
                 pricelist.setPrice(price.getPrice());
                 pricelist.getTimeSlot().setStartDate(price.getTimeSlot().getStartDate());
                 pricelist.getTimeSlot().setEndDate(price.getTimeSlot().getEndDate());
@@ -460,7 +419,9 @@ public class AccommodationService implements IAccommodationService {
             pricelistItem.setTimeSlot(new TimeSlot(price.getTimeSlot().getStartDate(), price.getTimeSlot().getEndDate(), false));
             accommodationForUpdate.getPriceList().add(pricelistItem);
         }
-        return accommodationRepository.save(accommodationForUpdate);
+
+        accommodationRepository.save(accommodationForUpdate);
+        return accommodationForUpdate;
     }
 
     public void uploadImage(Long id, MultipartFile image) throws IOException {

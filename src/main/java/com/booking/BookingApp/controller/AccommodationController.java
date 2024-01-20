@@ -11,6 +11,7 @@ import com.booking.BookingApp.mapper.UserDTOMapper;
 import com.booking.BookingApp.service.interfaces.IAccommodationService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -80,7 +81,7 @@ public class AccommodationController {
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('HOST')")
-    public ResponseEntity<AccommodationDTO> createAccommodation(@RequestBody CreateAccommodationDTO accommodation) throws Exception {
+    public ResponseEntity<AccommodationDTO> createAccommodation(@Valid @RequestBody CreateAccommodationDTO accommodation) throws Exception {
         Accommodation newAccommodation=AccommodationDTOMapper.fromCreateDTOtoAccommodation(accommodation);
         Accommodation savedAccommodation = accommodationService.create(newAccommodation);
         return new ResponseEntity<AccommodationDTO>(AccommodationDTOMapper.fromAccommodationtoDTO(savedAccommodation), HttpStatus.CREATED);
@@ -147,11 +148,11 @@ public class AccommodationController {
     @PreAuthorize("hasAuthority('ROLE_HOST')")
     public ResponseEntity<AccommodationDTO> editAccommodationPricelistItem(@RequestBody PricelistItemDTO pricelistDTO, @PathVariable Long id)
             throws Exception {
-        Accommodation accommodationForUpdate = accommodationService.findOne(id);
-        Accommodation updatedAccommodation = accommodationService.editAccommodationPricelistItem(pricelistDTO,accommodationForUpdate);
+//        Accommodation accommodationForUpdate = accommodationService.findOne(id);
+        Accommodation updatedAccommodation = accommodationService.editAccommodationPricelistItem(pricelistDTO,id);
 
         if (updatedAccommodation == null) {
-            return new ResponseEntity<AccommodationDTO>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<AccommodationDTO>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<AccommodationDTO>(AccommodationDTOMapper.fromAccommodationtoDTO(updatedAccommodation), HttpStatus.OK);
     }
@@ -169,15 +170,15 @@ public class AccommodationController {
     }
 
     @PutMapping(value = "/editTimeSlot/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasRole('HOST')")
+//    @PreAuthorize("hasRole('HOST')")
     public ResponseEntity<AccommodationDTO> editAccommodationFreeTimeSlots(@RequestBody TimeSlotDTO timeSlotDTO, @PathVariable Long id)
             throws Exception {
-        Accommodation accommodationForUpdate = accommodationService.findOne(id);
-        Accommodation updatedAccommodation = accommodationService.editAccommodationFreeTimeSlots(timeSlotDTO, accommodationForUpdate);
+
+        Accommodation updatedAccommodation = accommodationService.editAccommodationFreeTimeSlots(timeSlotDTO, id);
         System.out.println(updatedAccommodation);
         System.out.println("dosaoooooooooooo");
         if (updatedAccommodation == null) {
-            return new ResponseEntity<AccommodationDTO>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<AccommodationDTO>(HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<AccommodationDTO>(AccommodationDTOMapper.fromAccommodationtoDTO(updatedAccommodation), HttpStatus.OK);
     }

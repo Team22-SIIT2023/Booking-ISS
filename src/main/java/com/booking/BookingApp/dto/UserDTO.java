@@ -1,6 +1,8 @@
 package com.booking.BookingApp.dto;
 
 import com.booking.BookingApp.domain.Address;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -10,9 +12,13 @@ import lombok.Setter;
 @NoArgsConstructor
 public class UserDTO {
     private Long id;
+    @NotEmpty
     private String firstName;
+    @NotEmpty
     private String lastName;
+    @NotNull
     private AddressDTO address;
+    @NotEmpty
     private String phoneNumber;
     private AccountDTO account;
     private String picturePath;

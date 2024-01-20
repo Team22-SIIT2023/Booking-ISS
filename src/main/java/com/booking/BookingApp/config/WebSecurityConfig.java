@@ -59,7 +59,7 @@ public class WebSecurityConfig {
         configuration.setAllowedHeaders(Arrays.asList("*"));
         configuration.setAllowCredentials(true);
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
+        source.registerCorsConfiguration("/", configuration);
         return source;
     }
     // Servis koji se koristi za citanje podataka o korisnicima aplikacije
@@ -185,9 +185,8 @@ public class WebSecurityConfig {
 
 
         // Ovim smo dozvolili pristup statickim resursima aplikacije
-//                .requestMatchers(HttpMethod.GET, "/", "/webjars/*", "/*.html", "favicon.ico",
-//                        "/*/*.html", "/*/*.css", "/*/*.js");
+//                .requestMatchers(HttpMethod.GET, "/", "/webjars/", "/.html", "favicon.ico",
+//                        "//.html", "//.css", "//.js");
 
     }
-
 }
