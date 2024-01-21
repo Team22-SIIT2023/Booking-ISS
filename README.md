@@ -6,11 +6,13 @@ Book a spot in the hive.  :bee:
 
 ### Running a project
 Clone these repositories:
+
 `https://github.com/Team22-SIIT2023/Booking-IKS.git`
 
 `https://github.com/Team22-SIIT2023/Booking-ISS.git`
 
 Run frontend:
+
 `npm install`
 
 `ng serve`
