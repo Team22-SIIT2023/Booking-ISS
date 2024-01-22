@@ -55,7 +55,7 @@ public class RequestControllerTest {
         accommodation.setMaxGuests(5);
         accommodation.setId(1L);
         HttpHeaders headers = new HttpHeaders();
-        RequestDTO requestDTO =new RequestDTO(1L, timeSlot, 3000, accommodation,RequestStatus.PENDING,  3);
+        RequestDTO requestDTO =new RequestDTO(1L, timeSlot, 1500, accommodation,RequestStatus.PENDING,  3);
         ;
         headers.add("Authorization", "Bearer " + tokenGuest);
 
@@ -68,7 +68,7 @@ public class RequestControllerTest {
     }
 
     @Test
-    public void invalidAccommodationRequest() {
+    public void invalidAccommodationIdRequest() {
         TimeSlot timeSlot=getValidDates();
 
         AccommodationDTO accommodation=new AccommodationDTO();
@@ -256,7 +256,7 @@ public class RequestControllerTest {
 
     private TimeSlot getValidDates() {  //dates from database
 
-        LocalDate startDate=LocalDate.of(2024,1,20);
+        LocalDate startDate=LocalDate.of(2024,1,25);
         LocalDate endDate=LocalDate.of(2024,1,30);
 
         return new TimeSlot(startDate, endDate);

@@ -76,6 +76,7 @@ public class AccommodationsPage {
 
     public AccommodationsPage(WebDriver driver) {
         this.driver = driver;
+        (new WebDriverWait(driver,Duration.ofSeconds(10))).until(ExpectedConditions.urlToBe("http://localhost:4200/home"));
         this.jsExecutor = (JavascriptExecutor) driver;
         driver.get(PAGE_URL);
         PageFactory.initElements(driver, this);
@@ -118,11 +119,12 @@ public class AccommodationsPage {
         guestNumInput.clear();
         guestNumInput.sendKeys(guestNum);
 
+        ((JavascriptExecutor) driver).executeScript("arguments[0].value = arguments[1];", maxSlider, priceMax);
+        ((JavascriptExecutor) driver).executeScript("arguments[0].dispatchEvent(new Event('input', { bubbles: true }));", maxSlider);
+
         ((JavascriptExecutor) driver).executeScript("arguments[0].value = arguments[1];", minSlider, priceMin);
         ((JavascriptExecutor) driver).executeScript("arguments[0].dispatchEvent(new Event('input', { bubbles: true }));", minSlider);
 
-        ((JavascriptExecutor) driver).executeScript("arguments[0].value = arguments[1];", maxSlider, priceMax);
-        ((JavascriptExecutor) driver).executeScript("arguments[0].dispatchEvent(new Event('input', { bubbles: true }));", maxSlider);
 
         inputDateForFreeDates(year, month, startDate, endDate);
         clickApplyForFreeDates();
