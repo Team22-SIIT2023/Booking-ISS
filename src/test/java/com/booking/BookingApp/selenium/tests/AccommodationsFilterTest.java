@@ -4,6 +4,8 @@ import com.booking.BookingApp.selenium.pages.AccommodationsPage;
 import com.booking.BookingApp.selenium.pages.LoginPage;
 import org.junit.jupiter.api.Test;
 
+import java.util.concurrent.TimeUnit;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -89,12 +91,12 @@ public class AccommodationsFilterTest extends TestBase {
         boolean loaded=accommodationsPage.pageLoaded();
         assertTrue(loaded);
 
-        accommodationsPage.filterByGuestsDatesAndPrices("5",100,53000,"2024","JAN","18","20");
+        accommodationsPage.filterByGuestsDatesAndPrices("5",1000,53000,"2024","JAN","25","30");
         int resultNumber=accommodationsPage.countCards();
         assertEquals(resultNumber,1);
-        boolean priceFilter=accommodationsPage.checkFilteredPrice(100,53000);
+        boolean priceFilter=accommodationsPage.checkFilteredPrice(1000,53000);
         assertTrue(priceFilter);
-        boolean datesFilter=accommodationsPage.checkFilteredDates("2024","JAN","18","20");
+        boolean datesFilter=accommodationsPage.checkFilteredDates("2024","JAN","25","30");
         assertTrue(datesFilter);
     }
     @Test
@@ -106,7 +108,7 @@ public class AccommodationsFilterTest extends TestBase {
         boolean loaded=accommodationsPage.pageLoaded();
         assertTrue(loaded);
 
-        accommodationsPage.filterByGuestsDatesAndPrices("5",1200,53000,"2024","JAN","27","30");
+        accommodationsPage.filterByGuestsDatesAndPrices("5",1200,53000,"2024","JUN","27","30");
         int resultNumber=accommodationsPage.countCards();
         assertEquals(resultNumber,0);
     }
@@ -119,7 +121,7 @@ public class AccommodationsFilterTest extends TestBase {
         boolean loaded=accommodationsPage.pageLoaded();
         assertTrue(loaded);
 
-        accommodationsPage.filterByGuestsDatesAndPrices("5",2200,53000,"2024","JAN","17","20");
+        accommodationsPage.filterByGuestsDatesAndPrices("5",40000,50000,"2024","JAN","25","30");
         int resultNumber=accommodationsPage.countCards();
         assertEquals(resultNumber,0);
     }
