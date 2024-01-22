@@ -230,6 +230,25 @@ VALUES (
            2,3,false
        );
 
+
+
+-- INSERT INTO accommodations (
+--     name, description, address_id, min_guest, max_guest,
+--     acc_type, price_per_guest, automatic_conf, acc_status,
+--     reservation_deadline,host_id, deleted)
+-- VALUES (
+--            'Accommodation Name 9',
+--            'Accommodation Description',
+--            8,
+--            1,
+--            5,
+--            'HOTEL',
+--            true,
+--            true,
+--            'ACCEPTED',
+--            2,3,false
+--        );
+
 -- INSERT INTO accommodations (
 --     name, description, address_id, min_guest, max_guest,
 --     acc_type, price_per_guest, automatic_conf, acc_status,
@@ -315,8 +334,11 @@ VALUES (DATE '2024-01-20',DATE  '2024-01-30', false);
 INSERT INTO timeslots (start_date, end_date, deleted)
 VALUES (DATE '2024-01-20',DATE  '2024-01-30', false);
 
+INSERT INTO timeslots (start_date, end_date, deleted)
+VALUES (DATE '2024-01-20',DATE  '2024-01-30', false);
 
-
+INSERT INTO timeslots (start_date, end_date, deleted)
+VALUES (DATE '2024-01-20',DATE  '2024-01-30', false);
 
 
 
@@ -328,6 +350,7 @@ INSERT INTO pricelist_items (time_slot_id, price, deleted) VALUES (13,100.00, fa
 INSERT INTO pricelist_items (time_slot_id, price, deleted) VALUES (14,100.00, false);
 INSERT INTO pricelist_items (time_slot_id, price, deleted) VALUES (15,100.00, false);
 INSERT INTO pricelist_items (time_slot_id, price, deleted) VALUES (16,100.00, false);
+-- INSERT INTO pricelist_items (time_slot_id, price, deleted) VALUES (18,100.00, false);
 
 --
 INSERT INTO accommodations_price_list VALUES (1,1);
@@ -341,6 +364,8 @@ INSERT INTO accommodations_free_time_slots VALUES (4,5);
 INSERT INTO accommodations_free_time_slots VALUES (5,6);
 INSERT INTO accommodations_free_time_slots VALUES (6,7);
 INSERT INTO accommodations_free_time_slots VALUES (7,8);
+INSERT INTO accommodations_free_time_slots VALUES (8,9);
+-- INSERT INTO accommodations_free_time_slots VALUES (9,19);
 -- INSERT INTO accommodations_free_time_slots VALUES (8,9);
 
 INSERT INTO accommodations_price_list VALUES (2,2);
@@ -350,6 +375,7 @@ INSERT INTO accommodations_price_list VALUES (5,5);
 INSERT INTO accommodations_price_list VALUES (6,6);
 INSERT INTO accommodations_price_list VALUES (7,7);
 INSERT INTO accommodations_price_list VALUES (8,8);
+-- INSERT INTO accommodations_price_list VALUES (9,9);
 
 -- INSERT INTO accommodations_free_time_slots VALUES (1,2);
 -- INSERT INTO accommodations_free_time_slots VALUES (1,3);

@@ -94,7 +94,7 @@ public class AvailabilityServiceTest {
 
 
     @Test
-    public void test_when_reservation_not_overlaps_free_dates_overlaps() throws Exception {
+    public void test_when_reservation_not_overlaps_free_dates_overlaps_on_start_and_end() throws Exception {
         TimeSlotDTO timeSlotDTO = new TimeSlotDTO(LocalDate.parse("2024-02-05"), LocalDate.parse("2024-02-25"));
 
         TimeSlot accommodationTimeSlot1 = new TimeSlot(3L, LocalDate.parse("2024-02-10"), LocalDate.parse("2024-02-20"), false);

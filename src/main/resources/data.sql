@@ -46,7 +46,7 @@ insert into guest_notification_settings (id, is_request_responded) values (2, fa
 
 
 INSERT INTO timeslots (start_date, end_date, deleted)
-VALUES ('2024-01-20 10:00:00','2024-01-30 12:00:00', false);
+VALUES ('2024-01-24 10:00:00','2024-01-30 12:00:00', false);
 INSERT INTO timeslots (start_date, end_date, deleted)
 VALUES ('2024-01-20 10:00:00','2024-01-30 12:00:00', false);
 INSERT INTO timeslots (start_date, end_date, deleted)
@@ -209,6 +209,12 @@ VALUES ('2023-04-22 10:00:00','2023-04-26 12:00:00', false);
 INSERT INTO timeslots (start_date, end_date, deleted)
 VALUES ('2023-06-22 10:00:00','2023-06-26 12:00:00', false);
 
+
+INSERT INTO timeslots (start_date, end_date, deleted)
+VALUES ('2024-09-22 10:00:00','2024-09-26 12:00:00', false);
+
+
+
 INSERT INTO requests (time_slot_id,price,accommodation_id,guest_number,request_status,guest_id,deleted)
 VALUES (10,3500.00,1, 5,'ACCEPTED' ,2,false);
 
@@ -223,3 +229,7 @@ VALUES (13,5000.00,1, 2,'ACCEPTED' ,2,false);
 
 INSERT INTO requests (time_slot_id,price,accommodation_id,guest_number,request_status,guest_id,deleted)
 VALUES (14,4300.00,1, 2,'ACCEPTED' ,2,false);
+
+INSERT INTO pricelist_items (time_slot_id, price, deleted) VALUES (17,100.00, false);
+
+INSERT INTO accommodations_price_list VALUES (1,2);

@@ -116,7 +116,7 @@ public class EditTimeSlotsAccommodationPage {
     }
 
 
-    public void inputDateForFreeDates(String year, String month, String startDate, String endDate) {
+    public void inputDateForFreeDates(String year, String month, String startDate, String endDate) throws InterruptedException {
         datePickerForFreeDatesBtn.click();
         (new WebDriverWait(driver, Duration.of(10, ChronoUnit.SECONDS))).until(ExpectedConditions.visibilityOf(dateDialog));
 
@@ -131,6 +131,7 @@ public class EditTimeSlotsAccommodationPage {
         String end = String.format("//td//span[contains(text(),'%s')]", endDate);
 
         driver.findElement(By.xpath(start)).click();
+        Thread.sleep(1000);
         driver.findElement(By.xpath(end)).click();
     }
 
@@ -142,13 +143,19 @@ public class EditTimeSlotsAccommodationPage {
         btnApplyDates.click();
     }
 
-    public void acceptPrice() {
-        acceptEditPrice.click();
+    public boolean acceptPrice() throws InterruptedException {
+        Boolean check = driver.findElement(By.className("editPriceBtn")).isEnabled();
+        if (check) {
+            acceptEditPrice.click();
+            return true;
+        }
+        Thread.sleep(1000);
+        return false;
     }
 
     public void acceptFreeDates() throws InterruptedException {
         acceptEditFreeDates.click();
-        Thread.sleep(1000);
+        Thread.sleep(2000);
     }
 
     public int getStartTableSize() throws InterruptedException {
@@ -161,11 +168,21 @@ public class EditTimeSlotsAccommodationPage {
 
     public int getEndTableSize() throws InterruptedException {
         (new WebDriverWait(driver, Duration.of(10, ChronoUnit.SECONDS))).until(ExpectedConditions.visibilityOf(table));
+        Thread.sleep(1000);
         (new WebDriverWait(driver, Duration.of(10, ChronoUnit.SECONDS))).until(ExpectedConditions.numberOfElementsToBe(By.xpath("//table/tbody/*"), before+1));
 
 //        List<WebElement> list = driver.findElements(By.xpath("//table/tbody/*"));
 //        (new WebDriverWait(driver, Duration.of(10, ChronoUnit.SECONDS))).until(ExpectedConditions.numberOfElementsToBe(By.xpath("//table/tbody"), 2));
-        return before+1;
+//        return before+1;
+        return tableRows.size();
+    }
+
+    public int getEndTableSizeEqualsDate() throws InterruptedException {
+        (new WebDriverWait(driver, Duration.of(10, ChronoUnit.SECONDS))).until(ExpectedConditions.visibilityOf(table));
+//        (new WebDriverWait(driver, Duration.of(10, ChronoUnit.SECONDS))).until(ExpectedConditions.numberOfElementsToBe(By.xpath("//table/tbody/*"), before+1));
+//        List<WebElement> list = driver.findElements(By.xpath("//table/tbody/*"));
+//        (new WebDriverWait(driver, Duration.of(10, ChronoUnit.SECONDS))).until(ExpectedConditions.numberOfElementsToBe(By.xpath("//table/tbody"), 2));
+        return tableRows.size();
     }
 
 
