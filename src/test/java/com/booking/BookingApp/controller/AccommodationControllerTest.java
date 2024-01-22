@@ -215,11 +215,9 @@ public class AccommodationControllerTest {
         assertEquals(responseEntity.getBody().getPriceList().get(0).getTimeSlot().getStartDate(), LocalDate.of(2024,1,20));
         assertEquals(responseEntity.getBody().getPriceList().get(0).getTimeSlot().getEndDate(), LocalDate.of(2024,1,25));
 
-        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
         assertEquals(responseEntity.getBody().getPriceList().get(1).getPrice(), 200);
         assertEquals(responseEntity.getBody().getPriceList().get(1).getTimeSlot().getStartDate(), LocalDate.of(2024,1,25));
         assertEquals(responseEntity.getBody().getPriceList().get(1).getTimeSlot().getEndDate(), LocalDate.of(2024,1,31));
-
     }
 
     @Test
@@ -257,4 +255,29 @@ public class AccommodationControllerTest {
 
         assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());
     }
+
+//
+//    @Test
+//    public void validEditPricelistWithStartDateOverlaps() {
+//        headers.add("Authorization", "Bearer " + tokenHost);
+//
+//        PricelistItemDTO pricelistItemDTO = new PricelistItemDTO();
+//        LocalDate startDate = LocalDate.of(2024,1,15);
+//        LocalDate endDate = LocalDate.of(2024,1,25);
+//        TimeSlotDTO timeSlot = new TimeSlotDTO(startDate, endDate);
+//        pricelistItemDTO.setTimeSlot(timeSlot);
+//        pricelistItemDTO.setPrice(200);
+//        HttpEntity<PricelistItemDTO> httpEntity = new HttpEntity<>(pricelistItemDTO, headers);
+//        ResponseEntity<AccommodationDTO> responseEntity = restTemplate.exchange("/api/accommodations/editPricelist/{id}", HttpMethod.PUT, httpEntity, AccommodationDTO.class, 9L);
+//
+//        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+//        assertEquals(responseEntity.getBody().getPriceList().get(0).getPrice(), 100);
+//        assertEquals(responseEntity.getBody().getPriceList().get(0).getTimeSlot().getStartDate(), LocalDate.of(2024,1,25));
+//        assertEquals(responseEntity.getBody().getPriceList().get(0).getTimeSlot().getEndDate(), LocalDate.of(2024,1,30));
+//
+//        assertEquals(responseEntity.getBody().getPriceList().get(1).getPrice(), 200);
+//        assertEquals(responseEntity.getBody().getPriceList().get(1).getTimeSlot().getStartDate(), LocalDate.of(2024,1,15));
+//        assertEquals(responseEntity.getBody().getPriceList().get(1).getTimeSlot().getEndDate(), LocalDate.of(2024,1,25));
+//    }
+
 }

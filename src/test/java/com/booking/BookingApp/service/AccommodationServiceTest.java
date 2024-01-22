@@ -68,10 +68,11 @@ public class AccommodationServiceTest {
     public void test_when_accommodation_id_not_valid() throws Exception {
         TimeSlotDTO timeSlotDTO = new TimeSlotDTO(LocalDate.parse("2024-01-25"), LocalDate.parse("2024-01-29"));
 
-        when(accommodationRepository.findById(3L)).thenReturn(Optional.empty());
+        when(accommodationRepository.findById(30L)).thenReturn(Optional.empty());
 
-        Accommodation result = accommodationService.editAccommodationFreeTimeSlots(timeSlotDTO, 3L);
+        Accommodation result = accommodationService.editAccommodationFreeTimeSlots(timeSlotDTO, 30L);
 
+        verify(accommodationRepository).findById(30L);
         verifyNoInteractions(availabilityService);
         assertNull(result);
     }
@@ -104,6 +105,8 @@ public class AccommodationServiceTest {
         return  accommodationFreeTimeslots;
     }
 
+
+
     //for edit price
 
     @Test
@@ -113,17 +116,17 @@ public class AccommodationServiceTest {
         pricelistItemDTO.setPrice(1000);
         pricelistItemDTO.setTimeSlot(timeSlotDTO);
 
-        when(accommodationRepository.findById(3L)).thenReturn(Optional.empty());
+        when(accommodationRepository.findById(30L)).thenReturn(Optional.empty());
 
-        Accommodation result = accommodationService.editAccommodationPricelistItem(pricelistItemDTO, 3L);
+        Accommodation result = accommodationService.editAccommodationPricelistItem(pricelistItemDTO, 30L);
 
-        verify(accommodationRepository).findById(3L);
+        verify(accommodationRepository).findById(30L);
         verifyNoMoreInteractions(accommodationRepository);
         assertNull(result);
     }
 
     @Test
-    public void test_edit_price_without_overlaps() {
+    public void test_edit_price_without_overlaps_date() {
         PricelistItemDTO pricelistItemDTO = new PricelistItemDTO();
         TimeSlotDTO timeSlotDTO = new TimeSlotDTO(LocalDate.parse("2024-01-25"), LocalDate.parse("2024-01-29"));
         pricelistItemDTO.setPrice(1000);
@@ -281,7 +284,7 @@ public class AccommodationServiceTest {
     }
 
     @Test
-    public void test_edit_price_with_overlaps_and_equals_date() {
+    public void test_edit_price_with_equals_date() {
         PricelistItemDTO pricelistItemDTO = new PricelistItemDTO();
         TimeSlotDTO timeSlotDTO = new TimeSlotDTO(LocalDate.parse("2024-02-10"), LocalDate.parse("2024-02-20"));
         pricelistItemDTO.setPrice(1000);
