@@ -23,24 +23,23 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestPropertySource("classpath:application-test.properties")
+
 public class RequestControllerTest {
 
 
     private String tokenGuest;
 
-
     @Autowired
     private TestRestTemplate restTemplate;
 
     @BeforeEach
-    public void login(){
-            ResponseEntity<UserTokenState> responseEntityGuest =
-                    restTemplate.postForEntity("/api/users/login",
-                            new UserCredentialsDTO("mika@example.com", "123"),
-                            UserTokenState.class);
-            tokenGuest = responseEntityGuest.getBody().getAccessToken();
+    public void loginGuest(){
+        ResponseEntity<UserTokenState> responseEntityGuest =
+                restTemplate.postForEntity("/api/users/login",
+                        new UserCredentialsDTO("mika@example.com", "123"),
+                        UserTokenState.class);
+        tokenGuest = responseEntityGuest.getBody().getAccessToken();
     }
-
     @Test
     public void validRequest() {
         TimeSlot timeSlot=getValidDates();
@@ -256,7 +255,7 @@ public class RequestControllerTest {
 
     private TimeSlot getValidDates() {  //dates from database
 
-        LocalDate startDate=LocalDate.of(2024,1,20);
+        LocalDate startDate=LocalDate.of(2024,1,25);
         LocalDate endDate=LocalDate.of(2024,1,30);
 
         return new TimeSlot(startDate, endDate);

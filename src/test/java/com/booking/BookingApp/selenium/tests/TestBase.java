@@ -13,9 +13,7 @@ public class TestBase {
     @BeforeEach
     public void initializeWebDriver() {
         driver = new ChromeDriver();
-
         driver.manage().window().maximize();
-
         driver.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
     }
 

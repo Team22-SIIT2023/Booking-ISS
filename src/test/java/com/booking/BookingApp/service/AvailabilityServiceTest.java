@@ -2,7 +2,7 @@ package com.booking.BookingApp.service;
 
 import com.booking.BookingApp.domain.TimeSlot;
 import com.booking.BookingApp.dto.TimeSlotDTO;
-import com.booking.BookingApp.repository.RequestRepository;
+import com.booking.BookingApp.repository.RequestRepositoryTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -15,19 +15,17 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 @SpringBootTest
 @TestPropertySource(locations = "classpath:application-test.properties")
 public class AvailabilityServiceTest {
 
     @Mock
-    RequestRepository requestRepository;
+    RequestRepositoryTest requestRepository;
 
     @InjectMocks
     AvailabilityService availabilityService;

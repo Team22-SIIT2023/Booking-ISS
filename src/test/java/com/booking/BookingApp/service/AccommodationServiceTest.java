@@ -2,12 +2,19 @@ package com.booking.BookingApp.service;
 
 import com.booking.BookingApp.domain.Accommodation;
 import com.booking.BookingApp.domain.PricelistItem;
+import com.booking.BookingApp.domain.Request;
 import com.booking.BookingApp.domain.TimeSlot;
+import com.booking.BookingApp.domain.enums.RequestStatus;
 import com.booking.BookingApp.dto.PricelistItemDTO;
 import com.booking.BookingApp.dto.TimeSlotDTO;
 import com.booking.BookingApp.repository.AccommodationRepository;
+import com.booking.BookingApp.repository.TimeSlotRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -16,21 +23,23 @@ import org.springframework.test.context.TestPropertySource;
 
 import java.sql.Time;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @SpringBootTest
 @TestPropertySource(locations = "classpath:application-test.properties")
 public class AccommodationServiceTest {
 
     @Mock
     AccommodationRepository accommodationRepository;
+
+    @Mock
+    TimeSlotRepository timeSlotRepository;
 
     @Mock
     AvailabilityService availabilityService;
@@ -307,4 +316,105 @@ public class AccommodationServiceTest {
         assertEquals(arrayList.get(0).getTimeSlot().getStartDate(), LocalDate.parse("2024-02-10"));
         assertEquals(arrayList.get(0).getTimeSlot().getEndDate(), LocalDate.parse("2024-02-20"));
     }
+
+    //ovde pisem testove za automatsku potvrdu
+
+    @Test
+    public void changeFreeTimeSlotsWithInvalidAccommodationIdTest(){
+        TimeSlotDTO reservationTimeSlot = new TimeSlotDTO(LocalDate.parse("2024-01-25"), LocalDate.parse("2024-02-02"));
+
+        when(accommodationRepository.findById(3L)).thenReturn(Optional.empty());
+
+        Accommodation result = accommodationService.changeFreeTimeSlotsAcceptingReservation(3L, reservationTimeSlot);
+
+        verify(accommodationRepository).findById(3L);
+        verifyNoMoreInteractions(accommodationRepository);
+        verifyNoInteractions(timeSlotRepository);
+        assertNull(result);
+    }
+
+
+
+    //testiramo da li radi funkcija da li izbacuje datume rezervacije iz accommodation freetimeslots liste
+    @MethodSource(value = "getValidDatesForReservation")
+    @ParameterizedTest
+    public void changeFreeTimeSlotsSuccessfullTest(
+            LocalDate startDate, LocalDate endDate, ArrayList<TimeSlot> expectedNewFreeTimeSlots) {
+
+        //dobijamo timeslot iz methodsource-a
+        TimeSlotDTO reservationTimeSlot = new TimeSlotDTO(startDate, endDate);
+
+        //pravimo accommodation i setujemo id i freeTimeSlots
+        Accommodation reservedAccommodation = new Accommodation();
+        reservedAccommodation.setId(1L);
+        Collection<TimeSlot> freeTimeSlots = new ArrayList<>();
+        freeTimeSlots.add(getValidDatesForFreeTimeSlots());
+        reservedAccommodation.setFreeTimeSlots(freeTimeSlots);
+
+        //mokujemo repozitorijume
+        when(accommodationRepository.findById(1L)).thenReturn(Optional.of(reservedAccommodation));
+        when(accommodationRepository.save(reservedAccommodation)).thenReturn(reservedAccommodation);
+        when(timeSlotRepository.save(any(TimeSlot.class))).thenReturn(any(TimeSlot.class));
+
+        //pozovemo funkciju koju testiramo
+        Accommodation accommodation = accommodationService.changeFreeTimeSlotsAcceptingReservation(1L, reservationTimeSlot);
+
+        //proverimo da li su se pozvale mokovane metode
+        verify(accommodationRepository).findById(1L);
+        verify(timeSlotRepository, times(expectedNewFreeTimeSlots.size())).save(any(TimeSlot.class));
+        verify(accommodationRepository).save(accommodation);
+        verifyNoMoreInteractions(accommodationRepository);
+        verifyNoMoreInteractions(timeSlotRepository);
+
+        //proverimo da li smo dobili iste liste
+        assertEquals(expectedNewFreeTimeSlots.size(), accommodation.getFreeTimeSlots().size());
+
+        for(int i=0;i<accommodation.getFreeTimeSlots().size();i++){
+            List<TimeSlot> timeSlotsActual = accommodation.getFreeTimeSlots().stream().toList();
+
+            TimeSlot timeSlotExpected = expectedNewFreeTimeSlots.get(i);
+            TimeSlot timeSlotActual = timeSlotsActual.get(i);
+
+            assertEquals(timeSlotExpected.getStartDate(),timeSlotActual.getStartDate());
+            assertEquals(timeSlotExpected.getEndDate(),timeSlotActual.getEndDate());
+        }
+    }
+
+    private TimeSlot getValidDatesForFreeTimeSlots() {
+        LocalDate now = LocalDate.now();
+        LocalDate startDate = now.plusDays(5);
+        LocalDate endDate = now.plusDays(15);
+        return new TimeSlot(startDate, endDate);
+    }
+
+    List<Arguments> getValidDatesForReservation(){
+        LocalDate now = LocalDate.now();
+
+        //za prvi argument
+        ArrayList<TimeSlot> emptyFreeTimeSlots = new ArrayList<>();
+
+        //za drugi argument
+        ArrayList<TimeSlot> newFreeTimeSlots = new ArrayList<>();
+        TimeSlot timeSlot1 = new TimeSlot(now.plusDays(5),now.plusDays(7));
+        TimeSlot timeSlot2 = new TimeSlot(now.plusDays(13),now.plusDays(15));
+        newFreeTimeSlots.add(timeSlot1);
+        newFreeTimeSlots.add(timeSlot2);
+
+        //za treci argument
+        ArrayList<TimeSlot> newFreeTimeSlots1 = new ArrayList<>();
+        TimeSlot timeSlot3 = new TimeSlot(now.plusDays(11),now.plusDays(15));
+        newFreeTimeSlots1.add(timeSlot3);
+
+        //za cetvrti argument
+        ArrayList<TimeSlot> newFreeTimeSlots2 = new ArrayList<>();
+        TimeSlot timeSlot4 = new TimeSlot(now.plusDays(5),now.plusDays(6));
+        newFreeTimeSlots2.add(timeSlot4);
+
+
+        return Arrays.asList(Arguments.arguments(now.plusDays(5),now.plusDays(15),emptyFreeTimeSlots),
+                Arguments.arguments(now.plusDays(8),now.plusDays(12),newFreeTimeSlots),
+                Arguments.arguments(now.plusDays(5),now.plusDays(10),newFreeTimeSlots1),
+                Arguments.arguments(now.plusDays(7),now.plusDays(15),newFreeTimeSlots2));
+    }
+
 }

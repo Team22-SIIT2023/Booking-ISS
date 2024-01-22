@@ -96,10 +96,14 @@ public class AccommodationService implements IAccommodationService {
 
     @Override
     public Accommodation changeFreeTimeSlotsAcceptingReservation(Long accommodationId, TimeSlotDTO reservationTimeSlot) {
-        Accommodation accommodation = removeReservedTimeSlots(findOne(accommodationId),reservationTimeSlot);
-        System.out.println("posle brisanja       " + accommodation);
-        accommodationRepository.save(accommodation);
-        return accommodation;
+        Accommodation accommodation = findOne(accommodationId);
+        if(accommodation == null){
+            return null;
+        }
+        Accommodation accommodationWithNewFreeTimeSlots = removeReservedTimeSlots(accommodation,reservationTimeSlot);
+        System.out.println("posle brisanja       " + accommodationWithNewFreeTimeSlots);
+        accommodationRepository.save(accommodationWithNewFreeTimeSlots);
+        return accommodationWithNewFreeTimeSlots;
     }
 
     @Override
@@ -267,10 +271,6 @@ public class AccommodationService implements IAccommodationService {
         System.out.println(existingAccommodation);
 
         return accommodationRepository.save(existingAccommodation);
-//        accommodationForUpdate.setStatus(AccommodationStatus.UPDATED);
-//        accommodationForUpdate.setFreeTimeSlots(accommodation.getFreeTimeSlots());
-//        accommodationForUpdate.setPriceList(accommodation.getPriceList());
-//        return accommodationRepository.save(accommodationForUpdate);
 
     }
 
@@ -287,13 +287,13 @@ public class AccommodationService implements IAccommodationService {
             if((reservationStartDate.isAfter(freeStartDate) || reservationStartDate.equals(freeStartDate))
                     && reservationStartDate.isBefore(freeEndDate) && reservationEndDate.isAfter(freeStartDate)
                     && (reservationEndDate.isBefore(freeEndDate)||reservationEndDate.equals(freeEndDate))){
-                if(!freeStartDate.plusDays(1).equals(reservationStartDate)){
+                if(!freeStartDate.plusDays(1).equals(reservationStartDate)&& !freeStartDate.equals(reservationStartDate)){
                     TimeSlot timeSlot = new TimeSlot(freeStartDate,reservationStartDate.minusDays(1),false);
                     System.out.println("TIMESLOT1:            " + timeSlot);
                     timeSlotRepository.save(timeSlot);
                     newFreeTimeSlots.add(timeSlot);
                 }
-                if(!reservationEndDate.plusDays(1).equals(freeEndDate)){
+                if(!reservationEndDate.plusDays(1).equals(freeEndDate)&& !reservationEndDate.equals(freeEndDate)){
                     TimeSlot timeSlot1 = new TimeSlot(reservationEndDate.plusDays(1),freeEndDate,false);
                     System.out.println("TIMESLOT2:            " + timeSlot1);
                     timeSlotRepository.save(timeSlot1);

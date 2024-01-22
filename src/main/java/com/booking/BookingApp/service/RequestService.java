@@ -92,21 +92,27 @@ public class RequestService implements IRequestService {
     public Request create(Request request) throws Exception{
 
         if(request.getTimeSlot().getStartDate().isBefore(LocalDate.now())){
+            System.out.println("1");
             return null;
         }
         if(request.getTimeSlot().getEndDate().isBefore(request.getTimeSlot().getStartDate())){
+            System.out.println("2");
             return null;
         }
         if(!availabilityService.checkFreeTimeSlots(request.getTimeSlot(),request.getAccommodation())){
+            System.out.println("3");
             return null;
         }
         if(!(request.getGuestNumber()<=request.getAccommodation().getMaxGuests() && request.getGuestNumber()>=request.getAccommodation().getMinGuests())){
+            System.out.println("4");
             return null;
         }
         Date startDate=Date.from(request.getTimeSlot().getStartDate().atStartOfDay(ZoneId.systemDefault()).toInstant());
         Date endDate=Date.from(request.getTimeSlot().getEndDate().atStartOfDay(ZoneId.systemDefault()).toInstant());
+//        System.out.println(accommodationService.calculatePriceForAccommodation(request.getAccommodation().getId(),request.getGuestNumber(),startDate,endDate));
         if(accommodationService.calculatePriceForAccommodation(request.getAccommodation().getId(),request.getGuestNumber(),startDate,endDate)==0
             ||accommodationService.calculatePriceForAccommodation(request.getAccommodation().getId(),request.getGuestNumber(),startDate,endDate)!=request.getPrice()){
+            System.out.println("5");
             return null;
         }
 
@@ -147,8 +153,7 @@ public class RequestService implements IRequestService {
         System.out.println(requests.size());
         System.out.println("ACCEPTING REQUESTS:" + requests);
         for(Request _request:requests){
-            _request.setStatus(RequestStatus.DENIED);
-            requestRepository.save(_request);
+            deny(_request);
         }
         TimeSlotDTO timeSlotDTO = new TimeSlotDTO(request.getTimeSlot().getStartDate(),request.getTimeSlot().getEndDate());
         Accommodation accommodation = accommodationService.changeFreeTimeSlotsAcceptingReservation(request.getAccommodation().getId(),timeSlotDTO);
